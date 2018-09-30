@@ -66,7 +66,7 @@ namespace CartoonShader
 					int index = y + x * vertexCountY;
 
 					vertices[index] = new Vector3(x, y, 0);
-					uvs[index] = new Vector2(x / (float)vertexCountX, y / (float)vertexCountY);
+					uvs[index] = new Vector2(x / (float)vertexCountX, 1f - y / (float)vertexCountY);
 				}
 			}
 

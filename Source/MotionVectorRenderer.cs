@@ -7,54 +7,52 @@ namespace CartoonShader
 {
 	public class MotionVectorRenderer : Script
 	{
-		public Camera Cam;
-		public MaterialBase Material;
-
 		[Limit(1, 100)]
 		public float ResolutionDivisor
 		{
-			get { return resolutionDivisor; }
+			get { return _resolutionDivisor; }
 			set
 			{
-				value = Mathf.Clamp(value, 1, 100);
-				if (resolutionDivisor != value)
+				value = Mathf.Clamp(value, 1, 1000);
+				if (_resolutionDivisor != value)
 				{
-					resolutionDivisor = value;
-					//resolution = Cam.Viewport.Size;// / resolutionDivisor;
-					if (output)
+					_resolutionDivisor = value;
+					if (Camera && output)
 					{
-						output.Init(PixelFormat.R8G8B8A8_UNorm, resolution);
+						_resolution = Camera.Viewport.Size / _resolutionDivisor;
+						output.Init(PixelFormat.R8G8B8A8_UNorm, _resolution);
 					}
 				}
 			}
 		}
 
-		private Vector2 resolution = new Vector2(640, 374);
+		public Camera Camera;
+		public MaterialBase OutputMaterial;
+		public string MaterialParamName { get; private set; } = "Image";
+
+		private Vector2 _resolution;
 		private RenderTarget output;
 		private SceneRenderTask task;
-		private MaterialInstance material;
-		private bool setMaterial;
-		private float resolutionDivisor;
+		private bool _setMaterial;
+		private float _resolutionDivisor;
 
 		private void OnEnable()
 		{
+			_resolution = Screen.Size;
 			// Create backbuffer
 			if (output == null)
 				output = RenderTarget.New();
-			output.Init(PixelFormat.R8G8B8A8_UNorm, resolution);
+			output.Init(PixelFormat.R8G8B8A8_UNorm, _resolution);
 
 			// Create rendering task
 			if (task == null)
 				task = RenderTask.Create<SceneRenderTask>();
-			task.Order = -100;
-			task.Camera = Cam;
+			task.Order = -10000;
+			task.Camera = Camera;
 			task.Output = output;
 			task.Enabled = false;
 
-			// Use dynamic material instance
-			if (Material && material == null)
-				material = Material.CreateVirtualInstance();
-			setMaterial = true;
+			_setMaterial = true;
 		}
 
 		private void OnDisable()
@@ -62,28 +60,28 @@ namespace CartoonShader
 			// Cleanup
 			Destroy(ref task);
 			Destroy(ref output);
-			Destroy(ref material);
 		}
 
 		private void Update()
 		{
+			if (_resolution != Screen.Size)
+			{
+				_resolution = Screen.Size;
+				if (output)
+				{
+					output.Init(PixelFormat.R8G8B8A8_UNorm, _resolution);
+				}
+			}
+
 			task.Enabled = true;
 
-			if (setMaterial)
+			if (_setMaterial && task?.Buffers)
 			{
-				setMaterial = false;
+				_setMaterial = false;
 
-				if (material)
+				if (OutputMaterial)
 				{
-					material.GetParam("Image").Value = output;
-				}
-
-				if (Actor is ModelActor modelActor)
-				{
-					if (modelActor.HasContentLoaded)
-					{
-						modelActor.Entries[0].Material = material;
-					}
+					OutputMaterial.GetParam(MaterialParamName).Value = task.Buffers.MotionVectors;
 				}
 			}
 		}

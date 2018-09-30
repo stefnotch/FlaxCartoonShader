@@ -18,7 +18,6 @@ namespace CartoonShader.Source
 		private Vector2 _resolution;
 		private RenderTarget output;
 		private SceneRenderTask task;
-		private MaterialInstance _materialInstance;
 		private bool _setMaterial;
 
 		private void OnEnable()
@@ -32,14 +31,11 @@ namespace CartoonShader.Source
 			// Create rendering task
 			if (task == null)
 				task = RenderTask.Create<SceneRenderTask>();
-			task.Order = 100000;
+			task.Order = -100000;
 			task.Camera = Camera;
 			task.Output = output;
 			task.Enabled = false;
 
-			// Use dynamic material instance
-			if (OutputMaterial && _materialInstance == null)
-				_materialInstance = OutputMaterial.CreateVirtualInstance();
 			_setMaterial = true;
 		}
 
@@ -48,7 +44,6 @@ namespace CartoonShader.Source
 			// Cleanup
 			Destroy(ref task);
 			Destroy(ref output);
-			Destroy(ref _materialInstance);
 		}
 
 		private void Update()
@@ -68,17 +63,9 @@ namespace CartoonShader.Source
 			{
 				_setMaterial = false;
 
-				if (_materialInstance)
+				if (OutputMaterial)
 				{
-					_materialInstance.GetParam(MaterialParamName).Value = output;
-				}
-
-				if (Actor is ModelActor modelActor)
-				{
-					if (modelActor.HasContentLoaded)
-					{
-						modelActor.Entries[0].Material = _materialInstance;
-					}
+					OutputMaterial.GetParam(MaterialParamName).Value = output;
 				}
 			}
 		}

@@ -93,9 +93,21 @@
 			}
 		},
 		{
+			"TypeID": "CartoonShader.MotionVectorRenderer",
+			"ID": "3f8299364f55a9dcbbcbcf94d958ce7c",
+			"ParentID": "db675b124cf4496897b81cb20ea17d2f",
+			"V": {
+	"Camera": "db675b124cf4496897b81cb20ea17d2f",
+	"OutputMaterial": "098efdc44f839feb723089910524bcc8",
+	"ResolutionDivisor": 1.0,
+	"MaterialParamName": "Image"
+}
+		},
+		{
 			"TypeID": 13,
 			"ID": "db23d2b6416604ff7a5eb6aaee2f2695",
 			"ParentID": "db675b124cf4496897b81cb20ea17d2f",
+			"IsActive": false,
 			"Name": "Edge Detection PostFX",
 			"Size": {
 				"X": 100.0,
@@ -172,16 +184,14 @@
 			"TypeID": 13,
 			"ID": "501e6f844c929c53e344b38d0b433c7a",
 			"ParentID": "548825a24f649b2351aa94aa3ce035ef",
-			"IsActive": false,
 			"Name": "Motion Vector PostFX",
 			"Transform": {
 				"Translation": {
-					"X": 0.0,
-					"Y": 5000.0,
+					"X": 1000.0,
+					"Y": 0.0,
 					"Z": 0.0
 				}
 			},
-			"IsBounded": false,
 			"Settings": {
 				"AO": {},
 				"Bloom": {
@@ -209,7 +219,7 @@
 			"TypeID": 2,
 			"ID": "6fe54f8e458df263c707b99e144c3666",
 			"ParentID": "548825a24f649b2351aa94aa3ce035ef",
-			"Name": "OrthographicCamera",
+			"Name": "Orthographic Camera",
 			"Transform": {
 				"Translation": {
 					"X": 0.0,
@@ -227,6 +237,67 @@
 			"V": {
 	"Material": "8c1149fd4dad82f683d47886e587ad45"
 }
+		},
+		{
+			"TypeID": "CartoonShader.Source.CameraTV",
+			"ID": "b8bd06e7439b48d6d4152faf2742d3cb",
+			"ParentID": "6fe54f8e458df263c707b99e144c3666",
+			"V": {
+	"Camera": "db675b124cf4496897b81cb20ea17d2f",
+	"OutputMaterial": "8c1149fd4dad82f683d47886e587ad45",
+	"MaterialParamName": "Image"
+}
+		},
+		{
+			"TypeID": 13,
+			"ID": "9ba93b1f4b3250a618437fbccf3e6fec",
+			"ParentID": "6fe54f8e458df263c707b99e144c3666",
+			"Name": "No PostFX",
+			"Size": {
+				"X": 100.0,
+				"Y": 100.0,
+				"Z": 100.0
+			},
+			"Settings": {
+				"AO": {
+					"Enabled": false,
+					"OverrideFlags": 1
+				},
+				"Bloom": {
+					"Enabled": false,
+					"Intensity": 1.0,
+					"Threshold": 3.0,
+					"BlurSigma": 3.5999999046325685,
+					"Scale": 1.7999999523162842,
+					"OverrideFlags": 1
+				},
+				"ToneMapping": {},
+				"ColorGrading": {},
+				"EyeAdaptation": {
+					"Technique": 0,
+					"OverrideFlags": 1
+				},
+				"CameraArtifacts": {
+					"VignetteIntensity": 0.0,
+					"GrainAmount": 0.0,
+					"OverrideFlags": 73
+				},
+				"LensFlares": {
+					"Intensity": 0.0,
+					"OverrideFlags": 1
+				},
+				"DepthOfField": {
+					"OverrideFlags": 1
+				},
+				"MotionBlur": {
+					"Enabled": false,
+					"OverrideFlags": 1
+				},
+				"SSR": {
+					"Intensity": 0.0,
+					"OverrideFlags": 1
+				}
+			}
 		}
 	]
 }
