@@ -11,52 +11,36 @@ namespace CartoonShader.Source
 {
 	public class CameraTV : Script
 	{
-		public Camera Cam;
-		public MaterialBase Material;
+		public Camera Camera;
+		public MaterialBase OutputMaterial;
+		public string MaterialParamName { get; private set; } = "Image";
 
-		[Limit(1, 2000)]
-		public Vector2 Resolution
-		{
-			get { return resolution; }
-			set
-			{
-				value = Vector2.Clamp(value, new Vector2(1), new Vector2(2000));
-				if (resolution != value)
-				{
-					resolution = value;
-					if (output)
-					{
-						output.Init(PixelFormat.R8G8B8A8_UNorm, resolution);
-					}
-				}
-			}
-		}
-
-		private Vector2 resolution = new Vector2(640, 374);
+		private Vector2 _resolution;
 		private RenderTarget output;
 		private SceneRenderTask task;
-		private MaterialInstance material;
-		private bool setMaterial;
+		private MaterialInstance _materialInstance;
+		private bool _setMaterial;
 
 		private void OnEnable()
 		{
+			_resolution = Screen.Size;
 			// Create backbuffer
 			if (output == null)
 				output = RenderTarget.New();
-			output.Init(PixelFormat.R8G8B8A8_UNorm, resolution);
+			output.Init(PixelFormat.R8G8B8A8_UNorm, _resolution);
 
 			// Create rendering task
 			if (task == null)
 				task = RenderTask.Create<SceneRenderTask>();
 			task.Order = 100000;
-			task.Camera = Cam;
+			task.Camera = Camera;
 			task.Output = output;
 			task.Enabled = false;
 
 			// Use dynamic material instance
-			if (Material && material == null)
-				material = Material.CreateVirtualInstance();
-			setMaterial = true;
+			if (OutputMaterial && _materialInstance == null)
+				_materialInstance = OutputMaterial.CreateVirtualInstance();
+			_setMaterial = true;
 		}
 
 		private void OnDisable()
@@ -64,28 +48,36 @@ namespace CartoonShader.Source
 			// Cleanup
 			Destroy(ref task);
 			Destroy(ref output);
-			Destroy(ref material);
+			Destroy(ref _materialInstance);
 		}
 
 		private void Update()
 		{
+			if (_resolution != Screen.Size)
+			{
+				_resolution = Screen.Size;
+				if (output)
+				{
+					output.Init(PixelFormat.R8G8B8A8_UNorm, _resolution);
+				}
+			}
+
 			task.Enabled = true;
 
-			if (setMaterial)
+			if (_setMaterial)
 			{
-				setMaterial = false;
+				_setMaterial = false;
 
-				if (material)
+				if (_materialInstance)
 				{
-					material.GetParam("Image").Value = output;
+					_materialInstance.GetParam(MaterialParamName).Value = output;
 				}
 
-				if (Actor is ModelActor)
+				if (Actor is ModelActor modelActor)
 				{
-					var modelActor = (ModelActor)Actor;
 					if (modelActor.HasContentLoaded)
 					{
-						modelActor.Entries[0].Material = material;
+						modelActor.Entries[0].Material = _materialInstance;
 					}
 				}
 			}

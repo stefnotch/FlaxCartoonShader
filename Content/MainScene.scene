@@ -224,7 +224,9 @@
 			"TypeID": "CartoonShader.FullscreenQuad",
 			"ID": "0a0a9ede4fe03950f1ca0e920a9ec9a9",
 			"ParentID": "6fe54f8e458df263c707b99e144c3666",
-			"V": {}
+			"V": {
+	"Material": "8c1149fd4dad82f683d47886e587ad45"
+}
 		}
 	]
 }
