@@ -7,9 +7,12 @@ namespace CartoonShader
 	[Tooltip("Expects an orthographic camera")]
 	public class FullscreenQuad : Script
 	{
-		private Model _tempModel;
-
+		/// <summary>
+		/// Material to use for this fullscreen quad
+		/// </summary>
 		public MaterialBase Material;
+
+		private Model _tempModel;
 		private ModelActor _childModel;
 		private const float ZPos = 100f;
 		private const float Scale = 0.5f;
@@ -24,6 +27,7 @@ namespace CartoonShader
 
 			_childModel = Actor.TemporaryChild<ModelActor>();
 			_childModel.Model = _tempModel;
+
 			_childModel.Entries[0].Material = Material;
 
 			_childModel.LocalPosition = new Vector3(0, 0, ZPos);

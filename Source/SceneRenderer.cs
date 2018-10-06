@@ -9,11 +9,23 @@ using FlaxEngine.Rendering;
 
 namespace CartoonShader.Source
 {
-	public class CameraTV : Script
+	public class SceneRenderer : Script
 	{
-		public Camera Camera;
+		/// <summary>
+		/// Camera source
+		/// </summary>
+		public Camera SourceCamera;
+
+		/// <summary>
+		/// Normal Material that will be applied to the fullscreen quad
+		/// </summary>
 		public MaterialBase OutputMaterial;
-		public string MaterialParamName { get; private set; } = "Image";
+
+		/// <summary>
+		/// The name of the RenderTarget
+		/// </summary>
+		[Tooltip("The name of the RenderTarget")]
+		public string RenderTargetMaterialParam { get; set; } = "Image";
 
 		private Vector2 _resolution;
 		private RenderTarget output;
@@ -32,7 +44,7 @@ namespace CartoonShader.Source
 			if (task == null)
 				task = RenderTask.Create<SceneRenderTask>();
 			task.Order = -100000;
-			task.Camera = Camera;
+			task.Camera = SourceCamera;
 			task.Output = output;
 			task.Enabled = false;
 
@@ -65,7 +77,7 @@ namespace CartoonShader.Source
 
 				if (OutputMaterial)
 				{
-					OutputMaterial.GetParam(MaterialParamName).Value = output;
+					OutputMaterial.GetParam(RenderTargetMaterialParam).Value = output;
 				}
 			}
 		}

@@ -53,9 +53,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Source\ActorExtensions.cs" />
-    <Compile Include="Source\CameraTV.cs" />
     <Compile Include="Source\FullscreenQuad.cs" />
     <Compile Include="Source\MotionVectorRenderer.cs" />
+    <Compile Include="Source\SceneRenderer.cs" />
     <Compile Include="Cache\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

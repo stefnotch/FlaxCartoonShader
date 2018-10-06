@@ -77,12 +77,12 @@
 			"TypeID": 2,
 			"ID": "db675b124cf4496897b81cb20ea17d2f",
 			"ParentID": "548825a24f649b2351aa94aa3ce035ef",
-			"Name": "Camera",
+			"Name": "Scene Camera",
 			"Transform": {
 				"Translation": {
-					"X": -369.76507568359377,
+					"X": -377.5201721191406,
 					"Y": 367.41156005859377,
-					"Z": -408.2010803222656
+					"Z": -386.3840026855469
 				},
 				"Orientation": {
 					"X": 0.28354740142822268,
@@ -98,16 +98,25 @@
 			"ParentID": "db675b124cf4496897b81cb20ea17d2f",
 			"V": {
 	"Camera": "db675b124cf4496897b81cb20ea17d2f",
-	"OutputMaterial": "098efdc44f839feb723089910524bcc8",
+	"OutputMaterial": "8cd59aee45d01927bfe1219d5c7f3407",
 	"ResolutionDivisor": 1.0,
-	"MaterialParamName": "Image"
+	"MaterialParamName": "MotionVectors"
+}
+		},
+		{
+			"TypeID": "CartoonShader.Source.SceneRenderer",
+			"ID": "76a400554529e4a323106a8cd5aea304",
+			"ParentID": "db675b124cf4496897b81cb20ea17d2f",
+			"V": {
+	"SourceCamera": "db675b124cf4496897b81cb20ea17d2f",
+	"OutputMaterial": "8cd59aee45d01927bfe1219d5c7f3407",
+	"RenderTargetMaterialParam": "Image"
 }
 		},
 		{
 			"TypeID": 13,
 			"ID": "db23d2b6416604ff7a5eb6aaee2f2695",
 			"ParentID": "db675b124cf4496897b81cb20ea17d2f",
-			"IsActive": false,
 			"Name": "Edge Detection PostFX",
 			"Size": {
 				"X": 100.0,
@@ -147,9 +156,7 @@
 			"AnimationGraph": "c1804202432a129d97f52890ca5cad4c",
 			"Buffer": {
 				"Entries": [
-					{
-						"Material": "1644c0f54611c102c19323aae7abe8ce"
-					}
+					{}
 				]
 			}
 		},
@@ -209,10 +216,7 @@
 				"LensFlares": {},
 				"DepthOfField": {},
 				"MotionBlur": {},
-				"SSR": {},
-				"PostFxMaterials": [
-					"098efdc44f839feb723089910524bcc8"
-				]
+				"SSR": {}
 			}
 		},
 		{
@@ -232,20 +236,10 @@
 		},
 		{
 			"TypeID": "CartoonShader.FullscreenQuad",
-			"ID": "0a0a9ede4fe03950f1ca0e920a9ec9a9",
+			"ID": "c4cc64ea4461a407cb7697bd78b9b508",
 			"ParentID": "6fe54f8e458df263c707b99e144c3666",
 			"V": {
-	"Material": "8c1149fd4dad82f683d47886e587ad45"
-}
-		},
-		{
-			"TypeID": "CartoonShader.Source.CameraTV",
-			"ID": "b8bd06e7439b48d6d4152faf2742d3cb",
-			"ParentID": "6fe54f8e458df263c707b99e144c3666",
-			"V": {
-	"Camera": "db675b124cf4496897b81cb20ea17d2f",
-	"OutputMaterial": "8c1149fd4dad82f683d47886e587ad45",
-	"MaterialParamName": "Image"
+	"Material": "8cd59aee45d01927bfe1219d5c7f3407"
 }
 		},
 		{
@@ -258,6 +252,8 @@
 				"Y": 100.0,
 				"Z": 100.0
 			},
+			"Priority": 1,
+			"BlendRadius": 0.0,
 			"Settings": {
 				"AO": {
 					"Enabled": false,
@@ -297,6 +293,32 @@
 					"Intensity": 0.0,
 					"OverrideFlags": 1
 				}
+			}
+		},
+		{
+			"TypeID": 1,
+			"ID": "b88de0a547eaadf18e039da496b4e1b7",
+			"ParentID": "548825a24f649b2351aa94aa3ce035ef",
+			"Name": "TempBlackWall",
+			"Transform": {
+				"Translation": {
+					"X": 0.0,
+					"Y": 2000.0,
+					"Z": 500.0
+				},
+				"Scale": {
+					"X": 30.0,
+					"Y": 30.0,
+					"Z": 1.0
+				}
+			},
+			"Model": "b43f0f8f4aaba3f3156896a5a22ba493",
+			"Buffer": {
+				"Entries": [
+					{
+						"Material": "0a89c52746c385bd36eaa292de60d7ab"
+					}
+				]
 			}
 		}
 	]

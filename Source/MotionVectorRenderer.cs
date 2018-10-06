@@ -17,11 +17,7 @@ namespace CartoonShader
 				if (_resolutionDivisor != value)
 				{
 					_resolutionDivisor = value;
-					if (Camera && output)
-					{
-						_resolution = Camera.Viewport.Size / _resolutionDivisor;
-						output.Init(PixelFormat.R8G8B8A8_UNorm, _resolution);
-					}
+					InitOutput();
 				}
 			}
 		}
@@ -34,15 +30,16 @@ namespace CartoonShader
 		private RenderTarget output;
 		private SceneRenderTask task;
 		private bool _setMaterial;
+
 		private float _resolutionDivisor;
 
 		private void OnEnable()
 		{
-			_resolution = Screen.Size;
+			_resolution = Camera.Viewport.Size;
 			// Create backbuffer
 			if (output == null)
 				output = RenderTarget.New();
-			output.Init(PixelFormat.R8G8B8A8_UNorm, _resolution);
+			InitOutput();
 
 			// Create rendering task
 			if (task == null)
@@ -62,15 +59,20 @@ namespace CartoonShader
 			Destroy(ref output);
 		}
 
+		private void InitOutput()
+		{
+			if (Camera && output)
+			{
+				output.Init(PixelFormat.R8G8B8A8_UNorm, Camera.Viewport.Size / _resolutionDivisor);
+			}
+		}
+
 		private void Update()
 		{
-			if (_resolution != Screen.Size)
+			if (_resolution != Camera.Viewport.Size)
 			{
-				_resolution = Screen.Size;
-				if (output)
-				{
-					output.Init(PixelFormat.R8G8B8A8_UNorm, _resolution);
-				}
+				_resolution = Camera.Viewport.Size;
+				InitOutput();
 			}
 
 			task.Enabled = true;
