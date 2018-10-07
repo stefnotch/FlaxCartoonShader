@@ -56,41 +56,39 @@ namespace CartoonShader
 			int width = (int)_screenSize.X;
 			int height = (int)_screenSize.Y;
 
-			// Vertices and UVs
-			int vertexCountX = width + 1;
-			int vertexCountY = height + 1;
-
-			Vector3[] vertices = new Vector3[vertexCountX * vertexCountY];
-			Vector2[] uvs = new Vector2[vertexCountX * vertexCountY];
-
-			for (int x = 0; x < vertexCountX; x++)
-			{
-				for (int y = 0; y < vertexCountY; y++)
-				{
-					int index = y + x * vertexCountY;
-
-					vertices[index] = new Vector3(x, y, 0);
-					uvs[index] = new Vector2(x / (float)vertexCountX, 1f - y / (float)vertexCountY);
-				}
-			}
-
-			// Indices
+			Vector3[] vertices = new Vector3[width * height * 6];
+			Vector2[] uvs = new Vector2[width * height * 6];
 			int[] triangles = new int[width * height * 6];
 			for (int x = 0; x < width; x++)
 			{
 				for (int y = 0; y < height; y++)
 				{
-					int vertexIndex = (y + x * vertexCountY);
 					int index = (y + x * height) * 6;
 
-					triangles[index] = vertexIndex;
-					triangles[index + 1] = vertexIndex + 1;
-					triangles[index + 2] = vertexIndex + vertexCountY;
+					//TODO: x+1, y+1...
+					vertices[index] = new Vector3(x, y, 0);
+					vertices[index + 1] = new Vector3(x + 1, y, 0);
+					vertices[index + 2] = new Vector3(x, y + 1, 0);
 
-					triangles[index + 3] = vertexIndex + 1;
-					triangles[index + 4] = vertexIndex + vertexCountY + 1;
-					triangles[index + 5] = vertexIndex + vertexCountY;
+					vertices[index + 3] = new Vector3(x + 1, y, 0);
+					vertices[index + 4] = new Vector3(x + 1, y + 1, 0);
+					vertices[index + 5] = new Vector3(x, y + 1, 0);
+
+					Vector2 uv = new Vector2(
+							(x + 0.5f) / (float)width,
+							1f - (y + 0.5f) / (float)height
+						);
+
+					for (int i = 0; i < 6; i++)
+					{
+						uvs[index + i] = uv;
+					}
 				}
+			}
+
+			for (int i = 0; i < triangles.Length; i++)
+			{
+				triangles[i] = i;
 			}
 
 			mesh.UpdateMesh(vertices, triangles, uv: uvs);

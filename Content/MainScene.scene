@@ -75,6 +75,85 @@
 		},
 		{
 			"TypeID": 2,
+			"ID": "6fe54f8e458df263c707b99e144c3666",
+			"ParentID": "548825a24f649b2351aa94aa3ce035ef",
+			"Name": "Orthographic Camera",
+			"Transform": {
+				"Translation": {
+					"X": 0.0,
+					"Y": 2000.0,
+					"Z": 0.0
+				}
+			},
+			"UsePerspective": false,
+			"Far": 1000.0
+		},
+		{
+			"TypeID": "CartoonShader.FullscreenQuad",
+			"ID": "c4cc64ea4461a407cb7697bd78b9b508",
+			"ParentID": "6fe54f8e458df263c707b99e144c3666",
+			"V": {
+	"Material": "8cd59aee45d01927bfe1219d5c7f3407"
+}
+		},
+		{
+			"TypeID": 13,
+			"ID": "9ba93b1f4b3250a618437fbccf3e6fec",
+			"ParentID": "6fe54f8e458df263c707b99e144c3666",
+			"Name": "Only custom PostFx",
+			"Size": {
+				"X": 100.0,
+				"Y": 100.0,
+				"Z": 100.0
+			},
+			"Priority": 1,
+			"BlendRadius": 0.0,
+			"Settings": {
+				"AO": {
+					"Enabled": false,
+					"OverrideFlags": 1
+				},
+				"Bloom": {
+					"Enabled": false,
+					"Intensity": 1.0,
+					"Threshold": 3.0,
+					"BlurSigma": 3.5999999046325685,
+					"Scale": 1.7999999523162842,
+					"OverrideFlags": 1
+				},
+				"ToneMapping": {},
+				"ColorGrading": {},
+				"EyeAdaptation": {
+					"Technique": 0,
+					"OverrideFlags": 1
+				},
+				"CameraArtifacts": {
+					"VignetteIntensity": 0.0,
+					"GrainAmount": 0.0,
+					"OverrideFlags": 73
+				},
+				"LensFlares": {
+					"Intensity": 0.0,
+					"OverrideFlags": 1
+				},
+				"DepthOfField": {
+					"OverrideFlags": 1
+				},
+				"MotionBlur": {
+					"Enabled": false,
+					"OverrideFlags": 1
+				},
+				"SSR": {
+					"Intensity": 0.0,
+					"OverrideFlags": 1
+				},
+				"PostFxMaterials": [
+					"07029e4d48a07938bc047c9269970c6b"
+				]
+			}
+		},
+		{
+			"TypeID": 2,
 			"ID": "db675b124cf4496897b81cb20ea17d2f",
 			"ParentID": "548825a24f649b2351aa94aa3ce035ef",
 			"Name": "Scene Camera",
@@ -99,7 +178,7 @@
 			"V": {
 	"Camera": "db675b124cf4496897b81cb20ea17d2f",
 	"OutputMaterial": "8cd59aee45d01927bfe1219d5c7f3407",
-	"ResolutionDivisor": 1.0,
+	"ResolutionDivisor": 8.0,
 	"MaterialParamName": "MotionVectors"
 }
 		},
@@ -217,82 +296,6 @@
 				"DepthOfField": {},
 				"MotionBlur": {},
 				"SSR": {}
-			}
-		},
-		{
-			"TypeID": 2,
-			"ID": "6fe54f8e458df263c707b99e144c3666",
-			"ParentID": "548825a24f649b2351aa94aa3ce035ef",
-			"Name": "Orthographic Camera",
-			"Transform": {
-				"Translation": {
-					"X": 0.0,
-					"Y": 2000.0,
-					"Z": 0.0
-				}
-			},
-			"UsePerspective": false,
-			"Far": 1000.0
-		},
-		{
-			"TypeID": "CartoonShader.FullscreenQuad",
-			"ID": "c4cc64ea4461a407cb7697bd78b9b508",
-			"ParentID": "6fe54f8e458df263c707b99e144c3666",
-			"V": {
-	"Material": "8cd59aee45d01927bfe1219d5c7f3407"
-}
-		},
-		{
-			"TypeID": 13,
-			"ID": "9ba93b1f4b3250a618437fbccf3e6fec",
-			"ParentID": "6fe54f8e458df263c707b99e144c3666",
-			"Name": "No PostFX",
-			"Size": {
-				"X": 100.0,
-				"Y": 100.0,
-				"Z": 100.0
-			},
-			"Priority": 1,
-			"BlendRadius": 0.0,
-			"Settings": {
-				"AO": {
-					"Enabled": false,
-					"OverrideFlags": 1
-				},
-				"Bloom": {
-					"Enabled": false,
-					"Intensity": 1.0,
-					"Threshold": 3.0,
-					"BlurSigma": 3.5999999046325685,
-					"Scale": 1.7999999523162842,
-					"OverrideFlags": 1
-				},
-				"ToneMapping": {},
-				"ColorGrading": {},
-				"EyeAdaptation": {
-					"Technique": 0,
-					"OverrideFlags": 1
-				},
-				"CameraArtifacts": {
-					"VignetteIntensity": 0.0,
-					"GrainAmount": 0.0,
-					"OverrideFlags": 73
-				},
-				"LensFlares": {
-					"Intensity": 0.0,
-					"OverrideFlags": 1
-				},
-				"DepthOfField": {
-					"OverrideFlags": 1
-				},
-				"MotionBlur": {
-					"Enabled": false,
-					"OverrideFlags": 1
-				},
-				"SSR": {
-					"Intensity": 0.0,
-					"OverrideFlags": 1
-				}
 			}
 		},
 		{
