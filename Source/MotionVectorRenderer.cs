@@ -7,13 +7,13 @@ namespace CartoonShader
 {
 	public class MotionVectorRenderer : Script
 	{
-		[Limit(1, 100)]
+		[Limit(0.1f, 1000)]
 		public float ResolutionDivisor
 		{
 			get { return _resolutionDivisor; }
 			set
 			{
-				value = Mathf.Clamp(value, 1, 1000);
+				value = Mathf.Clamp(value, 0.1f, 1000);
 				if (_resolutionDivisor != value)
 				{
 					_resolutionDivisor = value;
@@ -25,6 +25,8 @@ namespace CartoonShader
 		public Camera Camera;
 		public MaterialBase OutputMaterial;
 		public string MaterialParamName { get; private set; } = "Image";
+
+		public MaterialBase PostFX;
 
 		private Vector2 _resolution;
 		private RenderTarget output;
