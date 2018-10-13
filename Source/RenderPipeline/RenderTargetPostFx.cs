@@ -7,7 +7,7 @@ using CartoonShader.Source.MeshGenerators;
 using FlaxEngine;
 using FlaxEngine.Rendering;
 
-namespace CartoonShader.Source
+namespace CartoonShader.Source.RenderPipeline
 {
 	public class RenderTargetPostFx : IDisposable
 	{
@@ -15,35 +15,18 @@ namespace CartoonShader.Source
 		private ModelActor _modelActor;
 		private Model _model;
 		private const float ZPos = 100f;
-		private MaterialInstance _materialInstance;
 		private RenderTarget _output;
 		private SceneRenderTask _task;
 		private Vector2 _size;
 
-		/// <summary>
-		/// string: Name of the RenderTarget's Material Parameter
-		/// </summary>
-		public readonly Dictionary<string, RenderTarget> Input = new Dictionary<string, RenderTarget>();
+		[Serialize]
+		[ShowInEditor]
+		public readonly RenderTargetOutput RenderTargetOutput = new RenderTargetOutput();
 
 		/// <summary>
 		/// Output RenderTarget
 		/// </summary>
 		public RenderTarget Output { get => _output; private set => _output = value; }
-
-		/// <summary>
-		/// The material that should be used
-		/// </summary>
-		public MaterialBase RenderMaterial;
-
-		/// <summary>
-		/// If it should create a material instance
-		/// </summary>
-		public bool ShouldCreateMaterialInstance = false;
-
-		/// <summary>
-		/// Will be a material instance if <see cref="ShouldCreateMaterialInstance"/> is true
-		/// </summary>
-		public MaterialInstance MaterialInstance => _materialInstance;
 
 		/// <summary>
 		/// Output RenderTarget Size
@@ -94,43 +77,31 @@ namespace CartoonShader.Source
 		public void Initialize(Vector2 screenSize)
 		{
 			_orthographicCamera = CreateOrthographicCamera();
-
 			_model = Content.CreateVirtualAsset<Model>();
 			_model.SetupLODs(1);
 			_modelActor = FlaxEngine.Object.New<ModelActor>();
-			_modelActor.LocalPosition = new Vector3(Size * -0.5f, ZPos);
+			_modelActor.Model = _model;
+			_modelActor.LocalPosition = new Vector3(screenSize * -0.5f, ZPos);
+			RenderTargetOutput.ModelActor = _modelActor;
 
-			if (RenderMaterial)
-			{
-				if (ShouldCreateMaterialInstance)
-				{
-					_materialInstance = RenderMaterial.CreateVirtualInstance();
-					_modelActor.Entries[0].Material = _materialInstance;
-				}
-				else
-				{
-					_modelActor.Entries[0].Material = RenderMaterial;
-				}
-			}
-
-			//SceneRenderer.cs stuffz
-			// Create backbuffer (== null? Really?)
+			//SceneRenderer.cs
 			if (!_output) _output = RenderTarget.New();
 
-			// Create rendering task
-			if (!_task) _task = RenderTask.Create<SceneRenderTask>();
-			_task.Order = Order;
-			_task.Camera = _orthographicCamera;
-			_task.Output = _output;
-			_task.Enabled = false;
-
 			Size = screenSize;
+
+			if (_task) throw new Exception("Scene Render Task is not null");
+			// Create rendering task
+			_task = CreateRenderTask();
+
+			RenderTargetOutput.Initialize();
 		}
 
 		public void StartRenderTask()
 		{
 			//TODO: Check if we can already enable the task
 			_task.Enabled = true;
+
+			RenderTargetOutput.StartRenderTask();
 		}
 
 		private void UpdateMesh(Mesh mesh)
@@ -148,6 +119,21 @@ namespace CartoonShader.Source
 			{
 				new QuadGenerator(_size).Generate(mesh);
 			}
+		}
+
+		private SceneRenderTask CreateRenderTask()
+		{
+			SceneRenderTask task = RenderTask.Create<SceneRenderTask>();
+			task.Order = Order;
+			task.Camera = _orthographicCamera;
+			task.Output = _output;
+			task.Enabled = false;
+			task.AllowGlobalCustomPostFx = false;
+			task.CustomActors.Add(_orthographicCamera);
+			task.CustomActors.Add(_modelActor);
+			task.ActorsSource = ActorsSources.CustomActors;
+
+			return task;
 		}
 
 		private Camera CreateOrthographicCamera()
@@ -174,14 +160,12 @@ namespace CartoonShader.Source
 					FlaxEngine.Object.Destroy(ref _orthographicCamera);
 					FlaxEngine.Object.Destroy(ref _model);
 					FlaxEngine.Object.Destroy(ref _modelActor);
-					if (_materialInstance)
-					{
-						FlaxEngine.Object.Destroy(ref _materialInstance);
-					}
+					FlaxEngine.Object.Destroy(ref _task);
 					if (_output)
 					{
 						FlaxEngine.Object.Destroy(ref _output);
 					}
+					RenderTargetOutput.Dispose();
 				}
 
 				// TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.

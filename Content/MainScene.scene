@@ -89,11 +89,12 @@
 			"Far": 1000.0
 		},
 		{
-			"TypeID": "CartoonShader.FullscreenQuad",
+			"TypeID": "CartoonShader.Source.FullscreenQuad",
 			"ID": "c4cc64ea4461a407cb7697bd78b9b508",
 			"ParentID": "6fe54f8e458df263c707b99e144c3666",
 			"V": {
-	"Material": "8cd59aee45d01927bfe1219d5c7f3407"
+	"Material": "8cd59aee45d01927bfe1219d5c7f3407",
+	"QuadForEachPixel": true
 }
 		},
 		{
@@ -291,6 +292,51 @@
 					}
 				]
 			}
+		},
+		{
+			"TypeID": 1,
+			"ID": "4899a10e46c925a125a15ea34e9c6ef3",
+			"ParentID": "548825a24f649b2351aa94aa3ce035ef",
+			"Name": "ModelActor",
+			"Transform": {
+				"Translation": {
+					"X": 0.0,
+					"Y": 0.0,
+					"Z": 836.4134521484375
+				}
+			},
+			"Model": "b43f0f8f4aaba3f3156896a5a22ba493",
+			"Buffer": {
+				"Entries": [
+					{
+						"Material": "8c1149fd4dad82f683d47886e587ad45"
+					}
+				]
+			}
+		},
+		{
+			"TypeID": "CartoonShader.Source.RenderPipeline.Renderer",
+			"ID": "650b56734c3f028febdc75a101a2c8f5",
+			"ParentID": "4899a10e46c925a125a15ea34e9c6ef3",
+			"V": {
+	"Name": "Image",
+	"RenderInputs": [],
+	"Material": "6e30906747fab8d036e77ea7f05cc030",
+	"RenderTargetEffect": {
+		"RenderTargetOutput": {
+			"Inputs": {},
+			"ShouldCreateMaterialInstance": true
+		},
+		"QuadForEachPixel": true,
+		"Order": -100000,
+		"Size": {
+			"X": 0.0,
+			"Y": 0.0
+		}
+	},
+	"QuadForEachPixel": false,
+	"o": "8c1149fd4dad82f683d47886e587ad45"
+}
 		}
 	]
 }
