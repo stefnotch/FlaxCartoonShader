@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FlaxEngine;
 
-namespace CartoonShader
+namespace CartoonShader.Source
 {
 	public static class ActorExtensions
 	{

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using CartoonShader.Source.MeshGenerators;
 using FlaxEngine;
 
-namespace CartoonShader
+namespace CartoonShader.Source
 {
 	[Tooltip("Expects an orthographic camera")]
 	public class FullscreenQuad : Script
@@ -63,71 +64,11 @@ namespace CartoonShader
 
 			if (QuadForEachPixel)
 			{
-				Vector3[] vertices = new Vector3[width * height * 6];
-				Vector2[] uvs = new Vector2[width * height * 6];
-				int[] triangles = new int[width * height * 6];
-				for (int x = 0; x < width; x++)
-				{
-					for (int y = 0; y < height; y++)
-					{
-						int index = (y + x * height) * 6;
-
-						//TODO: x+1, y+1...
-						vertices[index] = new Vector3(x, y, 0);
-						vertices[index + 1] = new Vector3(x, y + 1, 0);
-						vertices[index + 2] = new Vector3(x + 1, y, 0);
-
-						vertices[index + 3] = new Vector3(x + 1, y, 0);
-						vertices[index + 4] = new Vector3(x, y + 1, 0);
-						vertices[index + 5] = new Vector3(x + 1, y + 1, 0);
-
-						Vector2 uv = new Vector2(
-								(x + 0.5f) / (float)width,
-								1f - (y + 0.5f) / (float)height
-							);
-
-						for (int i = 0; i < 6; i++)
-						{
-							uvs[index + i] = uv;
-						}
-					}
-				}
-
-				for (int i = 0; i < triangles.Length; i++)
-				{
-					triangles[i] = i;
-				}
-
-				mesh.UpdateMesh(vertices, triangles, uv: uvs);
+				new ScreenPixelQuadsGenerator(new Int2(width, height)).Generate(mesh);
 			}
 			else
 			{
-				Vector3[] vertices = new Vector3[6]
-				{
-					new Vector3(0,0,0),
-					new Vector3(0,height,0),
-					new Vector3(width,0,0),
-
-					new Vector3(width,0,0),
-					new Vector3(0,height,0),
-					new Vector3(width,height,0)
-				};
-				Vector2[] uvs = new Vector2[6]
-				{
-					new Vector2(0,1),
-					new Vector2(0,0),
-					new Vector2(1,1),
-
-					new Vector2(1,1),
-					new Vector2(0,0),
-					new Vector2(1,0)
-				};
-				int[] triangles = new int[6]
-				{
-					0,1,2,3,4,5
-				};
-
-				mesh.UpdateMesh(vertices, triangles, uv: uvs);
+				new QuadGenerator(new Vector2(width, height)).Generate(mesh);
 			}
 		}
 	}
