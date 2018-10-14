@@ -8,7 +8,7 @@ using FlaxEngine.Rendering;
 
 namespace CartoonShader.Source.RenderPipeline
 {
-	public class RenderTargetOutput : IDisposable
+	public class RenderTargetToMaterial : IDisposable
 	{
 		private MaterialInstance _materialInstance;
 
@@ -37,11 +37,11 @@ namespace CartoonShader.Source.RenderPipeline
 		/// </summary>
 		public ModelActor ModelActor;
 
-		public RenderTargetOutput()
+		public RenderTargetToMaterial()
 		{
 		}
 
-		public RenderTargetOutput(Dictionary<string, RenderTarget> input)
+		public RenderTargetToMaterial(Dictionary<string, RenderTarget> input)
 		{
 			Inputs = input;
 		}

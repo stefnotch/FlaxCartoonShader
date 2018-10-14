@@ -37,25 +37,17 @@ namespace CartoonShader.Source.RenderPipeline
 			{
 				renderInput.Initialize(size, _renderTargetPostFx.Order - 1);
 
-				_renderTargetPostFx.RenderTargetOutput.Inputs.Add(renderInput.Name, renderInput.RenderOutput);
+				_renderTargetPostFx.RenderTargetToMaterial.Inputs.Add(renderInput.Name, renderInput.RenderOutput);
 			}
 			_renderTargetPostFx.QuadForEachPixel = QuadForEachPixel;
 			_renderTargetPostFx.Order = order;
-			_renderTargetPostFx.RenderTargetOutput.RenderMaterial = Material;
+			_renderTargetPostFx.RenderTargetToMaterial.RenderMaterial = Material;
 			_renderTargetPostFx.Initialize(size);
 
-			StartRenderTask();
-		}
-
-		public void StartRenderTask()
-		{
-			Scripting.Update += Scripting_Update;
-		}
-
-		private void Scripting_Update()
-		{
-			_renderTargetPostFx.StartRenderTask();
-			Scripting.Update -= Scripting_Update;
+			ScriptUtils.Instance.AddSingleUpdate(() =>
+			{
+				_renderTargetPostFx.StartRenderTask();
+			});
 		}
 
 		private void OnDisable()

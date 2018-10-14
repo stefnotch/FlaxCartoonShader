@@ -16,24 +16,40 @@ namespace CartoonShader.Source.RenderPipeline
 		public MaterialBase Material;
 
 		[HideInEditor]
-		public readonly RenderTargetOutput RenderTargetOutput = new RenderTargetOutput();
+		[NoSerialize]
+		private RenderTargetToMaterial _renderTargetToMaterial;
 
+		[VisibleIf(nameof(HasCustomSize))]
 		public Vector2 Size;
+
+		public bool UseScreenSize = false;
+
+		private bool HasCustomSize => !UseScreenSize;
 
 		public void Start()
 		{
+			_renderTargetToMaterial = new RenderTargetToMaterial();
 			foreach (var renderInput in RenderInputs)
 			{
-				renderInput.Initialize(Size);
-				RenderTargetOutput.Inputs.Add(renderInput.Name, renderInput.RenderOutput);
+				renderInput.Initialize(UseScreenSize ? Screen.Size : Size);
+				_renderTargetToMaterial.Inputs.Add(renderInput.Name, renderInput.RenderOutput);
 			}
 
 			OutputModel.Model.WaitForLoaded();
 
-			RenderTargetOutput.RenderMaterial = Material;
-			RenderTargetOutput.ModelActor = OutputModel;
-			RenderTargetOutput.Initialize();
-			RenderTargetOutput.StartRenderTask();
+			_renderTargetToMaterial.RenderMaterial = Material;
+			_renderTargetToMaterial.ModelActor = OutputModel;
+			_renderTargetToMaterial.Initialize();
+
+			ScriptUtils.Instance.AddSingleUpdate(() =>
+			{
+				_renderTargetToMaterial.StartRenderTask();
+			});
+		}
+
+		private void OnDisable()
+		{
+			_renderTargetToMaterial.Dispose();
 		}
 	}
 }

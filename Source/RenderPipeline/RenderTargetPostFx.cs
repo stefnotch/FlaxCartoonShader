@@ -21,7 +21,7 @@ namespace CartoonShader.Source.RenderPipeline
 
 		[Serialize]
 		[ShowInEditor]
-		public readonly RenderTargetOutput RenderTargetOutput = new RenderTargetOutput();
+		public readonly RenderTargetToMaterial RenderTargetToMaterial = new RenderTargetToMaterial();
 
 		/// <summary>
 		/// Output RenderTarget
@@ -82,7 +82,7 @@ namespace CartoonShader.Source.RenderPipeline
 			_modelActor = FlaxEngine.Object.New<ModelActor>();
 			_modelActor.Model = _model;
 			_modelActor.LocalPosition = new Vector3(screenSize * -0.5f, ZPos);
-			RenderTargetOutput.ModelActor = _modelActor;
+			RenderTargetToMaterial.ModelActor = _modelActor;
 
 			//SceneRenderer.cs
 			if (!_output) _output = RenderTarget.New();
@@ -93,7 +93,7 @@ namespace CartoonShader.Source.RenderPipeline
 			// Create rendering task
 			_task = CreateRenderTask();
 
-			RenderTargetOutput.Initialize();
+			RenderTargetToMaterial.Initialize();
 		}
 
 		public void StartRenderTask()
@@ -101,7 +101,7 @@ namespace CartoonShader.Source.RenderPipeline
 			//TODO: Check if we can already enable the task
 			_task.Enabled = true;
 
-			RenderTargetOutput.StartRenderTask();
+			RenderTargetToMaterial.StartRenderTask();
 		}
 
 		private void UpdateMesh(Mesh mesh)
@@ -132,6 +132,7 @@ namespace CartoonShader.Source.RenderPipeline
 			task.CustomActors.Add(_orthographicCamera);
 			task.CustomActors.Add(_modelActor);
 			task.ActorsSource = ActorsSources.CustomActors;
+			task.Mode = ViewMode.Emissive;
 
 			return task;
 		}
@@ -165,7 +166,7 @@ namespace CartoonShader.Source.RenderPipeline
 					{
 						FlaxEngine.Object.Destroy(ref _output);
 					}
-					RenderTargetOutput.Dispose();
+					RenderTargetToMaterial.Dispose();
 				}
 
 				// TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
