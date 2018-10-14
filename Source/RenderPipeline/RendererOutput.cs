@@ -7,6 +7,7 @@ using FlaxEngine;
 
 namespace CartoonShader.Source.RenderPipeline
 {
+	//TODO: ExecuteInEditor (without blowing up)
 	public class RendererOutput : Script
 	{
 		public ModelActor OutputModel;
@@ -19,12 +20,9 @@ namespace CartoonShader.Source.RenderPipeline
 		[NoSerialize]
 		private RenderTargetToMaterial _renderTargetToMaterial;
 
-		[VisibleIf(nameof(HasCustomSize))]
 		public Vector2 Size;
 
 		public bool UseScreenSize = false;
-
-		private bool HasCustomSize => !UseScreenSize;
 
 		public void Start()
 		{

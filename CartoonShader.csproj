@@ -61,9 +61,10 @@
     <Compile Include="Source\MeshGenerators\ScreenPixelQuadsGenerator.cs" />
     <Compile Include="Source\RenderPipeline\Renderer.cs" />
     <Compile Include="Source\RenderPipeline\RendererOutput.cs" />
-    <Compile Include="Source\RenderPipeline\RenderTargetPostFx.cs" />
-    <Compile Include="Source\RenderPipeline\RenderTargetToMaterial.cs" />
+    <Compile Include="Source\RenderPipeline\RenderTargetRenderer.cs" />
     <Compile Include="Source\RenderPipeline\ScriptUtils.cs" />
+    <Compile Include="Source\RenderPipeline\Internal\RenderTargetPostFx.cs" />
+    <Compile Include="Source\RenderPipeline\Internal\RenderTargetToMaterial.cs" />
     <Compile Include="Cache\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

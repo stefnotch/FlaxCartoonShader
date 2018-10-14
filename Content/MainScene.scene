@@ -295,12 +295,12 @@
 		},
 		{
 			"TypeID": 1,
-			"ID": "88c10ab14ae41b65d4f0c1aa32dd618e",
+			"ID": "d191eefd48aa4000beacf29408013947",
 			"ParentID": "548825a24f649b2351aa94aa3ce035ef",
 			"Name": "ModelActor 0",
 			"Transform": {
 				"Translation": {
-					"X": -183.57339477539063,
+					"X": -147.00059509277345,
 					"Y": 0.0,
 					"Z": 836.4134521484375
 				}
@@ -313,30 +313,31 @@
 			}
 		},
 		{
-			"TypeID": "CartoonShader.Source.RenderPipeline.Renderer",
-			"ID": "07ee4ac64ae1ac990a5827ac131721ba",
-			"ParentID": "88c10ab14ae41b65d4f0c1aa32dd618e",
-			"V": {
-	"Name": "Image",
-	"RenderInputs": [],
-	"Material": "6e30906747fab8d036e77ea7f05cc030",
-	"QuadForEachPixel": false
-}
-		},
-		{
 			"TypeID": "CartoonShader.Source.RenderPipeline.RendererOutput",
-			"ID": "f575289041fb077245ff798e4a934afa",
-			"ParentID": "88c10ab14ae41b65d4f0c1aa32dd618e",
+			"ID": "1052d5564147f490cb0c588678d4639a",
+			"ParentID": "d191eefd48aa4000beacf29408013947",
 			"V": {
-	"OutputModel": "88c10ab14ae41b65d4f0c1aa32dd618e",
+	"OutputModel": "d191eefd48aa4000beacf29408013947",
 	"RenderInputs": [
-		"07ee4ac64ae1ac990a5827ac131721ba"
+		"1ab810a6414a690dddac6683b3509deb"
 	],
 	"Material": "8c1149fd4dad82f683d47886e587ad45",
 	"Size": {
-		"X": 400.0,
-		"Y": 400.0
-	}
+		"X": 10.0,
+		"Y": 10.0
+	},
+	"UseScreenSize": false
+}
+		},
+		{
+			"TypeID": "CartoonShader.Source.RenderPipeline.RenderTargetRenderer",
+			"ID": "1ab810a6414a690dddac6683b3509deb",
+			"ParentID": "d191eefd48aa4000beacf29408013947",
+			"V": {
+	"RenderInputs": [],
+	"Material": "6e30906747fab8d036e77ea7f05cc030",
+	"QuadForEachPixel": false,
+	"Name": "Image"
 }
 		},
 		{
@@ -359,30 +360,31 @@
 			}
 		},
 		{
-			"TypeID": "CartoonShader.Source.RenderPipeline.Renderer",
-			"ID": "650b56734c3f028febdc75a101a2c8f5",
-			"ParentID": "4899a10e46c925a125a15ea34e9c6ef3",
-			"V": {
-	"Name": "Image",
-	"RenderInputs": [],
-	"Material": "6e30906747fab8d036e77ea7f05cc030",
-	"QuadForEachPixel": false
-}
-		},
-		{
 			"TypeID": "CartoonShader.Source.RenderPipeline.RendererOutput",
 			"ID": "f0e0f24944655751b79034bddb77acbf",
 			"ParentID": "4899a10e46c925a125a15ea34e9c6ef3",
 			"V": {
 	"OutputModel": "4899a10e46c925a125a15ea34e9c6ef3",
 	"RenderInputs": [
-		"650b56734c3f028febdc75a101a2c8f5"
+		"e3ece2c0409e168459f9cc8e24f6efc2"
 	],
 	"Material": "8c1149fd4dad82f683d47886e587ad45",
 	"Size": {
 		"X": 10.0,
 		"Y": 10.0
-	}
+	},
+	"UseScreenSize": false
+}
+		},
+		{
+			"TypeID": "CartoonShader.Source.RenderPipeline.RenderTargetRenderer",
+			"ID": "e3ece2c0409e168459f9cc8e24f6efc2",
+			"ParentID": "4899a10e46c925a125a15ea34e9c6ef3",
+			"V": {
+	"RenderInputs": [],
+	"Material": "6e30906747fab8d036e77ea7f05cc030",
+	"QuadForEachPixel": false,
+	"Name": "Image"
 }
 		}
 	]
