@@ -308,9 +308,7 @@
 			"Model": "b43f0f8f4aaba3f3156896a5a22ba493",
 			"Buffer": {
 				"Entries": [
-					{
-						"Material": "8c1149fd4dad82f683d47886e587ad45"
-					}
+					{}
 				]
 			}
 		},
@@ -322,20 +320,27 @@
 	"Name": "Image",
 	"RenderInputs": [],
 	"Material": "6e30906747fab8d036e77ea7f05cc030",
-	"RenderTargetEffect": {
-		"RenderTargetOutput": {
-			"Inputs": {},
-			"ShouldCreateMaterialInstance": true
+	"QuadForEachPixel": false
+}
 		},
-		"QuadForEachPixel": true,
-		"Order": -100000,
-		"Size": {
-			"X": 0.0,
-			"Y": 0.0
-		}
+		{
+			"TypeID": "CartoonShader.Source.RenderPipeline.RendererOutput",
+			"ID": "f0e0f24944655751b79034bddb77acbf",
+			"ParentID": "4899a10e46c925a125a15ea34e9c6ef3",
+			"V": {
+	"OutputModel": "4899a10e46c925a125a15ea34e9c6ef3",
+	"RenderInputs": [
+		"650b56734c3f028febdc75a101a2c8f5"
+	],
+	"Material": "8c1149fd4dad82f683d47886e587ad45",
+	"RenderTargetOutput": {
+		"Inputs": {},
+		"ShouldCreateMaterialInstance": true
 	},
-	"QuadForEachPixel": false,
-	"o": "8c1149fd4dad82f683d47886e587ad45"
+	"Size": {
+		"X": 100.0,
+		"Y": 100.0
+	}
 }
 		}
 	]

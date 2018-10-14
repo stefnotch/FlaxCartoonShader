@@ -24,10 +24,10 @@ namespace CartoonShader.Source.RenderPipeline
 
 		public bool QuadForEachPixel = false;
 
-		public void OnEnable()
+		/*public void OnEnable()
 		{
 			Initialize(Screen.Size);
-		}
+		}*/
 
 		public void Initialize(Vector2 size, int order = -100000)
 		{
@@ -45,8 +45,6 @@ namespace CartoonShader.Source.RenderPipeline
 			_renderTargetPostFx.Initialize(size);
 
 			StartRenderTask();
-
-			n = 0;
 		}
 
 		public void StartRenderTask()
@@ -56,7 +54,6 @@ namespace CartoonShader.Source.RenderPipeline
 
 		private void Scripting_Update()
 		{
-			Debug.Log("STarted");
 			_renderTargetPostFx.StartRenderTask();
 			Scripting.Update -= Scripting_Update;
 		}
@@ -64,27 +61,6 @@ namespace CartoonShader.Source.RenderPipeline
 		private void OnDisable()
 		{
 			_renderTargetPostFx.Dispose();
-		}
-
-		private int n;
-
-		public MaterialBase o;
-
-		public void Update()
-		{
-			if (n < 10)
-			{
-				n++;
-			}
-			if (n == 10)
-			{
-				n++;
-				if (o)
-				{
-					Debug.Log("Set" + _renderTargetPostFx.Output);
-					o.GetParam("Image").Value = _renderTargetPostFx.Output;
-				}
-			}
 		}
 	}
 }
