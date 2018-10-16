@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FlaxEngine;
 
-namespace CartoonShader.Source.RenderPipeline
+namespace CartoonShader.Source.RenderPipelineOld
 {
 	public class ScriptUtils
 	{

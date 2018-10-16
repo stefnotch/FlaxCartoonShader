@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using FlaxEngine;
 using FlaxEngine.Rendering;
 
-namespace CartoonShader.Source.RenderPipeline
+namespace CartoonShader.Source.RenderPipelineOld
 {
 	public class RenderTargetRenderer : Renderer
 	{
@@ -46,6 +46,22 @@ namespace CartoonShader.Source.RenderPipeline
 		private void OnDisable()
 		{
 			_renderTargetPostFx.Dispose();
+		}
+
+		protected override void SizeChanged(Vector2 newSize)
+		{
+			if (_renderTargetPostFx != null)
+			{
+				_renderTargetPostFx.Size = newSize;
+			}
+
+			if (RenderInputs != null)
+			{
+				foreach (var renderInput in RenderInputs)
+				{
+					renderInput.Size = newSize;
+				}
+			}
 		}
 	}
 }

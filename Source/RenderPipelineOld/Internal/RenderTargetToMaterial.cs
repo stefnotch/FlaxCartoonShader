@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using FlaxEngine;
 using FlaxEngine.Rendering;
 
-namespace CartoonShader.Source.RenderPipeline
+namespace CartoonShader.Source.RenderPipelineOld
 {
 	public class RenderTargetToMaterial : IDisposable
 	{

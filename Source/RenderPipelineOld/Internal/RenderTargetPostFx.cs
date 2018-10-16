@@ -7,7 +7,7 @@ using CartoonShader.Source.MeshGenerators;
 using FlaxEngine;
 using FlaxEngine.Rendering;
 
-namespace CartoonShader.Source.RenderPipeline
+namespace CartoonShader.Source.RenderPipelineOld
 {
 	public class RenderTargetPostFx : IDisposable
 	{
@@ -16,7 +16,7 @@ namespace CartoonShader.Source.RenderPipeline
 		private Model _model;
 		private const float ZPos = 100f;
 		private RenderTarget _output;
-		private SceneRenderTask _task;
+		private SceneRenderTask _task; //TODO: Add PostFx
 		private Vector2 _size;
 
 		[Serialize]
@@ -39,6 +39,10 @@ namespace CartoonShader.Source.RenderPipeline
 				if (_size != value)
 				{
 					_size = value; //TODO: Stuffz here
+					if (_modelActor)
+					{
+						_modelActor.LocalPosition = new Vector3(_size * -0.5f, ZPos);
+					}
 					if (_model)
 					{
 						UpdateMesh(_model.LODs[0].Meshes[0]);
@@ -54,7 +58,9 @@ namespace CartoonShader.Source.RenderPipeline
 		/// <summary>
 		/// Should a quad be generated for every pixel
 		/// </summary>
-		public bool QuadForEachPixel = true;
+		public bool QuadForEachPixel = false;
+
+		public bool HalfPixelOffset = false;
 
 		/// <summary>
 		/// Rendering order
@@ -81,7 +87,6 @@ namespace CartoonShader.Source.RenderPipeline
 			_model.SetupLODs(1);
 			_modelActor = FlaxEngine.Object.New<ModelActor>();
 			_modelActor.Model = _model;
-			_modelActor.LocalPosition = new Vector3(screenSize * -0.5f, ZPos);
 			RenderTargetToMaterial.ModelActor = _modelActor;
 
 			//SceneRenderer.cs

@@ -5,11 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using FlaxEngine;
 
-namespace CartoonShader.Source.RenderPipeline
+namespace CartoonShader.Source.RenderPipelineOld
 {
 	//TODO: ExecuteInEditor (without blowing up)
+	//TODO: This is also a renderer!
 	public class RendererOutput : Script
 	{
+		private Vector2 _size;
+
 		public ModelActor OutputModel;
 
 		public readonly List<Renderer> RenderInputs = new List<Renderer>();
@@ -20,7 +23,21 @@ namespace CartoonShader.Source.RenderPipeline
 		[NoSerialize]
 		private RenderTargetToMaterial _renderTargetToMaterial;
 
-		public Vector2 Size;
+		public Vector2 Size
+		{
+			get => _size;
+			set
+			{
+				if (!UseScreenSize)
+				{
+					if (_size != value)
+					{
+						_size = value;
+						SizeChanged(_size);
+					}
+				}
+			}
+		}
 
 		public bool UseScreenSize = false;
 
@@ -48,6 +65,17 @@ namespace CartoonShader.Source.RenderPipeline
 		private void OnDisable()
 		{
 			_renderTargetToMaterial.Dispose();
+		}
+
+		private void SizeChanged(Vector2 newSize)
+		{
+			if (RenderInputs != null)
+			{
+				foreach (var renderInput in RenderInputs)
+				{
+					renderInput.Initialize(UseScreenSize ? Screen.Size : Size);
+				}
+			}
 		}
 	}
 }

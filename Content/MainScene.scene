@@ -386,6 +386,27 @@
 	"QuadForEachPixel": false,
 	"Name": "Image"
 }
+		},
+		{
+			"TypeID": 1,
+			"ID": "ed49ae8f4ef3f4f1af26f2ae8f8e29cb",
+			"ParentID": "548825a24f649b2351aa94aa3ce035ef",
+			"Name": "Plane",
+			"Transform": {
+				"Translation": {
+					"X": -299.36614990234377,
+					"Y": 0.0,
+					"Z": 761.8199462890625
+				}
+			},
+			"Model": "54a1ff4a42af9f018234f7b39b1366b3",
+			"Buffer": {
+				"Entries": [
+					{
+						"Material": "bcc1c8d84d05e353cf5f2395135ea0b6"
+					}
+				]
+			}
 		}
 	]
 }

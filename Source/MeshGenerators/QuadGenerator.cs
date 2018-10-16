@@ -11,6 +11,8 @@ namespace CartoonShader.Source.MeshGenerators
 	{
 		public Vector2 Size { get; }
 
+		public bool UVHalfPixelOffset = false;
+
 		public QuadGenerator(Vector2 size)
 		{
 			Size = size;
@@ -41,6 +43,14 @@ namespace CartoonShader.Source.MeshGenerators
 					new Vector2(0,0),
 					new Vector2(1,0)
 			};
+			if (UVHalfPixelOffset)
+			{
+				Vector2 halfPixel = 1 / Size;
+				for (int i = 0; i < uvs.Length; i++)
+				{
+					uvs[i] += halfPixel;
+				}
+			}
 			int[] triangles = new int[6]
 			{
 					0,1,2,3,4,5

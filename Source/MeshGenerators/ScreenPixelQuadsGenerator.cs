@@ -11,6 +11,8 @@ namespace CartoonShader.Source.MeshGenerators
 	{
 		public Int2 Size { get; }
 
+		public bool UVHalfPixelOffset = false;
+
 		public ScreenPixelQuadsGenerator(Int2 size)
 		{
 			Size = size;
@@ -38,10 +40,21 @@ namespace CartoonShader.Source.MeshGenerators
 					vertices[index + 4] = new Vector3(x, y + 1, 0);
 					vertices[index + 5] = new Vector3(x + 1, y + 1, 0);
 
-					Vector2 uv = new Vector2(
-							(x + 0.5f) / (float)width,
-							1f - (y + 0.5f) / (float)height
-						);
+					Vector2 uv;
+					if (UVHalfPixelOffset)
+					{
+						uv = new Vector2(
+								(x + 0.5f) / (float)width,
+								1f - (y + 0.5f) / (float)height
+							);
+					}
+					else
+					{
+						uv = new Vector2(
+								x / (float)width,
+								1f - y / (float)height
+							);
+					}
 
 					for (int i = 0; i < 6; i++)
 					{

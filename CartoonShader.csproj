@@ -55,13 +55,14 @@
     <Compile Include="Source\ActorExtensions.cs" />
     <Compile Include="Source\FullscreenQuad.cs" />
     <Compile Include="Source\MotionVectorRenderer.cs" />
-    <Compile Include="Source\SceneRenderer.cs" />
     <Compile Include="Source\MeshGenerators\IMeshGenerator.cs" />
     <Compile Include="Source\MeshGenerators\QuadGenerator.cs" />
     <Compile Include="Source\MeshGenerators\ScreenPixelQuadsGenerator.cs" />
+    <Compile Include="Source\RenderPipeline\IReadOnlyKeysDictionary.cs" />
     <Compile Include="Source\RenderPipeline\Renderer.cs" />
     <Compile Include="Source\RenderPipeline\RendererOutput.cs" />
     <Compile Include="Source\RenderPipeline\RenderTargetRenderer.cs" />
+    <Compile Include="Source\RenderPipeline\SceneRenderer.cs" />
     <Compile Include="Source\RenderPipeline\ScriptUtils.cs" />
     <Compile Include="Source\RenderPipeline\Internal\RenderTargetPostFx.cs" />
     <Compile Include="Source\RenderPipeline\Internal\RenderTargetToMaterial.cs" />
