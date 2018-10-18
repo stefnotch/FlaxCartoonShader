@@ -23,8 +23,7 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 				if (!_defaultOutput)
 				{
 					_defaultOutput = RenderTarget.New();
-					DefaultOutput = new RendererOutput("Default", _defaultOutput);
-					_outputs["Default"] = DefaultOutput;
+					AddOutput(new RendererOutput("Default", _defaultOutput));
 				}
 				if (!_task) _task = RenderTask.Create<SceneRenderTask>();
 				_task.Enabled = false;
@@ -37,6 +36,13 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 			if (enabled)
 			{
 				_task.Output = _defaultOutput;
+				//TODO:
+				/*
+				ScriptUtils.Instance.AddSingleUpdate(() =>
+				{
+					_task.Enabled = true;
+				});
+				*/
 			}
 			else
 			{

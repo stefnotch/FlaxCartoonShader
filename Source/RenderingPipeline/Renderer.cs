@@ -12,20 +12,28 @@ namespace CartoonShader.Source.RenderingPipeline
 	public class Renderer : IDisposable
 	{
 		//TODO: [Serialize] and [NoSerialize]
+		[Serialize]
 		protected int _order;
-
-		protected readonly Dictionary<string, RendererOutput> _outputs = new Dictionary<string, RendererOutput>();
-		protected readonly Dictionary<string, RendererInput> _inputs = new Dictionary<string, RendererInput>();
 
 		[Serialize]
 		protected MaterialBase _material;
 
+		[Serialize]
+		protected Vector2 _size;
+
+		[NoSerialize]
+		protected readonly Dictionary<string, RendererOutput> _outputs = new Dictionary<string, RendererOutput>();
+
+		[NoSerialize]
+		protected readonly Dictionary<string, RendererInput> _inputs = new Dictionary<string, RendererInput>();
+
 		[NoSerialize]
 		protected MaterialInstance _materialInstance;
 
-		protected Vector2 _size;
-		protected bool _enabled;
+		[NoSerialize]
+		protected bool _enabled = false;
 
+		[NoSerialize]
 		internal int Order
 		{
 			get => _order;
@@ -39,6 +47,7 @@ namespace CartoonShader.Source.RenderingPipeline
 			}
 		}
 
+		[NoSerialize]
 		public virtual RendererOutput DefaultOutput { get; protected set; }
 
 		[NoSerialize]
@@ -64,6 +73,7 @@ namespace CartoonShader.Source.RenderingPipeline
 			}
 		}
 
+		[NoSerialize]
 		public Vector2 Size
 		{
 			get => _size;
@@ -77,6 +87,7 @@ namespace CartoonShader.Source.RenderingPipeline
 			}
 		}
 
+		[NoSerialize]
 		public bool Enabled
 		{
 			get => _enabled;
@@ -90,21 +101,48 @@ namespace CartoonShader.Source.RenderingPipeline
 			}
 		}
 
+		public Renderer()
+		{
+		}
+
+		/// <summary>
+		/// Adds or replaces a RendererOutput
+		/// </summary>
+		/// <param name="rendererOutput"></param>
+		protected void AddOutput(RendererOutput rendererOutput)
+		{
+			if (rendererOutput == null) return;
+
+			// If it already has this RendererOutput, just return
+			if (_outputs.TryGetValue(rendererOutput.Name, out RendererOutput existingOutput))
+			{
+				if (existingOutput.RenderTarget == rendererOutput.RenderTarget)
+				{
+					return;
+				}
+			}
+
+			_outputs.Add(rendererOutput.Name, rendererOutput);
+		}
+
+		protected void RemoveOutput(string name)
+		{
+			_outputs.Remove(name);
+		}
+
 		protected virtual void Enable(bool enabled)
 		{
 			if (enabled)
 			{
 				MaterialChanged(Material);
-				//SizeChanged(Size);
-				//OrderChanged(Order);
+				SizeChanged(Size);
+				OrderChanged(Order);
 			}
-			throw new NotImplementedException();
 		}
 
 		protected virtual void SizeChanged(Vector2 size)
 		{
 			if (!Enabled) return;
-			throw new NotImplementedException();
 		}
 
 		protected virtual void MaterialChanged(MaterialBase material)
@@ -153,7 +191,6 @@ namespace CartoonShader.Source.RenderingPipeline
 		protected virtual void OrderChanged(int order)
 		{
 			if (!Enabled) return;
-			throw new NotImplementedException();
 		}
 
 		#region IDisposable Support

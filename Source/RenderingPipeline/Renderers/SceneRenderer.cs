@@ -9,9 +9,23 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 {
 	public class SceneRenderer : RendererWithTask
 	{
+		/// <summary>
+		/// Camera source
+		/// </summary>
+		public Camera SourceCamera;
+
 		protected override void Enable(bool enabled)
 		{
 			base.Enable(enabled);
+			const string DepthBuffer = "DepthBuffer";
+			const string MotionVectors = "MotionVectors";
+			if (enabled)
+			{
+				_task.Camera = SourceCamera;
+
+				AddOutput(new RendererOutput(DepthBuffer, _task.Buffers.DepthBuffer));
+				AddOutput(new RendererOutput(MotionVectors, _task.Buffers.MotionVectors));
+			}
 		}
 
 		protected override void MaterialChanged(MaterialBase material)
