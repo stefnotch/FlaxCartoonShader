@@ -47,9 +47,9 @@ namespace CartoonShader.Source.RenderingPipeline
 		}
 
 		[NoSerialize]
-		public virtual RendererOutput DefaultOutput { get; protected set; }
+		public virtual IRendererOutput DefaultOutput { get; protected set; }
 
-		[NoSerialize]
+		[NoSerialize] //TODO: IRendererOutput instead of RendererOutput
 		public IReadOnlyDictionary<string, RendererOutput> Outputs { get => _outputs; } //TODO: Naming convention for the default output?
 
 		[NoSerialize]
@@ -121,7 +121,7 @@ namespace CartoonShader.Source.RenderingPipeline
 				{
 					// TODO: This is going to blow up with RendererInputs
 					// Reason being: You aren't doing anything to update them.
-					_outputs[rendererOutput.Name] = rendererOutput;
+					_outputs[rendererOutput.Name].RenderTarget = rendererOutput.RenderTarget;
 				}
 			}
 			else
@@ -132,6 +132,7 @@ namespace CartoonShader.Source.RenderingPipeline
 
 		protected void RemoveOutput(string name)
 		{
+			_outputs[name].RenderTarget = null;
 			_outputs.Remove(name);
 		}
 
