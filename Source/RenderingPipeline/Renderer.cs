@@ -53,7 +53,7 @@ namespace CartoonShader.Source.RenderingPipeline
 		public IReadOnlyDictionary<string, RendererOutput> Outputs { get => _outputs; } //TODO: Naming convention for the default output?
 
 		[NoSerialize]
-		public IReadOnlyDictionary<string, RendererInput> Inputs { get => _inputs; } //TODO: Event when the inputs have changed!! (user attached/detached a rendertarget)
+		public IReadOnlyDictionary<string, RendererInput> Inputs { get => _inputs; }
 
 		/// <summary>
 		/// The Material that will be used by this <see cref="Renderer"/> to render something
@@ -162,6 +162,33 @@ namespace CartoonShader.Source.RenderingPipeline
 			AddInputs(newInputs);
 			UpdateInputs(newInputs);
 			newInputs.Clear();
+
+			UpdateMaterialInputs();
+		}
+
+		/// <summary>
+		/// Updates the _materialInstance-RenderTarget-parameter values
+		/// </summary>
+		private void UpdateMaterialInputs()
+		{
+			ActionRunner.Instance.AfterFirstUpdate(() =>
+			{
+				foreach (var input in Inputs.Values)
+				{
+					UpdateMaterialInput(input);
+				}
+			});
+		}
+
+		private void UpdateMaterialInput(RendererInput input)
+		{
+			if (input.RendererOutput == null || !input.RendererOutput.RenderTarget) return;
+			//TODO: This might end up getting called before everything is ready?
+			var materialParam = _materialInstance.GetParam(input.Name);
+			if (materialParam != null)
+			{
+				materialParam.Value = input.RendererOutput.RenderTarget;
+			}
 		}
 
 		private void AddInputsFromMaterial(Dictionary<string, RendererInput> newInputs, MaterialParameter[] materialParameters)
@@ -172,7 +199,7 @@ namespace CartoonShader.Source.RenderingPipeline
 			foreach (var parameter in inputParameters)
 			{
 				// Add all the new material pararmeters
-				newInputs.Add(parameter.Name, new RendererInput(parameter.Name));
+				newInputs.Add(parameter.Name, new RendererInput(parameter.Name, UpdateMaterialInput));
 			}
 		}
 

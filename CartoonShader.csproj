@@ -58,6 +58,7 @@
     <Compile Include="Source\MeshGenerators\IMeshGenerator.cs" />
     <Compile Include="Source\MeshGenerators\QuadGenerator.cs" />
     <Compile Include="Source\MeshGenerators\ScreenPixelQuadsGenerator.cs" />
+    <Compile Include="Source\RenderingPipeline\ActionRunner.cs" />
     <Compile Include="Source\RenderingPipeline\Renderer.cs" />
     <Compile Include="Source\RenderingPipeline\RendererInput.cs" />
     <Compile Include="Source\RenderingPipeline\RendererOutput.cs" />
@@ -69,10 +70,10 @@
     <Compile Include="Source\RenderPipelineOld\RendererOutput.cs" />
     <Compile Include="Source\RenderPipelineOld\RenderTargetRenderer.cs" />
     <Compile Include="Source\RenderPipelineOld\SceneRenderer.cs" />
-    <Compile Include="Source\RenderPipelineOld\ScriptUtils.cs" />
     <Compile Include="Source\RenderPipelineOld\Internal\RenderTargetPostFx.cs" />
     <Compile Include="Source\RenderPipelineOld\Internal\RenderTargetToMaterial.cs" />
     <Compile Include="Cache\AssemblyInfo.cs" />
+    <Compile Include="Source\RenderPipelineOld\ScriptUtils.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

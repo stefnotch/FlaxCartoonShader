@@ -36,13 +36,11 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 			if (enabled)
 			{
 				_task.Output = _defaultOutput;
-				//TODO:
-				/*
-				ScriptUtils.Instance.AddSingleUpdate(() =>
+
+				ActionRunner.Instance.OnUpdate_Once(() =>
 				{
 					_task.Enabled = true;
 				});
-				*/
 			}
 			else
 			{

@@ -8,13 +8,25 @@ namespace CartoonShader.Source.RenderingPipeline
 {
 	public class RendererInput
 	{
-		public RendererInput(string name)
+		private readonly Action<RendererInput> _rendererOutputChanged;
+		private RendererOutput _rendererOutput;
+
+		public RendererInput(string name, Action<RendererInput> rendererOutputChanged)
 		{
 			Name = name;
+			_rendererOutputChanged = rendererOutputChanged;
 		}
 
 		public string Name { get; }
 
-		public RendererOutput RendererOutput; //TODO: Either a RendererInput is tied to a parent, or it has an event, or I'm totally getting rid of it
+		public RendererOutput RendererOutput
+		{
+			get => _rendererOutput;
+			set
+			{
+				_rendererOutput = value;
+				_rendererOutputChanged?.Invoke(this);
+			}
+		}
 	}
 }
