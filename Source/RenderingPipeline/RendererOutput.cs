@@ -7,7 +7,9 @@ using FlaxEngine.Rendering;
 
 namespace CartoonShader.Source.RenderingPipeline
 {
-	// Could also be a readonly struct
+	/// <summary>
+	/// Read-only class
+	/// </summary>
 	public class RendererOutput
 	{
 		public RendererOutput(string name, RenderTarget renderTarget)

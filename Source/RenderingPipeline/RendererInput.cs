@@ -15,6 +15,6 @@ namespace CartoonShader.Source.RenderingPipeline
 
 		public string Name { get; }
 
-		public RendererOutput RendererOutput;
+		public RendererOutput RendererOutput; //TODO: Either a RendererInput is tied to a parent, or it has an event, or I'm totally getting rid of it
 	}
 }

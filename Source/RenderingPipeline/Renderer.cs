@@ -11,7 +11,6 @@ namespace CartoonShader.Source.RenderingPipeline
 	//TODO: Make this class abstract?
 	public class Renderer : IDisposable
 	{
-		//TODO: [Serialize] and [NoSerialize]
 		[Serialize]
 		protected int _order;
 
@@ -54,7 +53,7 @@ namespace CartoonShader.Source.RenderingPipeline
 		public IReadOnlyDictionary<string, RendererOutput> Outputs { get => _outputs; } //TODO: Naming convention for the default output?
 
 		[NoSerialize]
-		public IReadOnlyDictionary<string, RendererInput> Inputs { get => _inputs; } //TODO: Event when the inputs have changed!!
+		public IReadOnlyDictionary<string, RendererInput> Inputs { get => _inputs; } //TODO: Event when the inputs have changed!! (user attached/detached a rendertarget)
 
 		/// <summary>
 		/// The Material that will be used by this <see cref="Renderer"/> to render something
@@ -73,6 +72,7 @@ namespace CartoonShader.Source.RenderingPipeline
 			}
 		}
 
+		//TODO: Set the size!
 		[NoSerialize]
 		public Vector2 Size
 		{
@@ -87,6 +87,7 @@ namespace CartoonShader.Source.RenderingPipeline
 			}
 		}
 
+		//TODO: Enable every renderer upon startup!
 		[NoSerialize]
 		public bool Enabled
 		{
@@ -156,34 +157,51 @@ namespace CartoonShader.Source.RenderingPipeline
 			}
 			_materialInstance = material.CreateVirtualInstance();
 
-			SetInputs(_materialInstance.Parameters);
+			Dictionary<string, RendererInput> newInputs = new Dictionary<string, RendererInput>();
+			AddInputsFromMaterial(newInputs, _materialInstance.Parameters);
+			AddInputs(newInputs);
+			UpdateInputs(newInputs);
+			newInputs.Clear();
 		}
 
-		private void SetInputs(MaterialParameter[] materialParameters)
+		private void AddInputsFromMaterial(Dictionary<string, RendererInput> newInputs, MaterialParameter[] materialParameters)
 		{
-			//TODO: Add MaterialParameterType.RenderTargetArray and whatnot
 			var inputParameters = materialParameters
 				.Where(param => param.Type == MaterialParameterType.RenderTarget);
 
-			HashSet<string> parameterNames = new HashSet<string>(
-				inputParameters.Select(param => param.Name)
-			);
+			foreach (var parameter in inputParameters)
+			{
+				// Add all the new material pararmeters
+				newInputs.Add(parameter.Name, new RendererInput(parameter.Name));
+			}
+		}
 
+		protected virtual void AddInputs(Dictionary<string, RendererInput> newInputs)
+		{
+		}
+
+		private void UpdateInputs(Dictionary<string, RendererInput> newInputs)
+		{
+			// Update the existing inputs and remove the outdated ones
 			foreach (var inputName in _inputs.Keys.ToList())
 			{
-				// If the new material parameters don't have that one, get rid of it
-				if (!parameterNames.Contains(inputName))
+				if (newInputs.TryGetValue(inputName, out var newInput))
+				{
+					_inputs[inputName] = newInput;
+				}
+				else
 				{
 					_inputs.Remove(inputName);
 				}
 			}
 
-			foreach (var parameter in inputParameters)
+			// Add the totally new inputs
+			foreach (var newInput in newInputs)
 			{
-				// Add all the new material pararmeters
-				if (!_inputs.ContainsKey(parameter.Name))
+				string newInputName = newInput.Key;
+				if (!_inputs.ContainsKey(newInputName))
 				{
-					_inputs.Add(parameter.Name, new RendererInput(parameter.Name));
+					_inputs.Add(newInputName, newInput.Value);
 				}
 			}
 		}

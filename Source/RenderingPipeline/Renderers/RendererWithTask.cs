@@ -74,11 +74,24 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 			}
 		}
 
+		#region IDisposable Support
+
+		private bool disposedValue = false; // To detect redundant calls
+
 		protected override void Dispose(bool disposing)
 		{
+			if (!disposedValue)
+			{
+				if (disposing)
+				{
+					FlaxEngine.Object.Destroy(ref _task);
+					FlaxEngine.Object.Destroy(ref _defaultOutput);
+				}
+				disposedValue = true;
+			}
 			base.Dispose(disposing);
-			FlaxEngine.Object.Destroy(ref _task);
-			FlaxEngine.Object.Destroy(ref _defaultOutput);
 		}
+
+		#endregion IDisposable Support
 	}
 }
