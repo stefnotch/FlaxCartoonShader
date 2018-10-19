@@ -10,6 +10,7 @@ namespace CartoonShader.Source.RenderingPipeline
 	/// <summary>
 	/// Read-only class
 	/// </summary>
+	// TODO: Should it be tied to a Renderer?
 	public class RendererOutput
 	{
 		public RendererOutput(string name, RenderTarget renderTarget)

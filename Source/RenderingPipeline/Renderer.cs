@@ -41,7 +41,7 @@ namespace CartoonShader.Source.RenderingPipeline
 				if (_order != value)
 				{
 					_order = value;
-					OrderChanged(_order);
+					if (Enabled) OrderChanged(_order);
 				}
 			}
 		}
@@ -67,7 +67,7 @@ namespace CartoonShader.Source.RenderingPipeline
 				if (_material != value)
 				{
 					_material = value;
-					MaterialChanged(_material);
+					if (Enabled) MaterialChanged(_material);
 				}
 			}
 		}
@@ -82,7 +82,7 @@ namespace CartoonShader.Source.RenderingPipeline
 				if (_size != value)
 				{
 					_size = value;
-					SizeChanged(_size);
+					if (Enabled) SizeChanged(_size);
 				}
 			}
 		}
@@ -117,13 +117,17 @@ namespace CartoonShader.Source.RenderingPipeline
 			// If it already has this RendererOutput, just return
 			if (_outputs.TryGetValue(rendererOutput.Name, out RendererOutput existingOutput))
 			{
-				if (existingOutput.RenderTarget == rendererOutput.RenderTarget)
+				if (existingOutput.RenderTarget != rendererOutput.RenderTarget)
 				{
-					return;
+					// TODO: This is going to blow up with RendererInputs
+					// Reason being: You aren't doing anything to update them.
+					_outputs[rendererOutput.Name] = rendererOutput;
 				}
 			}
-
-			_outputs.Add(rendererOutput.Name, rendererOutput);
+			else
+			{
+				_outputs.Add(rendererOutput.Name, rendererOutput);
+			}
 		}
 
 		protected void RemoveOutput(string name)
@@ -149,6 +153,8 @@ namespace CartoonShader.Source.RenderingPipeline
 		protected virtual void MaterialChanged(MaterialBase material)
 		{
 			if (!Enabled) return;
+
+			if (material == null) return;
 
 			material.WaitForLoaded();
 			if (_materialInstance)
@@ -180,6 +186,10 @@ namespace CartoonShader.Source.RenderingPipeline
 			});
 		}
 
+		/// <summary>
+		/// Updates a single RenderTarget-parameter of the _materialInstance
+		/// </summary>
+		/// <param name="input">The RenderInput whose RenderOutput got updated</param>
 		private void UpdateMaterialInput(RendererInput input)
 		{
 			if (input.RendererOutput == null || !input.RendererOutput.RenderTarget) return;

@@ -14,15 +14,25 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 		/// </summary>
 		public Camera SourceCamera;
 
+		private const string DepthBuffer = "DepthBuffer";
+		private const string MotionVectors = "MotionVectors";
+
 		protected override void Enable(bool enabled)
 		{
 			base.Enable(enabled);
-			const string DepthBuffer = "DepthBuffer";
-			const string MotionVectors = "MotionVectors";
 			if (enabled)
 			{
 				_task.Camera = SourceCamera;
+				AddOutput(new RendererOutput(DepthBuffer, null));
+				AddOutput(new RendererOutput(DepthBuffer, null));
+			}
+		}
 
+		protected override void EnableRenderTask(bool enabled)
+		{
+			base.EnableRenderTask(enabled);
+			if (enabled)
+			{
 				AddOutput(new RendererOutput(DepthBuffer, _task.Buffers.DepthBuffer));
 				AddOutput(new RendererOutput(MotionVectors, _task.Buffers.MotionVectors));
 			}
@@ -31,6 +41,7 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 		protected override void MaterialChanged(MaterialBase material)
 		{
 			base.MaterialChanged(material);
+			//TODO: The material doesn't have any effect?
 		}
 
 		protected override void OrderChanged(int order)

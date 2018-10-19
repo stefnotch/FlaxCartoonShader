@@ -184,13 +184,11 @@
 }
 		},
 		{
-			"TypeID": "CartoonShader.Source.SceneRenderer",
+			"TypeID": "CartoonShader.Source.RenderPipelineOld.SceneRenderer",
 			"ID": "76a400554529e4a323106a8cd5aea304",
 			"ParentID": "db675b124cf4496897b81cb20ea17d2f",
 			"V": {
-	"SourceCamera": "db675b124cf4496897b81cb20ea17d2f",
-	"OutputMaterial": "8cd59aee45d01927bfe1219d5c7f3407",
-	"RenderTargetMaterialParam": "Image"
+	"SourceCamera": "db675b124cf4496897b81cb20ea17d2f"
 }
 		},
 		{
@@ -313,7 +311,7 @@
 			}
 		},
 		{
-			"TypeID": "CartoonShader.Source.RenderPipeline.RendererOutput",
+			"TypeID": "CartoonShader.Source.RenderPipelineOld.RendererOutput",
 			"ID": "1052d5564147f490cb0c588678d4639a",
 			"ParentID": "d191eefd48aa4000beacf29408013947",
 			"V": {
@@ -322,15 +320,15 @@
 		"1ab810a6414a690dddac6683b3509deb"
 	],
 	"Material": "8c1149fd4dad82f683d47886e587ad45",
+	"UseScreenSize": false,
 	"Size": {
 		"X": 10.0,
 		"Y": 10.0
-	},
-	"UseScreenSize": false
+	}
 }
 		},
 		{
-			"TypeID": "CartoonShader.Source.RenderPipeline.RenderTargetRenderer",
+			"TypeID": "CartoonShader.Source.RenderPipelineOld.RenderTargetRenderer",
 			"ID": "1ab810a6414a690dddac6683b3509deb",
 			"ParentID": "d191eefd48aa4000beacf29408013947",
 			"V": {
@@ -360,7 +358,7 @@
 			}
 		},
 		{
-			"TypeID": "CartoonShader.Source.RenderPipeline.RendererOutput",
+			"TypeID": "CartoonShader.Source.RenderPipelineOld.RendererOutput",
 			"ID": "f0e0f24944655751b79034bddb77acbf",
 			"ParentID": "4899a10e46c925a125a15ea34e9c6ef3",
 			"V": {
@@ -369,15 +367,15 @@
 		"e3ece2c0409e168459f9cc8e24f6efc2"
 	],
 	"Material": "8c1149fd4dad82f683d47886e587ad45",
+	"UseScreenSize": false,
 	"Size": {
 		"X": 10.0,
 		"Y": 10.0
-	},
-	"UseScreenSize": false
+	}
 }
 		},
 		{
-			"TypeID": "CartoonShader.Source.RenderPipeline.RenderTargetRenderer",
+			"TypeID": "CartoonShader.Source.RenderPipelineOld.RenderTargetRenderer",
 			"ID": "e3ece2c0409e168459f9cc8e24f6efc2",
 			"ParentID": "4899a10e46c925a125a15ea34e9c6ef3",
 			"V": {
@@ -407,6 +405,22 @@
 					}
 				]
 			}
+		},
+		{
+			"TypeID": "CartoonShader.Source.RenderPipelineScript",
+			"ID": "5396a893431b2b00dc696bb99dabf759",
+			"ParentID": "ed49ae8f4ef3f4f1af26f2ae8f8e29cb",
+			"V": {
+	"Renderers": [
+		{
+			"_order": 0,
+			"_size": {
+				"X": 0.0,
+				"Y": 0.0
+			}
+		}
+	]
+}
 		}
 	]
 }

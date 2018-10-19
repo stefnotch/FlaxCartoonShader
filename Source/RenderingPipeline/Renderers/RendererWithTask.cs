@@ -30,7 +30,7 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 			}
 			else
 			{
-				_task.Enabled = false;
+				EnableRenderTask(false);
 			}
 			base.Enable(enabled);
 			if (enabled)
@@ -39,7 +39,7 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 
 				ActionRunner.Instance.OnUpdate_Once(() =>
 				{
-					_task.Enabled = true;
+					EnableRenderTask(true);
 				});
 			}
 			else
@@ -47,9 +47,22 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 			}
 		}
 
+		protected virtual void EnableRenderTask(bool enabled)
+		{
+			if (enabled)
+			{
+				_task.Enabled = true;
+			}
+			else
+			{
+				_task.Enabled = false;
+			}
+		}
+
 		protected override void MaterialChanged(MaterialBase material)
 		{
 			base.MaterialChanged(material);
+			if (!material) return;
 		}
 
 		protected override void OrderChanged(int order)
@@ -66,7 +79,7 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 		{
 			base.SizeChanged(size);
 
-			if (Enabled && _defaultOutput)
+			if (Enabled && _defaultOutput && size.X >= 1 && size.Y >= 1)
 			{
 				_defaultOutput.Init(PixelFormat.R8G8B8A8_UNorm, size);
 			}

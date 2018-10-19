@@ -49,8 +49,15 @@ namespace CartoonShader.Source.RenderingPipeline
 		{
 			foreach (var action in _actions)
 			{
-				// TODO: Don't let 1 exception affect the rest
-				action.Invoke();
+				try
+				{
+					// TODO: Don't let 1 exception affect the rest
+					action.Invoke();
+				}
+				catch (Exception ex)
+				{
+					Debug.LogError(ex);
+				}
 			}
 
 			_actions.Clear();
