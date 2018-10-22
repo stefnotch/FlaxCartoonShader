@@ -24,7 +24,8 @@ namespace CartoonShader.Source.RenderingPipeline
 		protected readonly Dictionary<string, RendererOutput> _outputs = new Dictionary<string, RendererOutput>();
 
 		[NoSerialize]
-		protected readonly Dictionary<string, RendererInput> _inputs = new Dictionary<string, RendererInput>();
+		// TODO: Serialize & Deserialize this!!!
+		protected readonly RendererInputs _inputs = new RendererInputs();
 
 		[NoSerialize]
 		protected MaterialInstance _materialInstance;
@@ -53,7 +54,7 @@ namespace CartoonShader.Source.RenderingPipeline
 		public IReadOnlyDictionary<string, RendererOutput> Outputs { get => _outputs; } //TODO: Naming convention for the default output?
 
 		[NoSerialize]
-		public IReadOnlyDictionary<string, RendererInput> Inputs { get => _inputs; }
+		public RendererInputs Inputs { get => _inputs; }
 
 		/// <summary>
 		/// The Material that will be used by this <see cref="Renderer"/> to render something
@@ -110,12 +111,12 @@ namespace CartoonShader.Source.RenderingPipeline
 		/// Adds or replaces a RendererOutput
 		/// </summary>
 		/// <param name="rendererOutput"></param>
-		protected void AddOutput(RendererOutput rendererOutput)
+		protected RendererOutput GetOrCreateOutput(string name)
 		{
-			if (rendererOutput == null) return;
+			if (name == null) return;
 
 			// If it already has this RendererOutput, just return
-			if (_outputs.TryGetValue(rendererOutput.Name, out RendererOutput existingOutput))
+			if (_outputs.TryGetValue(name, out RendererOutput existingOutput))
 			{
 				if (existingOutput.RenderTarget != rendererOutput.RenderTarget)
 				{
@@ -126,7 +127,9 @@ namespace CartoonShader.Source.RenderingPipeline
 			}
 			else
 			{
-				_outputs.Add(rendererOutput.Name, rendererOutput);
+				var output = new RendererOutput(name);
+				_outputs.Add(name, output);
+				return output;
 			}
 		}
 

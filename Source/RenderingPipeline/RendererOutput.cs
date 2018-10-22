@@ -19,10 +19,9 @@ namespace CartoonShader.Source.RenderingPipeline
 	{
 		private RenderTarget _renderTarget;
 
-		public RendererOutput(string name, RenderTarget renderTarget)
+		public RendererOutput(string name)
 		{
 			Name = name;
-			RenderTarget = renderTarget;
 		}
 
 		public string Name { get; }

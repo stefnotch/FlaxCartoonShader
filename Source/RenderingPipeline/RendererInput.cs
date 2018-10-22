@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CartoonShader.Source.RenderingPipeline
 {
-	public class RendererInput
+	/*public class RendererInput
 	{
 		private readonly Action<RendererInput> _rendererOutputChanged;
 		private RendererOutput _rendererOutput;
@@ -28,5 +28,5 @@ namespace CartoonShader.Source.RenderingPipeline
 				_rendererOutputChanged?.Invoke(this);
 			}
 		}
-	}
+	}*/
 }
