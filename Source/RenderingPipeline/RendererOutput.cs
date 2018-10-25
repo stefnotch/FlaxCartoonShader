@@ -7,37 +7,16 @@ using FlaxEngine.Rendering;
 
 namespace CartoonShader.Source.RenderingPipeline
 {
-	public interface IRendererOutput
+	public class RendererOutput
 	{
-		string Name { get; }
-		RenderTarget RenderTarget { get; set; }
-
-		event Action<IRendererOutput> RenderTargetChanged;
-	}
-
-	public class RendererOutput : IRendererOutput
-	{
-		private RenderTarget _renderTarget;
-
-		public RendererOutput(string name)
+		public RendererOutput(string name, RenderTarget renderTarget)
 		{
 			Name = name;
+			RenderTarget = renderTarget;
 		}
 
 		public string Name { get; }
 
-		public RenderTarget RenderTarget
-		{
-			get => _renderTarget;
-
-			// TODO: Stop exposing the setter!
-			set
-			{
-				_renderTarget = value;
-				RenderTargetChanged?.Invoke(this);
-			}
-		}
-
-		public event Action<IRendererOutput> RenderTargetChanged;
+		public RenderTarget RenderTarget { get; }
 	}
 }
