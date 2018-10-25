@@ -25,6 +25,8 @@ namespace CartoonShader.Source.RenderingPipeline
 			SetInputs(rendererInputNames);
 		}
 
+		// TODO: Only the owner object should be able to call this
+		// TODO: Create an interface and stuffz
 		public void SetInputs(List<string> rendererInputNames)
 		{
 			// TODO: Previous inputs...
@@ -34,7 +36,6 @@ namespace CartoonShader.Source.RenderingPipeline
 			}
 			_rendererInputs.Clear();
 			_rendererChangeListeners.Clear();
-			// TODO: Only the owner object should be able to call this
 			foreach (var name in rendererInputNames)
 			{
 				_rendererInputs.Add(name, null);

@@ -10,7 +10,7 @@ namespace CartoonShader.Source.RenderingPipeline
 	public interface IRendererOutput
 	{
 		string Name { get; }
-		RenderTarget RenderTarget { get; }
+		RenderTarget RenderTarget { get; set; }
 
 		event Action<IRendererOutput> RenderTargetChanged;
 	}
@@ -29,6 +29,8 @@ namespace CartoonShader.Source.RenderingPipeline
 		public RenderTarget RenderTarget
 		{
 			get => _renderTarget;
+
+			// TODO: Stop exposing the setter!
 			set
 			{
 				_renderTarget = value;
