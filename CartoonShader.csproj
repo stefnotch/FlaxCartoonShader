@@ -58,6 +58,7 @@
     <Compile Include="Source\RenderingPipeline\DictionaryExtensions.cs" />
     <Compile Include="Source\RenderingPipeline\IRenderer.cs" />
     <Compile Include="Source\RenderingPipeline\RendererInputs.cs" />
+    <Compile Include="Source\RenderingPipeline\Renderers\PostFxRenderer.cs" />
     <Compile Include="Source\RenderPipelineScript.cs" />
     <Compile Include="Source\MeshGenerators\IMeshGenerator.cs" />
     <Compile Include="Source\MeshGenerators\QuadGenerator.cs" />

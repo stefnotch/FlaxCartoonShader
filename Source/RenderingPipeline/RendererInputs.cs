@@ -20,14 +20,14 @@ namespace CartoonShader.Source.RenderingPipeline
 		{
 		}
 
-		public RendererInputs(List<string> rendererInputNames)
+		public RendererInputs(IEnumerable<string> rendererInputNames)
 		{
 			SetInputs(rendererInputNames);
 		}
 
 		// TODO: Only the owner object should be able to call this
 		// TODO: Create an interface and stuffz
-		public void SetInputs(List<string> rendererInputNames)
+		public void SetInputs(IEnumerable<string> rendererInputNames)
 		{
 			// TODO: Previous inputs...
 			foreach (var key in _rendererInputs.Keys)

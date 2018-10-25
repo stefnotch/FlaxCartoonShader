@@ -23,8 +23,8 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 			if (enabled)
 			{
 				_task.Camera = SourceCamera;
-				AddOutput(new RendererOutput(DepthBuffer, null));
-				AddOutput(new RendererOutput(DepthBuffer, null));
+				SetOutput(DepthBuffer, null);
+				SetOutput(MotionVectors, null);
 			}
 		}
 
@@ -33,45 +33,9 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 			base.EnableRenderTask(enabled);
 			if (enabled)
 			{
-				AddOutput(new RendererOutput(DepthBuffer, _task.Buffers.DepthBuffer));
-				AddOutput(new RendererOutput(MotionVectors, _task.Buffers.MotionVectors));
+				SetOutput(DepthBuffer, _task.Buffers.DepthBuffer);
+				SetOutput(MotionVectors, _task.Buffers.MotionVectors);
 			}
 		}
-
-		protected override void MaterialChanged(MaterialBase material)
-		{
-			base.MaterialChanged(material);
-			//TODO: The material doesn't have any effect?
-		}
-
-		protected override void OrderChanged(int order)
-		{
-			base.OrderChanged(order);
-		}
-
-		protected override void SizeChanged(Vector2 size)
-		{
-			base.SizeChanged(size);
-		}
-
-		#region IDisposable Support
-
-		private bool disposedValue = false; // To detect redundant calls
-
-		protected override void Dispose(bool disposing)
-		{
-			if (!disposedValue)
-			{
-				if (disposing)
-				{
-					FlaxEngine.Object.Destroy(ref _task);
-					FlaxEngine.Object.Destroy(ref _defaultOutput);
-				}
-				disposedValue = true;
-			}
-			base.Dispose(disposing);
-		}
-
-		#endregion IDisposable Support
 	}
 }

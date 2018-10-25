@@ -9,9 +9,7 @@ namespace CartoonShader.Source.RenderingPipeline
 {
 	public interface IRenderer : IDisposable
 	{
-		IRendererOutput DefaultOutput { get; }
-
-		IReadOnlyDictionary<string, IRendererOutput> Outputs { get; } //TODO: Naming convention for the default output?
+		RendererOutputs Outputs { get; }
 
 		RendererInputs Inputs { get; }
 

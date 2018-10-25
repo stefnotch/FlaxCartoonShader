@@ -9,7 +9,30 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 {
 	public class PostFxRenderer : RendererWithTask
 	{
+		[Serialize]
+		protected MaterialBase _material;
+
+		[NoSerialize]
+		protected MaterialInstance _materialInstance;
+
 		public override IRendererOutput DefaultOutput => base.DefaultOutput;
+
+		/// <summary>
+		/// The Material that will be used by this <see cref="PostFxRenderer"/> to render something
+		/// </summary>
+		[NoSerialize]
+		public MaterialBase Material
+		{
+			get => _material;
+			set
+			{
+				if (_material != value)
+				{
+					_material = value;
+					MaterialChangedInternal(_material);
+				}
+			}
+		}
 
 		protected override void Enable(bool enabled)
 		{
@@ -25,6 +48,54 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 		{
 			base.SizeChanged(size);
 		}
+
+		private void MaterialChangedInternal(MaterialBase material)
+		{
+			if (Enabled) MaterialChanged(material);
+		}
+
+		protected virtual void MaterialChanged(MaterialBase material)
+		{
+			if (material == null) return;
+
+			material.WaitForLoaded();
+			if (_materialInstance)
+			{
+				FlaxEngine.Object.Destroy(ref _materialInstance);
+			}
+			_materialInstance = material.CreateVirtualInstance();
+
+			//this.Inputs.SetInputs()
+			/*
+			Dictionary<string, RendererInput> newInputs = new Dictionary<string, RendererInput>();
+			AddInputsFromMaterial(newInputs, _materialInstance.Parameters);
+			AddInputs(newInputs);
+			UpdateInputs(newInputs);
+			newInputs.Clear();
+
+			UpdateMaterialInputs();*/
+		}
+
+		protected override void RendererInputChanged(string name, IRendererOutput newRendererOutput)
+		{
+		}
+
+		/*
+		 *
+		 		/// <summary>
+		/// Updates the _materialInstance-RenderTarget-parameter values
+		/// </summary>
+		private void UpdateMaterialInputs()
+		{
+			ActionRunner.Instance.AfterFirstUpdate(() =>
+			{
+				foreach (var input in Inputs.Values)
+				{
+					UpdateMaterialInput(input);
+				}
+			});
+		}
+		*/
 
 		#region IDisposable Support
 

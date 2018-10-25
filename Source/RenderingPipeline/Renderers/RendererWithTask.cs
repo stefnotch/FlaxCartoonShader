@@ -26,9 +26,22 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 		protected RendererOutput _defaultOutput;
 
 		[NoSerialize]
+		protected readonly RendererOutputs _outputs = new RendererOutputs();
+
+		public RendererWithTask()
+		{
+			Inputs.RendererInputChanged += RendererInputChanged;
+		}
+
+		protected virtual void RendererInputChanged(string name, IRendererOutput newRendererOutput)
+		{
+		}
+
+		[NoSerialize]
 		public virtual IRendererOutput DefaultOutput => _defaultOutput;
 
-		public IReadOnlyDictionary<string, IRendererOutput> Outputs { get; private set; } = new Dictionary<string, IRendererOutput>();
+		[NoSerialize]
+		public RendererOutputs Outputs => _outputs;
 
 		// TODO: Serialize & Deserialize this!!!
 		[NoSerialize]
@@ -103,6 +116,28 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 
 				SizeChangedInternal(Size);
 				OrderChangedInternal(Order);
+
+				ActionRunner.Instance.OnUpdate_Once(() =>
+				{
+					EnableRenderTask(true);
+				});
+			}
+			else
+			{
+				EnableRenderTask(false);
+			}
+		}
+
+		// TODO: Improve this (as soon as you turn on an output, the pipeline gets Enabled automatically!!!)
+		protected virtual void EnableRenderTask(bool enabled)
+		{
+			if (enabled)
+			{
+				if (_task) _task.Enabled = true;
+			}
+			else
+			{
+				if (_task) _task.Enabled = false;
 			}
 		}
 
@@ -117,6 +152,36 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 			{
 				_task.Order = order;
 			}
+		}
+
+		protected void SetOutput(string name, RenderTarget renderTarget)
+		{
+			if (name == null) return;
+
+			if (_outputs.TryGetValue(name, out IRendererOutput existingOutput))
+			{
+				if (existingOutput.RenderTarget != renderTarget)
+				{
+					RenderTarget rt = existingOutput.RenderTarget;
+					FlaxEngine.Object.Destroy(ref rt);
+
+					_outputs[name].RenderTarget = renderTarget;
+				}
+			}
+			else
+			{
+				var output = new RendererOutput(name);
+				output.RenderTarget = renderTarget;
+				_outputs.Add(name, output);
+			}
+		}
+
+		protected void RemoveOutput(string name)
+		{
+			RenderTarget rt = _outputs[name].RenderTarget;
+			FlaxEngine.Object.Destroy(ref rt);
+			_outputs[name].RenderTarget = null;
+			_outputs.Remove(name);
 		}
 
 		/*
@@ -184,6 +249,7 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 			{
 				if (disposing)
 				{
+					Inputs.RendererInputChanged -= RendererInputChanged;
 					FlaxEngine.Object.Destroy(ref _task);
 					RenderTarget renderTarget = _defaultOutput?.RenderTarget;
 					FlaxEngine.Object.Destroy(ref renderTarget);
