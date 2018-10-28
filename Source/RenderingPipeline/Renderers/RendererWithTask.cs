@@ -10,9 +10,6 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 {
 	public class RendererWithTask : IRenderer
 	{
-		[NoSerialize]
-		protected SceneRenderTask _task;
-
 		[Serialize]
 		protected int _order;
 
@@ -20,25 +17,40 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 		protected Vector2 _size;
 
 		[NoSerialize]
+		protected SceneRenderTask _task;
+
+		[NoSerialize]
 		protected bool _enabled = false;
 
 		[NoSerialize]
-		protected RendererOutput _defaultOutput;
+		protected RendererOutput _defaultOutput = new RendererOutput();
 
 		[NoSerialize]
 		protected readonly RendererOutputs _outputs = new RendererOutputs();
 
 		public RendererWithTask()
 		{
+			if (!_task) _task = RenderTask.Create<SceneRenderTask>();
+			_task.Enabled = false;
+
+			_defaultOutput.RenderTargetChanged += _defaultOutput_RenderTargetChanged;
+			_defaultOutput.RenderTarget = RenderTarget.New();
+
+			_task.Output = _defaultOutput.RenderTarget;
+
 			Inputs.RendererInputChanged += RendererInputChanged;
 		}
 
-		protected virtual void RendererInputChanged(string name, IRendererOutput newRendererOutput)
-		{
-		}
+		[Serialize]
+		public string Name { get; set; }
 
 		[NoSerialize]
 		public virtual IRendererOutput DefaultOutput => _defaultOutput;
+
+		[NoSerialize]
+		public RenderTarget RenderTarget => _defaultOutput.RenderTarget;
+
+		public event Action<IRendererOutput> RenderTargetChanged;
 
 		[NoSerialize]
 		public RendererOutputs Outputs => _outputs;
@@ -56,7 +68,7 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 				if (_order != value)
 				{
 					_order = value;
-					if (Enabled) OrderChangedInternal(_order);
+					OrderChangedInternal(_order);
 				}
 			}
 		}
@@ -91,6 +103,15 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 			}
 		}
 
+		protected virtual void RendererInputChanged(string name, IRendererOutput newRendererOutput)
+		{
+		}
+
+		private void _defaultOutput_RenderTargetChanged(IRendererOutput obj)
+		{
+			RenderTargetChanged?.Invoke(obj);
+		}
+
 		private void SizeChangedInternal(Vector2 size)
 		{
 			if (Enabled) SizeChanged(size);
@@ -104,16 +125,10 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 			}
 		}
 
-		protected virtual void Enable(bool enabled)
+		public virtual void Enable(bool enabled)
 		{
 			if (enabled)
 			{
-				_defaultOutput.RenderTarget = RenderTarget.New();
-
-				if (!_task) _task = RenderTask.Create<SceneRenderTask>();
-				_task.Enabled = false;
-				_task.Output = DefaultOutput.RenderTarget;
-
 				SizeChangedInternal(Size);
 				OrderChangedInternal(Order);
 
@@ -154,7 +169,7 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 			}
 		}
 
-		protected void SetOutput(string name, RenderTarget renderTarget)
+		/*protected void SetOutput(string name, RenderTarget renderTarget)
 		{
 			if (name == null) return;
 
@@ -182,7 +197,7 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 			FlaxEngine.Object.Destroy(ref rt);
 			_outputs[name].RenderTarget = null;
 			_outputs.Remove(name);
-		}
+		}*/
 
 		/*
 		protected RenderTarget _defaultOutput;
@@ -249,9 +264,10 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 			{
 				if (disposing)
 				{
+					_defaultOutput.RenderTargetChanged -= _defaultOutput_RenderTargetChanged;
 					Inputs.RendererInputChanged -= RendererInputChanged;
 					FlaxEngine.Object.Destroy(ref _task);
-					RenderTarget renderTarget = _defaultOutput?.RenderTarget;
+					RenderTarget renderTarget = RenderTarget;
 					FlaxEngine.Object.Destroy(ref renderTarget);
 				}
 				disposedValue = true;

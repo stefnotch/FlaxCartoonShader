@@ -10,110 +10,77 @@ namespace CartoonShader.Source.RenderingPipeline
 {
 	public interface IRendererOutputs : IReadOnlyDictionary<string, IRendererOutput>
 	{
-		event Action<string, IRendererOutput> OutputChanged;
-
-		// TODO
+		// TODO?
 	}
 
 	public class RendererOutputs : IRendererOutputs
 	{
-		public IRendererOutput Default;
-		private readonly Dictionary<string, IRendererOutput> _outputs = new Dictionary<string, IRendererOutput>();
+		private readonly Dictionary<string, RendererOutput> _outputs = new Dictionary<string, RendererOutput>();
 
 		public RendererOutputs()
 		{
 		}
 
-		public event Action<string, IRendererOutput> OutputChanged;
+		public int Count => _outputs.Count;
 
-		public int Count => throw new NotImplementedException();
+		public IEnumerable<string> Keys => _outputs.Keys;
 
-		public IEnumerable<string> Keys => throw new NotImplementedException();
+		public IEnumerable<IRendererOutput> Values => _outputs.Values;
 
-		public IEnumerable<IRendererOutput> Values => throw new NotImplementedException();
-
-		// something like this
 		public IRendererOutput this[string name]
 		{
 			get
 			{
-				return null;
-			}
-			/*set
-			{
-				if (value == null)
-				{
-					RemoveOutput(name);
-				}
-				else
-				{
-				}
-			}*/
-		}
-
-		/*
-		public RenderTarget this[string name]
-		{
-			get
-			{
-				return null;
+				return _outputs[name];
 			}
 		}
-		*/
 
-		public bool ContainsKey(string key)
-		{
-			throw new NotImplementedException();
-		}
+		public bool ContainsKey(string key) => _outputs.ContainsKey(key);
 
 		public IEnumerator<KeyValuePair<string, IRendererOutput>> GetEnumerator()
 		{
-			throw new NotImplementedException();
+			return _outputs
+				.Select((keyValuePair) => new KeyValuePair<string, IRendererOutput>(keyValuePair.Key, keyValuePair.Value))
+				.GetEnumerator();
 		}
 
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			throw new NotImplementedException();
-		}
+		IEnumerator IEnumerable.GetEnumerator() => _outputs.GetEnumerator();
 
 		public bool TryGetValue(string key, out IRendererOutput value)
 		{
-			throw new NotImplementedException();
+			bool returnValue = _outputs.TryGetValue(key, out var rendererOutput);
+			value = rendererOutput;
+			return returnValue;
 		}
 
-		// TODO: Should I really totally destroy it???
-		private void RemoveOutput(string name)
-		{
-			RenderTarget rt = _outputs[name].RenderTarget;
-			FlaxEngine.Object.Destroy(ref rt);
-			_outputs[name].RenderTarget = null;
-			_outputs.Remove(name);
-		}
-
-		// TODO: Make this public?
-		private void SetOutput(string name, RenderTarget renderTarget)
+		// TODO: Make this public? Or some other solution?
+		public void SetOutput(string name, RenderTarget renderTarget)
 		{
 			if (name == null) return;
 
-			if (_outputs.TryGetValue(name, out IRendererOutput existingOutput))
+			if (_outputs.TryGetValue(name, out RendererOutput existingOutput))
 			{
 				if (existingOutput.RenderTarget != renderTarget)
 				{
-					// TODO: Should I seriously destroy it?
-					RenderTarget rt = existingOutput.RenderTarget;
-					FlaxEngine.Object.Destroy(ref rt);
-
 					_outputs[name].RenderTarget = renderTarget;
 				}
 			}
 			else
 			{
-				var output = new RendererOutput(name)
+				var output = new RendererOutput()
 				{
 					RenderTarget = renderTarget
 				};
 				_outputs.Add(name, output);
 			}
+		}
+
+		public void RemoveOutput(string name)
+		{
+			RenderTarget rt = _outputs[name].RenderTarget;
+			FlaxEngine.Object.Destroy(ref rt);
+			_outputs[name].RenderTarget = null;
+			_outputs.Remove(name);
 		}
 	}
 }

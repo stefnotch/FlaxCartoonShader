@@ -22,25 +22,7 @@ namespace CartoonShader.Source.RenderingPipeline
 
 		public RendererInputs(IEnumerable<string> rendererInputNames)
 		{
-			SetInputs(rendererInputNames);
-		}
-
-		// TODO: Only the owner object should be able to call this
-		// TODO: Create an interface and stuffz
-		public void SetInputs(IEnumerable<string> rendererInputNames)
-		{
-			// TODO: Previous inputs...
-			foreach (var key in _rendererInputs.Keys)
-			{
-				DetatchListener(key);
-			}
-			_rendererInputs.Clear();
-			_rendererChangeListeners.Clear();
-			foreach (var name in rendererInputNames)
-			{
-				_rendererInputs.Add(name, null);
-				_rendererChangeListeners.Add(name, null);
-			}
+			UpdateInputs(rendererInputNames);
 		}
 
 		public IRendererOutput this[string key]
@@ -65,6 +47,28 @@ namespace CartoonShader.Source.RenderingPipeline
 			}
 		}
 
+		// TODO: Only the owner object should be able to call this
+		// TODO: Create an interface and stuffz
+		public void UpdateInputs(IEnumerable<string> rendererInputNames, IEnumerable<string> previousRendererInputNames = null)
+		{
+			// TODO: Previous input caching and whatnot
+			//HashSet<string> newRendererInputNames = new HashSet<string>(rendererInputNames);
+			if (previousRendererInputNames != null)
+			{
+				foreach (var name in previousRendererInputNames)
+				{
+					DetatchListener(name);
+					_rendererInputs.Remove(name);
+				}
+			}
+
+			foreach (var name in rendererInputNames)
+			{
+				_rendererInputs.Add(name, null);
+				_rendererChangeListeners.Add(name, null);
+			}
+		}
+
 		private void AttatchListener(string key)
 		{
 			Action<IRendererOutput> rtChangedListener = (IRendererOutput rendererOutput) =>
@@ -82,6 +86,7 @@ namespace CartoonShader.Source.RenderingPipeline
 				if (_rendererChangeListeners[key] != null)
 				{
 					_rendererInputs[key].RenderTargetChanged -= _rendererChangeListeners[key];
+					_rendererChangeListeners.Remove(key);
 				}
 			}
 		}

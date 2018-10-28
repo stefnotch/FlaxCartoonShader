@@ -7,7 +7,7 @@ using FlaxEngine;
 
 namespace CartoonShader.Source.RenderingPipeline
 {
-	public interface IRenderer : IDisposable
+	public interface IRenderer : IRendererOutput, IDisposable
 	{
 		RendererOutputs Outputs { get; }
 

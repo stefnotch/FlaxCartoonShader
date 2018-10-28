@@ -7,10 +7,10 @@ using FlaxEngine.Rendering;
 
 namespace CartoonShader.Source.RenderingPipeline
 {
-	public interface IRendererOutput
+	public interface IRendererOutput// : IObservable<IRendererOutput>
 	{
-		string Name { get; }
-		RenderTarget RenderTarget { get; set; }
+		//TODO: Do I really need an event?
+		RenderTarget RenderTarget { get;/* set;*/ }
 
 		event Action<IRendererOutput> RenderTargetChanged;
 	}
@@ -19,18 +19,15 @@ namespace CartoonShader.Source.RenderingPipeline
 	{
 		private RenderTarget _renderTarget;
 
-		public RendererOutput(string name)
+		public RendererOutput()
 		{
-			Name = name;
 		}
-
-		public string Name { get; }
 
 		public RenderTarget RenderTarget
 		{
 			get => _renderTarget;
 
-			// TODO: Stop exposing the setter!
+			// TODO: Stop exposing the setter? (Accept an IObservable/event in the constructor?)
 			set
 			{
 				_renderTarget = value;

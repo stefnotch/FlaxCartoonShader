@@ -17,14 +17,18 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 		private const string DepthBuffer = "DepthBuffer";
 		private const string MotionVectors = "MotionVectors";
 
-		protected override void Enable(bool enabled)
+		public SceneRenderer() : base()
+		{
+			_outputs.SetOutput(DepthBuffer, null);
+			_outputs.SetOutput(MotionVectors, null);
+		}
+
+		public override void Enable(bool enabled)
 		{
 			base.Enable(enabled);
 			if (enabled)
 			{
 				_task.Camera = SourceCamera;
-				SetOutput(DepthBuffer, null);
-				SetOutput(MotionVectors, null);
 			}
 		}
 
@@ -33,8 +37,8 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 			base.EnableRenderTask(enabled);
 			if (enabled)
 			{
-				SetOutput(DepthBuffer, _task.Buffers.DepthBuffer);
-				SetOutput(MotionVectors, _task.Buffers.MotionVectors);
+				_outputs.SetOutput(DepthBuffer, _task.Buffers.DepthBuffer);
+				_outputs.SetOutput(MotionVectors, _task.Buffers.MotionVectors);
 			}
 		}
 	}
