@@ -14,7 +14,7 @@ namespace CartoonShader.Source.RenderingPipeline
 
 		private ActionRunner()
 		{
-			OnUpdate_Once(() => _isAfterFirstUpdate = true);
+			OnNextUpdate(() => _isAfterFirstUpdate = true);
 		}
 
 		public static ActionRunner Instance
@@ -28,7 +28,7 @@ namespace CartoonShader.Source.RenderingPipeline
 
 		private readonly LinkedList<Action> _actions = new LinkedList<Action>();
 
-		public void OnUpdate_Once(Action onSingleUpdate)
+		public void OnNextUpdate(Action onSingleUpdate)
 		{
 			if (onSingleUpdate == null) return;
 			bool isEmpty = _actions.Count <= 0;
@@ -39,15 +39,20 @@ namespace CartoonShader.Source.RenderingPipeline
 			}
 		}
 
+		//TODO: Fancy async/await tricks!
+
 		public void AfterFirstUpdate(Action action)
 		{
 			if (_isAfterFirstUpdate) action?.Invoke();
-			else OnUpdate_Once(action);
+			else OnNextUpdate(action);
 		}
 
 		private void ExecuteActions()
 		{
-			foreach (var action in _actions)
+			List<Action> currentActions = _actions.ToList();
+			_actions.Clear();
+
+			foreach (var action in currentActions)
 			{
 				try
 				{
@@ -59,8 +64,6 @@ namespace CartoonShader.Source.RenderingPipeline
 					Debug.LogError(ex);
 				}
 			}
-
-			_actions.Clear();
 
 			// TODO: Multithreaded code = race condition
 			Scripting.Update -= ExecuteActions;

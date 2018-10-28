@@ -43,7 +43,7 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 		/// </summary>
 		public bool QuadForEachPixel = false;
 
-		public override void Enable(bool enabled)
+		protected override void EnableChanged(bool enabled)
 		{
 			if (enabled)
 			{
@@ -61,7 +61,7 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 				}
 			}
 
-			base.Enable(enabled);
+			base.EnableChanged(enabled);
 			if (enabled)
 			{
 				MaterialChangedInternal(Material);

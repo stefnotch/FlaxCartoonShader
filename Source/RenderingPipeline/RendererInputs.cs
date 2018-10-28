@@ -14,6 +14,9 @@ namespace CartoonShader.Source.RenderingPipeline
 
 		private readonly Dictionary<string, Action<IRendererOutput>> _rendererChangeListeners = new Dictionary<string, Action<IRendererOutput>>();
 
+		/// <summary>
+		/// Raised whenever a RendererInput is changed
+		/// </summary>
 		public event Action<string, IRendererOutput> RendererInputChanged;
 
 		public RendererInputs()
@@ -81,13 +84,11 @@ namespace CartoonShader.Source.RenderingPipeline
 
 		private void DetatchListener(string key)
 		{
-			if (_rendererInputs[key] != null)
+			if (_rendererInputs.TryGetValue(key, out var rendererOutput) && rendererOutput != null &&
+				_rendererChangeListeners.TryGetValue(key, out var rendererChangeListener) && rendererChangeListener != null)
 			{
-				if (_rendererChangeListeners[key] != null)
-				{
-					_rendererInputs[key].RenderTargetChanged -= _rendererChangeListeners[key];
-					_rendererChangeListeners.Remove(key);
-				}
+				rendererOutput.RenderTargetChanged -= rendererChangeListener;
+				_rendererChangeListeners.Remove(key);
 			}
 		}
 

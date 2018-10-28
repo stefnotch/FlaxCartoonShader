@@ -23,9 +23,9 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 			_outputs.SetOutput(MotionVectors, null);
 		}
 
-		public override void Enable(bool enabled)
+		protected override void EnableChanged(bool enabled)
 		{
-			base.Enable(enabled);
+			base.EnableChanged(enabled);
 			if (enabled)
 			{
 				_task.Camera = SourceCamera;
@@ -37,8 +37,11 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 			base.EnableRenderTask(enabled);
 			if (enabled)
 			{
-				_outputs.SetOutput(DepthBuffer, _task.Buffers.DepthBuffer);
-				_outputs.SetOutput(MotionVectors, _task.Buffers.MotionVectors);
+				ActionRunner.Instance.OnNextUpdate(() =>
+				{
+					_outputs.SetOutput(DepthBuffer, _task.Buffers.DepthBuffer);
+					_outputs.SetOutput(MotionVectors, _task.Buffers.MotionVectors);
+				});
 			}
 		}
 	}

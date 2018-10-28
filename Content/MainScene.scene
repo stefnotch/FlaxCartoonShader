@@ -154,6 +154,36 @@
 			}
 		},
 		{
+			"TypeID": 1,
+			"ID": "947ee5ed458b1f4cb8bc469db7697181",
+			"ParentID": "6fe54f8e458df263c707b99e144c3666",
+			"Name": "Cube",
+			"Transform": {
+				"Translation": {
+					"X": 0.0,
+					"Y": 0.0,
+					"Z": 203.86947631835938
+				}
+			},
+			"Model": "b43f0f8f4aaba3f3156896a5a22ba493",
+			"Buffer": {
+				"Entries": [
+					{
+						"Material": "d8629e504bf7d4c654242fbc21b15522"
+					}
+				]
+			}
+		},
+		{
+			"TypeID": "CartoonShader.RTestScript",
+			"ID": "512e58db4a844ce6ad2bccbc668e44b0",
+			"ParentID": "947ee5ed458b1f4cb8bc469db7697181",
+			"V": {
+	"Camera": "db675b124cf4496897b81cb20ea17d2f",
+	"Material": "d8629e504bf7d4c654242fbc21b15522"
+}
+		},
+		{
 			"TypeID": 2,
 			"ID": "db675b124cf4496897b81cb20ea17d2f",
 			"ParentID": "548825a24f649b2351aa94aa3ce035ef",

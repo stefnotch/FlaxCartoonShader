@@ -98,7 +98,7 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 				if (_enabled != value)
 				{
 					_enabled = value;
-					Enable(_enabled);
+					EnableChanged(_enabled);
 				}
 			}
 		}
@@ -125,14 +125,14 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 			}
 		}
 
-		public virtual void Enable(bool enabled)
+		protected virtual void EnableChanged(bool enabled)
 		{
 			if (enabled)
 			{
 				SizeChangedInternal(Size);
 				OrderChangedInternal(Order);
 
-				ActionRunner.Instance.OnUpdate_Once(() =>
+				ActionRunner.Instance.OnNextUpdate(() =>
 				{
 					EnableRenderTask(true);
 				});
@@ -256,11 +256,11 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 
 		#region IDisposable Support
 
-		private bool disposedValue = false; // To detect redundant calls
+		private bool _disposedValue = false; // To detect redundant calls
 
 		protected virtual void Dispose(bool disposing)
 		{
-			if (!disposedValue)
+			if (!_disposedValue)
 			{
 				if (disposing)
 				{
@@ -270,7 +270,7 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 					RenderTarget renderTarget = RenderTarget;
 					FlaxEngine.Object.Destroy(ref renderTarget);
 				}
-				disposedValue = true;
+				_disposedValue = true;
 			}
 		}
 
