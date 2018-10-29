@@ -17,13 +17,13 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 		protected Vector2 _size;
 
 		[NoSerialize]
-		protected SceneRenderTask _task;
-
-		[NoSerialize]
 		protected bool _enabled = false;
 
 		[NoSerialize]
-		protected RendererOutput _defaultOutput = new RendererOutput();
+		protected SceneRenderTask _task;
+
+		[NoSerialize]
+		protected readonly RendererOutput _defaultOutput = new RendererOutput();
 
 		[NoSerialize]
 		protected readonly RendererOutputs _outputs = new RendererOutputs();
@@ -45,7 +45,7 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 		public string Name { get; set; }
 
 		[NoSerialize]
-		public virtual IRendererOutput DefaultOutput => _defaultOutput;
+		public IRendererOutput DefaultOutput => _defaultOutput;
 
 		[NoSerialize]
 		public RenderTarget RenderTarget => _defaultOutput.RenderTarget;
@@ -269,6 +269,7 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 					FlaxEngine.Object.Destroy(ref _task);
 					RenderTarget renderTarget = RenderTarget;
 					FlaxEngine.Object.Destroy(ref renderTarget);
+					_defaultOutput.RenderTarget = null;
 				}
 				_disposedValue = true;
 			}

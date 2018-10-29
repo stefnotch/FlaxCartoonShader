@@ -11,10 +11,15 @@ namespace CartoonShader.Source.RenderingPipeline
 	{
 		private static ActionRunner _instance;
 		private bool _isAfterFirstUpdate = false;
+		private readonly TaskCompletionSource<bool> _promiseFirstUpdate = new TaskCompletionSource<bool>();
 
 		private ActionRunner()
 		{
-			OnNextUpdate(() => _isAfterFirstUpdate = true);
+			OnNextUpdate(() =>
+			{
+				_isAfterFirstUpdate = true;
+				_promiseFirstUpdate.SetResult(true);
+			});
 		}
 
 		public static ActionRunner Instance
@@ -31,6 +36,7 @@ namespace CartoonShader.Source.RenderingPipeline
 		public void OnNextUpdate(Action onSingleUpdate)
 		{
 			if (onSingleUpdate == null) return;
+
 			bool isEmpty = _actions.Count <= 0;
 			_actions.AddLast(onSingleUpdate);
 			if (isEmpty)
@@ -45,6 +51,13 @@ namespace CartoonShader.Source.RenderingPipeline
 		{
 			if (_isAfterFirstUpdate) action?.Invoke();
 			else OnNextUpdate(action);
+		}
+
+		public async Task FirstUpdate()
+		{
+			if (_isAfterFirstUpdate) return;
+
+			await _promiseFirstUpdate.Task;
 		}
 
 		private void ExecuteActions()

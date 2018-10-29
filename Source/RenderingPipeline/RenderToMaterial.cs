@@ -27,11 +27,24 @@ namespace CartoonShader.Source.RenderingPipeline
 
 		private void _inputs_RendererInputChanged(string name, IRendererOutput rendererOutput)
 		{
+			_inputs_RendererInputChangedAsync(name, rendererOutput);
+		}
+
+		private async void _inputs_RendererInputChangedAsync(string name, IRendererOutput rendererOutput)
+		{
+			// Not sure which one is "better"
+			await ActionRunner.Instance.FirstUpdate();
+			//ActionRunner.Instance.AfterFirstUpdate(() =>
+			//{
+			Material.WaitForLoaded();
+			Debug.Log("RendererInputChanged - Material Set");
 			var param = Material?.GetParam(name);
 			if (param != null)
 			{
+				Debug.Log("RendererInputChanged - Material Set!!");
 				param.Value = rendererOutput?.RenderTarget;
 			}
+			//});
 		}
 
 		[NoSerialize]
@@ -78,16 +91,6 @@ namespace CartoonShader.Source.RenderingPipeline
 		{
 			if (enabled)
 			{
-				ActionRunner.Instance.AfterFirstUpdate(() =>
-				{
-					var param = Material?.GetParam("Default");
-					Debug.Log("Test");
-					if (param != null)
-					{
-						Debug.Log("rt set");
-						param.Value = Inputs["Default"].RenderTarget;
-					}
-				});
 			}
 		}
 
