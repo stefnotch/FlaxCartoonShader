@@ -13,6 +13,7 @@ namespace CartoonShader.Source.RenderingPipeline
 		protected RendererInputs _inputs = new RendererInputs(new string[] { "Default" });
 
 		[Serialize]
+		[Limit(1)]
 		protected Vector2 _size;
 
 		[Serialize]

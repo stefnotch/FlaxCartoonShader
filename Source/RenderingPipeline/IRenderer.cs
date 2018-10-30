@@ -10,9 +10,9 @@ namespace CartoonShader.Source.RenderingPipeline
 	// TODO: Think up better names
 	public interface IRenderer : IRendererOutput, IDisposable
 	{
-		RendererOutputs Outputs { get; }
+		IRendererOutputs Outputs { get; }
 
-		RendererInputs Inputs { get; }
+		IRendererInputs Inputs { get; }
 
 		Vector2 Size { get; set; }
 

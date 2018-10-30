@@ -26,6 +26,9 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 		protected readonly RendererOutput _defaultOutput = new RendererOutput();
 
 		[NoSerialize]
+		protected readonly RendererInputs _inputs = new RendererInputs();
+
+		[NoSerialize]
 		protected readonly RendererOutputs _outputs = new RendererOutputs();
 
 		public RendererWithTask()
@@ -38,7 +41,7 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 
 			_task.Output = _defaultOutput.RenderTarget;
 
-			Inputs.RendererInputChanged += RendererInputChanged;
+			_inputs.RendererInputChanged += RendererInputChanged;
 		}
 
 		[Serialize]
@@ -53,11 +56,11 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 		public event Action<IRendererOutput> RenderTargetChanged;
 
 		[NoSerialize]
-		public RendererOutputs Outputs => _outputs;
+		public IRendererOutputs Outputs => _outputs;
 
 		// TODO: Serialize & Deserialize this!!!
 		[NoSerialize]
-		public RendererInputs Inputs { get; } = new RendererInputs();
+		public IRendererInputs Inputs => _inputs;
 
 		[NoSerialize]
 		internal int Order
@@ -265,7 +268,7 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 				if (disposing)
 				{
 					_defaultOutput.RenderTargetChanged -= _defaultOutput_RenderTargetChanged;
-					Inputs.RendererInputChanged -= RendererInputChanged;
+					_inputs.RendererInputChanged -= RendererInputChanged;
 					FlaxEngine.Object.Destroy(ref _task);
 					RenderTarget renderTarget = RenderTarget;
 					FlaxEngine.Object.Destroy(ref renderTarget);

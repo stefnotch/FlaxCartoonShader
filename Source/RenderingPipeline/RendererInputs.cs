@@ -8,7 +8,11 @@ using System.Threading.Tasks;
 namespace CartoonShader.Source.RenderingPipeline
 {
 	//TODO: IObservable
-	public class RendererInputs : IReadOnlyDictionary<string, IRendererOutput>, IReadOnlyCollection<KeyValuePair<string, IRendererOutput>>, IEnumerable<KeyValuePair<string, IRendererOutput>>
+	public interface IRendererInputs : IReadOnlyDictionary<string, IRendererOutput>, IReadOnlyCollection<KeyValuePair<string, IRendererOutput>>, IEnumerable<KeyValuePair<string, IRendererOutput>>
+	{
+	}
+
+	public class RendererInputs : IRendererInputs
 	{
 		private readonly Dictionary<string, IRendererOutput> _rendererInputs = new Dictionary<string, IRendererOutput>();
 

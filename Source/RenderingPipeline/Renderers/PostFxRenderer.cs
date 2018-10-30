@@ -151,7 +151,7 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 				FlaxEngine.Object.Destroy(ref _materialInstance);
 			}
 			_materialInstance = material.CreateVirtualInstance();
-			Inputs.UpdateInputs(GetRendererInputNames(_materialInstance), previousRendererInputNames);
+			_inputs.UpdateInputs(GetRendererInputNames(_materialInstance), previousRendererInputNames);
 
 			if (_modelActor) _modelActor.Entries[0].Material = _materialInstance;
 

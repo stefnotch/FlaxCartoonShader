@@ -10,7 +10,7 @@ namespace CartoonShader.Source.RenderingPipeline
 	public interface IRendererOutput// : IObservable<IRendererOutput>
 	{
 		//TODO: Do I really need an event?
-		RenderTarget RenderTarget { get;/* set;*/ }
+		RenderTarget RenderTarget { get; }
 
 		event Action<IRendererOutput> RenderTargetChanged;
 	}
