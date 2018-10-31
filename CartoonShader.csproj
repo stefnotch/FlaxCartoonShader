@@ -53,7 +53,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Source\ActorExtensions.cs" />
-    <Compile Include="Source\Disposer.cs" />
     <Compile Include="Source\FullscreenQuad.cs" />
     <Compile Include="Source\MotionVectorRenderer.cs" />
     <Compile Include="Source\RTestScript.cs" />
@@ -72,7 +71,6 @@
     <Compile Include="Source\RenderingPipeline\Renderers\RendererWithTask.cs" />
     <Compile Include="Source\RenderingPipeline\Renderers\SceneRenderer.cs" />
     <Compile Include="Cache\AssemblyInfo.cs" />
-    <Compile Include="Source\ScriptWithDisposer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
