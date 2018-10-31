@@ -13,9 +13,11 @@ namespace CartoonShader
 	{
 		public Camera Camera;
 		public Material Material;
+		public Material FxMaterial;
 
 		private RenderToMaterial r;
 		private SceneRenderer sr;
+		private PostFxRenderer pfxr;
 
 		public void OnEnable()
 		{
@@ -29,7 +31,12 @@ namespace CartoonShader
 			sr.Size = new Vector2(100);
 			r.Inputs["Default"] = sr.DefaultOutput;
 
+			pfxr = new PostFxRenderer();
+			pfxr.Material = FxMaterial;
+			pfxr.Inputs["Image"] = sr.DefaultOutput;
+
 			sr.Enabled = true;
+			pfxr.Enabled = true;
 			r.Enabled = true;
 		}
 
@@ -37,6 +44,7 @@ namespace CartoonShader
 		{
 			r?.Dispose();
 			sr?.Dispose();
+			pfxr?.Dispose();
 		}
 	}
 }

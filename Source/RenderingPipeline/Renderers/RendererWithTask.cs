@@ -14,7 +14,7 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 		protected int _order;
 
 		[Serialize]
-		protected Vector2 _size;
+		protected Vector2 _size = Vector2.One;
 
 		[NoSerialize]
 		protected bool _enabled = false;

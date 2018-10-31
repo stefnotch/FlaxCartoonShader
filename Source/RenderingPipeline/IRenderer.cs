@@ -17,5 +17,7 @@ namespace CartoonShader.Source.RenderingPipeline
 		Vector2 Size { get; set; }
 
 		bool Enabled { get; set; }
+
+		// TODO: PostFX
 	}
 }

@@ -49,7 +49,7 @@ namespace CartoonShader.Source.RenderingPipeline
 		}
 
 		[NoSerialize]
-		public RendererInputs Inputs => _inputs;
+		public IRendererInputs Inputs => _inputs;
 
 		[NoSerialize]
 		public Vector2 Size

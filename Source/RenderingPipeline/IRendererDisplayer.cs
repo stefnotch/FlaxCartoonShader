@@ -9,7 +9,7 @@ namespace CartoonShader.Source.RenderingPipeline
 {
 	public interface IRendererDisplayer : IDisposable
 	{
-		RendererInputs Inputs { get; }
+		IRendererInputs Inputs { get; }
 
 		Vector2 Size { get; set; }
 

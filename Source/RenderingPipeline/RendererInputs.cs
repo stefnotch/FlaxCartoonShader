@@ -8,8 +8,11 @@ using System.Threading.Tasks;
 namespace CartoonShader.Source.RenderingPipeline
 {
 	//TODO: IObservable
+	//TODO: I don't really need this interface, do I?
+
 	public interface IRendererInputs : IReadOnlyDictionary<string, IRendererOutput>, IReadOnlyCollection<KeyValuePair<string, IRendererOutput>>, IEnumerable<KeyValuePair<string, IRendererOutput>>
 	{
+		new IRendererOutput this[string key] { get; set; }
 	}
 
 	public class RendererInputs : IRendererInputs

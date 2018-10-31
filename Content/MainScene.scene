@@ -180,7 +180,8 @@
 			"ParentID": "947ee5ed458b1f4cb8bc469db7697181",
 			"V": {
 	"Camera": "db675b124cf4496897b81cb20ea17d2f",
-	"Material": "d8629e504bf7d4c654242fbc21b15522"
+	"Material": "d8629e504bf7d4c654242fbc21b15522",
+	"FxMaterial": "9d5e5f894135f85f023c1d9fdddde254"
 }
 		},
 		{
@@ -201,25 +202,6 @@
 					"W": 0.8466256260871887
 				}
 			}
-		},
-		{
-			"TypeID": "CartoonShader.MotionVectorRenderer",
-			"ID": "3f8299364f55a9dcbbcbcf94d958ce7c",
-			"ParentID": "db675b124cf4496897b81cb20ea17d2f",
-			"V": {
-	"Camera": "db675b124cf4496897b81cb20ea17d2f",
-	"OutputMaterial": "8cd59aee45d01927bfe1219d5c7f3407",
-	"ResolutionDivisor": 1.0,
-	"MaterialParamName": "MotionVectors"
-}
-		},
-		{
-			"TypeID": "CartoonShader.Source.RenderPipelineOld.SceneRenderer",
-			"ID": "76a400554529e4a323106a8cd5aea304",
-			"ParentID": "db675b124cf4496897b81cb20ea17d2f",
-			"V": {
-	"SourceCamera": "db675b124cf4496897b81cb20ea17d2f"
-}
 		},
 		{
 			"TypeID": 13,
@@ -323,100 +305,6 @@
 		},
 		{
 			"TypeID": 1,
-			"ID": "d191eefd48aa4000beacf29408013947",
-			"ParentID": "548825a24f649b2351aa94aa3ce035ef",
-			"Name": "ModelActor 0",
-			"Transform": {
-				"Translation": {
-					"X": -147.00059509277345,
-					"Y": 0.0,
-					"Z": 836.4134521484375
-				}
-			},
-			"Model": "b43f0f8f4aaba3f3156896a5a22ba493",
-			"Buffer": {
-				"Entries": [
-					{}
-				]
-			}
-		},
-		{
-			"TypeID": "CartoonShader.Source.RenderPipelineOld.RendererOutput",
-			"ID": "1052d5564147f490cb0c588678d4639a",
-			"ParentID": "d191eefd48aa4000beacf29408013947",
-			"V": {
-	"OutputModel": "d191eefd48aa4000beacf29408013947",
-	"RenderInputs": [
-		"1ab810a6414a690dddac6683b3509deb"
-	],
-	"Material": "8c1149fd4dad82f683d47886e587ad45",
-	"UseScreenSize": false,
-	"Size": {
-		"X": 10.0,
-		"Y": 10.0
-	}
-}
-		},
-		{
-			"TypeID": "CartoonShader.Source.RenderPipelineOld.RenderTargetRenderer",
-			"ID": "1ab810a6414a690dddac6683b3509deb",
-			"ParentID": "d191eefd48aa4000beacf29408013947",
-			"V": {
-	"RenderInputs": [],
-	"Material": "6e30906747fab8d036e77ea7f05cc030",
-	"QuadForEachPixel": false,
-	"Name": "Image"
-}
-		},
-		{
-			"TypeID": 1,
-			"ID": "4899a10e46c925a125a15ea34e9c6ef3",
-			"ParentID": "548825a24f649b2351aa94aa3ce035ef",
-			"Name": "ModelActor",
-			"Transform": {
-				"Translation": {
-					"X": 0.0,
-					"Y": 0.0,
-					"Z": 836.4134521484375
-				}
-			},
-			"Model": "b43f0f8f4aaba3f3156896a5a22ba493",
-			"Buffer": {
-				"Entries": [
-					{}
-				]
-			}
-		},
-		{
-			"TypeID": "CartoonShader.Source.RenderPipelineOld.RendererOutput",
-			"ID": "f0e0f24944655751b79034bddb77acbf",
-			"ParentID": "4899a10e46c925a125a15ea34e9c6ef3",
-			"V": {
-	"OutputModel": "4899a10e46c925a125a15ea34e9c6ef3",
-	"RenderInputs": [
-		"e3ece2c0409e168459f9cc8e24f6efc2"
-	],
-	"Material": "8c1149fd4dad82f683d47886e587ad45",
-	"UseScreenSize": false,
-	"Size": {
-		"X": 10.0,
-		"Y": 10.0
-	}
-}
-		},
-		{
-			"TypeID": "CartoonShader.Source.RenderPipelineOld.RenderTargetRenderer",
-			"ID": "e3ece2c0409e168459f9cc8e24f6efc2",
-			"ParentID": "4899a10e46c925a125a15ea34e9c6ef3",
-			"V": {
-	"RenderInputs": [],
-	"Material": "6e30906747fab8d036e77ea7f05cc030",
-	"QuadForEachPixel": false,
-	"Name": "Image"
-}
-		},
-		{
-			"TypeID": 1,
 			"ID": "ed49ae8f4ef3f4f1af26f2ae8f8e29cb",
 			"ParentID": "548825a24f649b2351aa94aa3ce035ef",
 			"Name": "Plane",
@@ -435,22 +323,6 @@
 					}
 				]
 			}
-		},
-		{
-			"TypeID": "CartoonShader.Source.RenderPipelineScript",
-			"ID": "5396a893431b2b00dc696bb99dabf759",
-			"ParentID": "ed49ae8f4ef3f4f1af26f2ae8f8e29cb",
-			"V": {
-	"Renderers": [
-		{
-			"_order": 0,
-			"_size": {
-				"X": 0.0,
-				"Y": 0.0
-			}
-		}
-	]
-}
 		}
 	]
 }
