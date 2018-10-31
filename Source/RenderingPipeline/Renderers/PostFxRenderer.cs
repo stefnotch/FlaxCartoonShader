@@ -21,6 +21,11 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 		[NoSerialize]
 		protected MaterialInstance _materialInstance;
 
+		public PostFxRenderer()
+		{
+			MaterialChanged(_material);
+		}
+
 		/// <summary>
 		/// The Material that will be used by this <see cref="PostFxRenderer"/> to render something
 		/// </summary>
@@ -33,7 +38,7 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 				if (_material != value)
 				{
 					_material = value;
-					MaterialChangedInternal(_material);
+					MaterialChanged(_material);
 				}
 			}
 		}
@@ -64,8 +69,6 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 			base.EnableChanged(enabled);
 			if (enabled)
 			{
-				MaterialChangedInternal(Material);
-
 				if (!_orthographicCamera)
 				{
 					_orthographicCamera = CreateOrthographicCamera();
@@ -134,15 +137,15 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 			}
 		}
 
-		private void MaterialChangedInternal(MaterialBase material)
-		{
-			if (Enabled) MaterialChanged(material);
-		}
-
 		protected virtual void MaterialChanged(MaterialBase material)
 		{
 			if (material == null) return;
 
+			UpdateMaterialInputs(material);
+		}
+
+		private void UpdateMaterialInputs(MaterialBase material)
+		{
 			material.WaitForLoaded();
 			IEnumerable<string> previousRendererInputNames = null;
 			if (_materialInstance)

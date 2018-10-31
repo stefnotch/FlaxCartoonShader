@@ -29,11 +29,14 @@ namespace CartoonShader
 			sr.SourceCamera = Camera;
 			sr.Order = -1000000;
 			sr.Size = new Vector2(100);
-			r.Inputs["Default"] = sr.DefaultOutput;
 
 			pfxr = new PostFxRenderer();
 			pfxr.Material = FxMaterial;
-			pfxr.Inputs["Image"] = sr.DefaultOutput;
+			pfxr.Order = sr.Order + 1;
+			pfxr.Size = new Vector2(100);
+			pfxr.Inputs["Image"] = sr;
+
+			r.Inputs["Default"] = pfxr;
 
 			sr.Enabled = true;
 			pfxr.Enabled = true;

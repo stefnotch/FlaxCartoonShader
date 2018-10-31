@@ -44,9 +44,6 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 			_inputs.RendererInputChanged += RendererInputChanged;
 		}
 
-		[Serialize]
-		public string Name { get; set; }
-
 		[NoSerialize]
 		public IRendererOutput DefaultOutput => _defaultOutput;
 
