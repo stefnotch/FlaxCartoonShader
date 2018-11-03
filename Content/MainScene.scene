@@ -229,7 +229,10 @@
 				"CameraArtifacts": {},
 				"LensFlares": {},
 				"DepthOfField": {},
-				"MotionBlur": {},
+				"MotionBlur": {
+					"MotionVectorsResolution": 1,
+					"OverrideFlags": 8
+				},
 				"SSR": {},
 				"PostFxMaterials": [
 					"0633756547538e4eb240c4940e0d4bec"
@@ -323,6 +326,38 @@
 					}
 				]
 			}
+		},
+		{
+			"TypeID": 1,
+			"ID": "751782824a2ecf7740ce5fa2cdea35d4",
+			"ParentID": "548825a24f649b2351aa94aa3ce035ef",
+			"Name": "Cube",
+			"Transform": {
+				"Translation": {
+					"X": -70.52467346191406,
+					"Y": 56.49678039550781,
+					"Z": 708.187744140625
+				}
+			},
+			"Model": "b43f0f8f4aaba3f3156896a5a22ba493",
+			"Buffer": {
+				"Entries": [
+					{
+						"Material": "8c1149fd4dad82f683d47886e587ad45"
+					}
+				]
+			}
+		},
+		{
+			"TypeID": "CartoonShader.Source.RenderingPipelineScript",
+			"ID": "9ce20355425f848d09b3c8a5e79c80f3",
+			"ParentID": "751782824a2ecf7740ce5fa2cdea35d4",
+			"V": {
+	"SceneCamera": "db675b124cf4496897b81cb20ea17d2f",
+	"BlurHorizontal": "ec34ae8e47a40a6866150c9b816c954b",
+	"BlurVertical": "6c1f203e408ea90415c4979ac9ea6ffc",
+	"OutputMaterial": "8c1149fd4dad82f683d47886e587ad45"
+}
 		}
 	]
 }

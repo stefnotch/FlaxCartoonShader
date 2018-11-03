@@ -14,8 +14,8 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 		/// </summary>
 		public Camera SourceCamera;
 
-		private const string DepthBuffer = "DepthBuffer";
-		private const string MotionVectors = "MotionVectors";
+		public const string DepthBuffer = "DepthBuffer";
+		public const string MotionVectors = "MotionVectors";
 
 		public SceneRenderer() : base()
 		{

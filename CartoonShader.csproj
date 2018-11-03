@@ -55,6 +55,7 @@
     <Compile Include="Source\ActorExtensions.cs" />
     <Compile Include="Source\FullscreenQuad.cs" />
     <Compile Include="Source\MotionVectorRenderer.cs" />
+    <Compile Include="Source\RenderingPipelineScript.cs" />
     <Compile Include="Source\RTestScript.cs" />
     <Compile Include="Source\MeshGenerators\IMeshGenerator.cs" />
     <Compile Include="Source\MeshGenerators\QuadGenerator.cs" />
