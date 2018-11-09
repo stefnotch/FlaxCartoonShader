@@ -264,8 +264,10 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 			{
 				if (disposing)
 				{
+					// TODO: Send a bunch of null render targets?
 					_defaultOutput.RenderTargetChanged -= _defaultOutput_RenderTargetChanged;
 					_inputs.RendererInputChanged -= RendererInputChanged;
+					Enabled = false;
 					FlaxEngine.Object.Destroy(ref _task);
 					RenderTarget renderTarget = RenderTarget;
 					FlaxEngine.Object.Destroy(ref renderTarget);

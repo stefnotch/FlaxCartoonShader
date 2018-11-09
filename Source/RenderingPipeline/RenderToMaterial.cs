@@ -19,7 +19,8 @@ namespace CartoonShader.Source.RenderingPipeline
 		[Serialize]
 		protected bool _enabled;
 
-		public MaterialBase Material;
+		[Serialize]
+		private MaterialBase _material;
 
 		public RenderToMaterial()
 		{
@@ -37,12 +38,12 @@ namespace CartoonShader.Source.RenderingPipeline
 			await ActionRunner.Instance.FirstUpdate();
 			//ActionRunner.Instance.AfterFirstUpdate(() =>
 			//{
+			if (!Material) return;
+
 			Material.WaitForLoaded();
-			Debug.Log("RendererInputChanged - Material Set");
 			var param = Material?.GetParam(name);
 			if (param != null)
 			{
-				Debug.Log("RendererInputChanged - Material Set!!");
 				param.Value = rendererOutput?.RenderTarget;
 			}
 			//});
@@ -76,6 +77,33 @@ namespace CartoonShader.Source.RenderingPipeline
 					_enabled = value;
 					EnableChanged(_enabled);
 				}
+			}
+		}
+
+		[NoSerialize]
+		public MaterialBase Material
+		{
+			get => _material;
+			set
+			{
+				if (_material != value)
+				{
+					_material = value;
+					MaterialChangedInternal(_material);
+				}
+			}
+		}
+
+		private void MaterialChangedInternal(MaterialBase material)
+		{
+			if (Enabled) MaterialChanged(material);
+		}
+
+		private void MaterialChanged(MaterialBase material)
+		{
+			foreach (var input in _inputs)
+			{
+				_inputs_RendererInputChanged(input.Key, input.Value);
 			}
 		}
 

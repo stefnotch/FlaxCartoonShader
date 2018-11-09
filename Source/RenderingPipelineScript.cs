@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,6 +19,8 @@ namespace CartoonShader.Source
 
 		public MaterialBase OutputMaterial;
 
+		private MaterialInstance _outputMaterialInstance;
+
 		private SceneRenderer _sceneRenderer;
 		private PostFxRenderer _blurHorizontalRenderer;
 		private PostFxRenderer _blurVerticalRenderer;
@@ -27,6 +29,15 @@ namespace CartoonShader.Source
 
 		private void OnEnable()
 		{
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+			RendererSetup();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+		}
+
+		private async Task RendererSetup()
+		{
+			await ActionRunner.Instance.FirstUpdate();
+
 			_sceneRenderer = new SceneRenderer();
 			_sceneRenderer.SourceCamera = SceneCamera;
 			_sceneRenderer.Order = -1500000;
@@ -36,7 +47,7 @@ namespace CartoonShader.Source
 			_blurHorizontalRenderer.Material = BlurHorizontal;
 			_blurHorizontalRenderer.Order = _sceneRenderer.Order + 1;
 			_blurHorizontalRenderer.Size = Screen.Size;
-			_blurHorizontalRenderer.Inputs["Image"] = _sceneRenderer.Outputs[SceneRenderer.MotionVectors];
+			_blurHorizontalRenderer.Inputs["Image"] = _sceneRenderer;//.Outputs[SceneRenderer.MotionVectors];
 
 			_blurVerticalRenderer = new PostFxRenderer();
 			_blurVerticalRenderer.Material = BlurVertical;
@@ -44,8 +55,12 @@ namespace CartoonShader.Source
 			_blurVerticalRenderer.Size = Screen.Size;
 			_blurVerticalRenderer.Inputs["Image"] = _blurHorizontalRenderer;
 
+			OutputMaterial.WaitForLoaded();
+			_outputMaterialInstance = OutputMaterial.CreateVirtualInstance();
+			(Actor as ModelActor).Entries[0].Material = _outputMaterialInstance;
+
 			_renderToMaterial = new RenderToMaterial();
-			_renderToMaterial.Material = OutputMaterial;
+			_renderToMaterial.Material = _outputMaterialInstance;
 			_renderToMaterial.Size = Screen.Size;
 			_renderToMaterial.Inputs["Image"] = _blurVerticalRenderer;
 
@@ -60,8 +75,10 @@ namespace CartoonShader.Source
 			_sceneRenderer?.Dispose();
 			_blurHorizontalRenderer?.Dispose();
 			_blurVerticalRenderer?.Dispose();
-
 			_renderToMaterial?.Dispose();
+
+			(Actor as ModelActor).Entries[0].Material = null;
+			Destroy(ref _outputMaterialInstance);
 		}
 	}
 }
