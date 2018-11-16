@@ -58,13 +58,13 @@
     <Compile Include="Source\RenderingPipelineScript.cs" />
     <Compile Include="Source\RTestScript.cs" />
     <Compile Include="Source\MeshGenerators\IMeshGenerator.cs" />
+    <Compile Include="Source\MeshGenerators\OptionalMeshDatatypes.cs" />
     <Compile Include="Source\MeshGenerators\QuadGenerator.cs" />
     <Compile Include="Source\MeshGenerators\ScreenPixelQuadsGenerator.cs" />
     <Compile Include="Source\RenderingPipeline\ActionRunner.cs" />
     <Compile Include="Source\RenderingPipeline\IRenderer.cs" />
     <Compile Include="Source\RenderingPipeline\IRendererDisplayer.cs" />
     <Compile Include="Source\RenderingPipeline\RendererInputs.cs" />
-    <Compile Include="Source\RenderingPipeline\RendererOutput.cs" />
     <Compile Include="Source\RenderingPipeline\RendererOutputs.cs" />
     <Compile Include="Source\RenderingPipeline\RenderPipeline.cs" />
     <Compile Include="Source\RenderingPipeline\RenderToMaterial.cs" />

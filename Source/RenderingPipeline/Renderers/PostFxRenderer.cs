@@ -169,16 +169,16 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 			}
 		}
 
-		private void UpdateMaterialInput(string name, IRendererOutput rendererOutput)
+		private void UpdateMaterialInput(string name, RenderTarget renderTarget)
 		{
 			ActionRunner.Instance.AfterFirstUpdate(() =>
 			{
-				if (name == null || rendererOutput == null || !rendererOutput.RenderTarget) return;
+				if (name == null || !renderTarget) return;
 
 				var materialParam = _materialInstance.GetParam(name);
 				if (materialParam != null)
 				{
-					materialParam.Value = rendererOutput.RenderTarget;
+					materialParam.Value = renderTarget;
 				}
 			});
 		}
@@ -194,7 +194,7 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 			return inputParameters;
 		}
 
-		protected override void RendererInputChanged(string name, IRendererOutput newRendererOutput)
+		protected override void RendererInputChanged(string name, RenderTarget newRendererOutput)
 		{
 			UpdateMaterialInput(name, newRendererOutput);
 		}

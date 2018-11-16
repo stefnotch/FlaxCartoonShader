@@ -8,14 +8,14 @@ using FlaxEngine.Rendering;
 
 namespace CartoonShader.Source.RenderingPipeline
 {
-	public interface IRendererOutputs : IReadOnlyDictionary<string, IRendererOutput>
+	public interface IRendererOutputs : IReadOnlyDictionary<string, RenderTarget>
 	{
 		// TODO?
 	}
 
 	public class RendererOutputs : IRendererOutputs
 	{
-		private readonly Dictionary<string, RendererOutput> _outputs = new Dictionary<string, RendererOutput>();
+		private readonly Dictionary<string, RenderTarget> _outputs = new Dictionary<string, RenderTarget>();
 
 		public RendererOutputs()
 		{
@@ -25,9 +25,9 @@ namespace CartoonShader.Source.RenderingPipeline
 
 		public IEnumerable<string> Keys => _outputs.Keys;
 
-		public IEnumerable<IRendererOutput> Values => _outputs.Values;
+		public IEnumerable<RenderTarget> Values => _outputs.Values;
 
-		public IRendererOutput this[string name]
+		public RenderTarget this[string name]
 		{
 			get
 			{
@@ -37,16 +37,16 @@ namespace CartoonShader.Source.RenderingPipeline
 
 		public bool ContainsKey(string key) => _outputs.ContainsKey(key);
 
-		public IEnumerator<KeyValuePair<string, IRendererOutput>> GetEnumerator()
+		public IEnumerator<KeyValuePair<string, RenderTarget>> GetEnumerator()
 		{
 			return _outputs
-				.Select((keyValuePair) => new KeyValuePair<string, IRendererOutput>(keyValuePair.Key, keyValuePair.Value))
+				.Select((keyValuePair) => new KeyValuePair<string, RenderTarget>(keyValuePair.Key, keyValuePair.Value))
 				.GetEnumerator();
 		}
 
 		IEnumerator IEnumerable.GetEnumerator() => _outputs.GetEnumerator();
 
-		public bool TryGetValue(string key, out IRendererOutput value)
+		public bool TryGetValue(string key, out RenderTarget value)
 		{
 			bool returnValue = _outputs.TryGetValue(key, out var rendererOutput);
 			value = rendererOutput;
@@ -58,28 +58,23 @@ namespace CartoonShader.Source.RenderingPipeline
 		{
 			if (name == null) return;
 
-			if (_outputs.TryGetValue(name, out RendererOutput existingOutput))
+			if (_outputs.TryGetValue(name, out RenderTarget existingOutput))
 			{
-				if (existingOutput.RenderTarget != renderTarget)
+				if (existingOutput != renderTarget)
 				{
-					_outputs[name].RenderTarget = renderTarget;
+					_outputs[name] = renderTarget;
 				}
 			}
 			else
 			{
-				var output = new RendererOutput()
-				{
-					RenderTarget = renderTarget
-				};
-				_outputs.Add(name, output);
+				_outputs.Add(name, renderTarget);
 			}
 		}
 
 		public void RemoveOutput(string name)
 		{
-			RenderTarget rt = _outputs[name].RenderTarget;
+			RenderTarget rt = _outputs[name];
 			FlaxEngine.Object.Destroy(ref rt);
-			_outputs[name].RenderTarget = null;
 			_outputs.Remove(name);
 		}
 	}

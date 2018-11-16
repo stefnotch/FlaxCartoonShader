@@ -23,7 +23,7 @@ namespace CartoonShader
 		{
 			r = new RenderToMaterial();
 			r.Material = Material;
-			r.Size = new Vector2(100);
+			//r.Size = new Vector2(100);
 
 			sr = new SceneRenderer();
 			sr.SourceCamera = Camera;
@@ -34,9 +34,9 @@ namespace CartoonShader
 			pfxr.Material = FxMaterial;
 			pfxr.Order = sr.Order + 1;
 			pfxr.Size = new Vector2(100);
-			pfxr.Inputs["Image"] = sr;
+			pfxr.Inputs["Image"] = sr.DefaultOutput;
 
-			r.Inputs["Default"] = pfxr;
+			r.Inputs["Default"] = pfxr.DefaultOutput;
 
 			sr.Enabled = true;
 			pfxr.Enabled = true;

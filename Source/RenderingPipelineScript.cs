@@ -47,13 +47,13 @@ namespace CartoonShader.Source
 			_blurHorizontalRenderer.Material = BlurHorizontal;
 			_blurHorizontalRenderer.Order = _sceneRenderer.Order + 1;
 			_blurHorizontalRenderer.Size = Screen.Size;
-			_blurHorizontalRenderer.Inputs["Image"] = _sceneRenderer;//.Outputs[SceneRenderer.MotionVectors];
+			_blurHorizontalRenderer.Inputs["Image"] = _sceneRenderer.DefaultOutput;//.Outputs[SceneRenderer.MotionVectors];
 
 			_blurVerticalRenderer = new PostFxRenderer();
 			_blurVerticalRenderer.Material = BlurVertical;
 			_blurVerticalRenderer.Order = _blurHorizontalRenderer.Order + 1;
 			_blurVerticalRenderer.Size = Screen.Size;
-			_blurVerticalRenderer.Inputs["Image"] = _blurHorizontalRenderer;
+			_blurVerticalRenderer.Inputs["Image"] = _blurHorizontalRenderer.DefaultOutput;
 
 			OutputMaterial.WaitForLoaded();
 			_outputMaterialInstance = OutputMaterial.CreateVirtualInstance();
@@ -61,8 +61,8 @@ namespace CartoonShader.Source
 
 			_renderToMaterial = new RenderToMaterial();
 			_renderToMaterial.Material = _outputMaterialInstance;
-			_renderToMaterial.Size = Screen.Size;
-			_renderToMaterial.Inputs["Image"] = _blurVerticalRenderer;
+			//_renderToMaterial.Size = Screen.Size;
+			_renderToMaterial.Inputs["Image"] = _blurVerticalRenderer.DefaultOutput;
 
 			_sceneRenderer.Enabled = true;
 			_blurHorizontalRenderer.Enabled = true;

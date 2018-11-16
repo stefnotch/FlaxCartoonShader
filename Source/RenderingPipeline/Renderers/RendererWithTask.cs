@@ -23,7 +23,7 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 		protected SceneRenderTask _task;
 
 		[NoSerialize]
-		protected readonly RendererOutput _defaultOutput = new RendererOutput();
+		protected RenderTarget _defaultOutput;
 
 		[NoSerialize]
 		protected readonly RendererInputs _inputs = new RendererInputs();
@@ -36,21 +36,15 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 			if (!_task) _task = RenderTask.Create<SceneRenderTask>();
 			_task.Enabled = false;
 
-			_defaultOutput.RenderTargetChanged += _defaultOutput_RenderTargetChanged;
-			_defaultOutput.RenderTarget = RenderTarget.New();
+			_defaultOutput = RenderTarget.New();
 
-			_task.Output = _defaultOutput.RenderTarget;
+			_task.Output = _defaultOutput;
 
 			_inputs.RendererInputChanged += RendererInputChanged;
 		}
 
 		[NoSerialize]
-		public IRendererOutput DefaultOutput => _defaultOutput;
-
-		[NoSerialize]
-		public RenderTarget RenderTarget => _defaultOutput.RenderTarget;
-
-		public event Action<IRendererOutput> RenderTargetChanged;
+		public RenderTarget DefaultOutput => _defaultOutput;
 
 		[NoSerialize]
 		public IRendererOutputs Outputs => _outputs;
@@ -103,13 +97,8 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 			}
 		}
 
-		protected virtual void RendererInputChanged(string name, IRendererOutput newRendererOutput)
+		protected virtual void RendererInputChanged(string name, RenderTarget newRendererOutput)
 		{
-		}
-
-		private void _defaultOutput_RenderTargetChanged(IRendererOutput obj)
-		{
-			RenderTargetChanged?.Invoke(obj);
 		}
 
 		private void SizeChangedInternal(Vector2 size)
@@ -119,9 +108,9 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 
 		protected virtual void SizeChanged(Vector2 size)
 		{
-			if (DefaultOutput != null && DefaultOutput.RenderTarget)
+			if (DefaultOutput)
 			{
-				DefaultOutput.RenderTarget.Init(PixelFormat.R8G8B8A8_UNorm, size);
+				DefaultOutput.Init(PixelFormat.R8G8B8A8_UNorm, size);
 			}
 		}
 
@@ -265,13 +254,10 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 				if (disposing)
 				{
 					// TODO: Send a bunch of null render targets?
-					_defaultOutput.RenderTargetChanged -= _defaultOutput_RenderTargetChanged;
 					_inputs.RendererInputChanged -= RendererInputChanged;
 					Enabled = false;
 					FlaxEngine.Object.Destroy(ref _task);
-					RenderTarget renderTarget = RenderTarget;
-					FlaxEngine.Object.Destroy(ref renderTarget);
-					_defaultOutput.RenderTarget = null;
+					FlaxEngine.Object.Destroy(ref _defaultOutput);
 				}
 				_disposedValue = true;
 			}

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FlaxEngine;
+using FlaxEngine.Rendering;
 
 namespace CartoonShader.Source.RenderingPipeline
 {
@@ -27,12 +28,12 @@ namespace CartoonShader.Source.RenderingPipeline
 			_inputs.RendererInputChanged += _inputs_RendererInputChanged;
 		}
 
-		private void _inputs_RendererInputChanged(string name, IRendererOutput rendererOutput)
+		private void _inputs_RendererInputChanged(string name, RenderTarget rendererOutput)
 		{
 			_inputs_RendererInputChangedAsync(name, rendererOutput);
 		}
 
-		private async void _inputs_RendererInputChangedAsync(string name, IRendererOutput rendererOutput)
+		private async void _inputs_RendererInputChangedAsync(string name, RenderTarget rendererOutput)
 		{
 			// Not sure which one is "better"
 			await ActionRunner.Instance.FirstUpdate();
@@ -44,7 +45,7 @@ namespace CartoonShader.Source.RenderingPipeline
 			var param = Material?.GetParam(name);
 			if (param != null)
 			{
-				param.Value = rendererOutput?.RenderTarget;
+				param.Value = rendererOutput;
 			}
 			//});
 		}

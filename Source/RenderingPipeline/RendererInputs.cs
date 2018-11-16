@@ -4,27 +4,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FlaxEngine.Rendering;
 
 namespace CartoonShader.Source.RenderingPipeline
 {
 	//TODO: IObservable
 	//TODO: I don't really need this interface, do I?
 
-	public interface IRendererInputs : IReadOnlyDictionary<string, IRendererOutput>, IReadOnlyCollection<KeyValuePair<string, IRendererOutput>>, IEnumerable<KeyValuePair<string, IRendererOutput>>
+	public interface IRendererInputs : IReadOnlyDictionary<string, RenderTarget>, IReadOnlyCollection<KeyValuePair<string, RenderTarget>>, IEnumerable<KeyValuePair<string, RenderTarget>>
 	{
-		new IRendererOutput this[string key] { get; set; }
+		new RenderTarget this[string key] { get; set; }
 	}
 
 	public class RendererInputs : IRendererInputs
 	{
-		private readonly Dictionary<string, IRendererOutput> _rendererInputs = new Dictionary<string, IRendererOutput>();
-
-		private readonly Dictionary<string, Action<IRendererOutput>> _rendererChangeListeners = new Dictionary<string, Action<IRendererOutput>>();
+		private readonly Dictionary<string, RenderTarget> _rendererInputs = new Dictionary<string, RenderTarget>();
 
 		/// <summary>
-		/// Raised whenever a RendererInput is changed
+		/// Raised whenever a RenderTarget is changed
 		/// </summary>
-		public event Action<string, IRendererOutput> RendererInputChanged;
+		public event Action<string, RenderTarget> RendererInputChanged;
 
 		public RendererInputs()
 		{
@@ -35,7 +34,7 @@ namespace CartoonShader.Source.RenderingPipeline
 			UpdateInputs(rendererInputNames);
 		}
 
-		public IRendererOutput this[string key]
+		public RenderTarget this[string key]
 		{
 			get
 			{
@@ -43,14 +42,8 @@ namespace CartoonShader.Source.RenderingPipeline
 			}
 			set
 			{
-				// Detatch previous listener
-				DetatchListener(key);
-
 				// Set the value
 				_rendererInputs[key] = value;
-
-				// Attach new listener
-				AttatchListener(key);
 
 				// Raise the event
 				RendererInputChanged?.Invoke(key, value);
@@ -67,7 +60,6 @@ namespace CartoonShader.Source.RenderingPipeline
 			{
 				foreach (var name in previousRendererInputNames)
 				{
-					DetatchListener(name);
 					_rendererInputs.Remove(name);
 				}
 			}
@@ -75,41 +67,20 @@ namespace CartoonShader.Source.RenderingPipeline
 			foreach (var name in rendererInputNames)
 			{
 				_rendererInputs.Add(name, null);
-				_rendererChangeListeners.Add(name, null);
-			}
-		}
-
-		private void AttatchListener(string key)
-		{
-			Action<IRendererOutput> rtChangedListener = (IRendererOutput rendererOutput) =>
-			{
-				RendererInputChanged?.Invoke(key, rendererOutput);
-			};
-			_rendererChangeListeners[key] = rtChangedListener;
-			_rendererInputs[key].RenderTargetChanged += rtChangedListener;
-		}
-
-		private void DetatchListener(string key)
-		{
-			if (_rendererInputs.TryGetValue(key, out var rendererOutput) && rendererOutput != null &&
-				_rendererChangeListeners.TryGetValue(key, out var rendererChangeListener) && rendererChangeListener != null)
-			{
-				rendererOutput.RenderTargetChanged -= rendererChangeListener;
-				_rendererChangeListeners.Remove(key);
 			}
 		}
 
 		public IEnumerable<string> Keys => _rendererInputs.Keys;
 
-		public IEnumerable<IRendererOutput> Values => _rendererInputs.Values;
+		public IEnumerable<RenderTarget> Values => _rendererInputs.Values;
 
 		public int Count => _rendererInputs.Count;
 
 		public bool ContainsKey(string key) => _rendererInputs.ContainsKey(key);
 
-		public IEnumerator<KeyValuePair<string, IRendererOutput>> GetEnumerator() => _rendererInputs.GetEnumerator();
+		public IEnumerator<KeyValuePair<string, RenderTarget>> GetEnumerator() => _rendererInputs.GetEnumerator();
 
-		public bool TryGetValue(string key, out IRendererOutput value) => _rendererInputs.TryGetValue(key, out value);
+		public bool TryGetValue(string key, out RenderTarget value) => _rendererInputs.TryGetValue(key, out value);
 
 		IEnumerator IEnumerable.GetEnumerator() => _rendererInputs.GetEnumerator();
 	}
