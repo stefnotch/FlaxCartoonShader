@@ -7,14 +7,21 @@ using FlaxEngine;
 
 namespace CartoonShader.Source.RenderingPipeline
 {
-	public class ActionRunner
+	// Pretty hack-ish script
+	public class ActionRunner : Script
 	{
 		private static ActionRunner _instance;
 		private bool _isAfterFirstUpdate = false;
 		private readonly TaskCompletionSource<bool> _promiseFirstUpdate = new TaskCompletionSource<bool>();
+		private bool _cleaningUp = false;
 
 		private ActionRunner()
 		{
+			if (_instance != null)
+			{
+				Debug.LogError("Instance is already set");
+				_instance.Cleanup();
+			}
 			OnNextUpdate(() =>
 			{
 				_isAfterFirstUpdate = true;
@@ -22,11 +29,44 @@ namespace CartoonShader.Source.RenderingPipeline
 			});
 		}
 
+		private void OnDestroy()
+		{
+			Cleanup();
+		}
+
+		private void Cleanup()
+		{
+			if (_cleaningUp) return;
+			Debug.Log("cleaner");
+			if (!_isAfterFirstUpdate)
+			{
+				_promiseFirstUpdate.SetCanceled();
+			}
+			_cleaningUp = true;
+			_instance = null;
+			if (this.Actor)
+			{
+				Destroy(this.Actor);
+			}
+		}
+
+		private void CreateContainerActor()
+		{
+			var containerActor = New<EmptyActor>();
+			containerActor.HideFlags = HideFlags.FullyHidden;
+			SceneManager.SpawnActor(containerActor);
+			containerActor.AddScript(_instance);
+		}
+
 		public static ActionRunner Instance
 		{
 			get
 			{
-				if (_instance == null) _instance = new ActionRunner();
+				if (_instance == null)
+				{
+					_instance = New<ActionRunner>();
+					_instance.CreateContainerActor();
+				}
 				return _instance;
 			}
 		}
