@@ -12,9 +12,9 @@ namespace CartoonShader.Source.RenderingPipeline
 		[NoSerialize]
 		protected RendererInputs _inputs = new RendererInputs(new string[] { "Default" });
 
-		[Serialize]
-		[Limit(1)]
-		protected Vector2 _size;
+		//[Serialize]
+		//[Limit(1)]
+		//protected Vector2 _size;
 
 		[Serialize]
 		protected bool _enabled;
@@ -52,7 +52,7 @@ namespace CartoonShader.Source.RenderingPipeline
 		[NoSerialize]
 		public IRendererInputs Inputs => _inputs;
 
-		[NoSerialize]
+		/*[NoSerialize]
 		public Vector2 Size
 		{
 			get => _size;
@@ -64,7 +64,7 @@ namespace CartoonShader.Source.RenderingPipeline
 					SizeChangedInternal(_size);
 				}
 			}
-		}
+		}*/
 
 		[NoSerialize]
 		public bool Enabled
@@ -107,14 +107,14 @@ namespace CartoonShader.Source.RenderingPipeline
 			}
 		}
 
-		private void SizeChangedInternal(Vector2 size)
+		/*private void SizeChangedInternal(Vector2 size)
 		{
 			if (Enabled) SizeChanged(size);
 		}
 
 		protected void SizeChanged(Vector2 size)
 		{
-		}
+		}*/
 
 		protected void EnableChanged(bool enabled)
 		{

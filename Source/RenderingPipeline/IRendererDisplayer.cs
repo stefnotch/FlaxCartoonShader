@@ -11,7 +11,7 @@ namespace CartoonShader.Source.RenderingPipeline
 	{
 		IRendererInputs Inputs { get; }
 
-		Vector2 Size { get; set; }
+		//Vector2 Size { get; set; }
 
 		bool Enabled { get; set; }
 	}
