@@ -11,7 +11,7 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 	public class PostFxRenderer : RendererWithTask
 	{
 		private Camera _orthographicCamera;
-		private ModelActor _modelActor;
+		private StaticModel _modelActor;
 		private Model _model;
 		private const float ZPos = 100f;
 
@@ -60,7 +60,7 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 				}
 				if (!_modelActor)
 				{
-					_modelActor = FlaxEngine.Object.New<ModelActor>();
+					_modelActor = FlaxEngine.Object.New<StaticModel>();
 					_modelActor.Model = _model;
 					_task.CustomActors.Add(_modelActor);
 				}

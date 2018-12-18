@@ -57,7 +57,7 @@ namespace CartoonShader.Source
 
 			OutputMaterial.WaitForLoaded();
 			_outputMaterialInstance = OutputMaterial.CreateVirtualInstance();
-			(Actor as ModelActor).Entries[0].Material = _outputMaterialInstance;
+			(Actor as StaticModel).Entries[0].Material = _outputMaterialInstance;
 
 			_renderToMaterial = new RenderToMaterial();
 			_renderToMaterial.Material = _outputMaterialInstance;
@@ -77,7 +77,7 @@ namespace CartoonShader.Source
 			_blurVerticalRenderer?.Dispose();
 			_renderToMaterial?.Dispose();
 
-			(Actor as ModelActor).Entries[0].Material = null;
+			(Actor as StaticModel).Entries[0].Material = null;
 			Destroy(ref _outputMaterialInstance);
 		}
 	}

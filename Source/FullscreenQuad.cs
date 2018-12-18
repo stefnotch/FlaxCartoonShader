@@ -19,7 +19,7 @@ namespace CartoonShader.Source
 		public bool QuadForEachPixel = true;
 
 		private Model _tempModel;
-		private ModelActor _childModel;
+		private StaticModel _childModel;
 		private const float ZPos = 100f;
 		private const float Scale = 0.5f;
 
@@ -31,7 +31,7 @@ namespace CartoonShader.Source
 			_tempModel = Content.CreateVirtualAsset<Model>();
 			_tempModel.SetupLODs(1);
 
-			_childModel = Actor.TemporaryChild<ModelActor>();
+			_childModel = Actor.TemporaryChild<StaticModel>();
 			_childModel.Model = _tempModel;
 
 			_childModel.Entries[0].Material = Material;
