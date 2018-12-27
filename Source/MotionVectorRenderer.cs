@@ -56,6 +56,7 @@ namespace CartoonShader
 
 		private void OnDisable()
 		{
+			task?.Dispose();
 			// Cleanup
 			Destroy(ref task);
 			Destroy(ref output);
