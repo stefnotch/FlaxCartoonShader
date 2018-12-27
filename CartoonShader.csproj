@@ -57,6 +57,7 @@
     <Compile Include="Source\MotionVectorRenderer.cs" />
     <Compile Include="Source\RenderingPipelineScript.cs" />
     <Compile Include="Source\RTestScript.cs" />
+    <Compile Include="Source\SceneReloadEventRaiser.cs" />
     <Compile Include="Source\MeshGenerators\IMeshGenerator.cs" />
     <Compile Include="Source\MeshGenerators\OptionalMeshDatatypes.cs" />
     <Compile Include="Source\MeshGenerators\QuadGenerator.cs" />

@@ -175,6 +175,10 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 			{
 				if (name == null || !renderTarget) return;
 
+				if (_materialInstance == null)
+				{
+					Debug.LogError("Missing material instance");
+				}
 				var materialParam = _materialInstance.GetParam(name);
 				if (materialParam != null)
 				{

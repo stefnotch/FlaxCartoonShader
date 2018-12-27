@@ -25,7 +25,7 @@ namespace CartoonShader.Source.RenderingPipeline
 			}
 
 			_isAfterFirstUpdate = false;
-			FlaxEditor.Scripting.ScriptsBuilder.ScriptsReloadBegin += Scripting_Exit;
+			SceneReloadEventRaiser.Instance.SceneReload += Scripting_Exit;
 			Scripting.Exit += Scripting_Exit;
 
 			OnNextUpdate(() =>
@@ -33,11 +33,6 @@ namespace CartoonShader.Source.RenderingPipeline
 				_isAfterFirstUpdate = true;
 				_firstUpdatePromise.SetResult(true);
 			});
-		}
-
-		private void Scripting_Update()
-		{
-			throw new NotImplementedException();
 		}
 
 		private void Scripting_Exit()
@@ -51,6 +46,9 @@ namespace CartoonShader.Source.RenderingPipeline
 			}
 			_isAfterFirstUpdate = false;
 			_actions.Clear();
+
+			SceneReloadEventRaiser.Instance.SceneReload -= Scripting_Exit;
+			Scripting.Exit -= Scripting_Exit;
 
 			_instance = null;
 		}
