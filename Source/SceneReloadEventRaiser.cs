@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using FlaxEngine;
 
@@ -30,6 +30,7 @@ namespace CartoonShader
 		private void OnDestroy()
 		{
 			SceneReload?.Invoke();
+			_instance = null;
 		}
 	}
 }
