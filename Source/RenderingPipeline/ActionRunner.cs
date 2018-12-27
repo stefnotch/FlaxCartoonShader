@@ -7,55 +7,52 @@ using FlaxEngine;
 
 namespace CartoonShader.Source.RenderingPipeline
 {
-	// Pretty hack-ish script
-	public class ActionRunner : Script
+	public class ActionRunner
 	{
 		private static ActionRunner _instance;
-		private bool _isAfterFirstUpdate = false;
-		private readonly TaskCompletionSource<bool> _promiseFirstUpdate = new TaskCompletionSource<bool>();
-		private bool _cleaningUp = false;
+		private readonly LinkedList<Action> _actions = new LinkedList<Action>();
+		private bool _isAfterFirstUpdate;
+		private bool _isExiting;
 
-		private ActionRunner()
+		private readonly TaskCompletionSource<bool> _firstUpdatePromise = new TaskCompletionSource<bool>();
+
+		protected ActionRunner()
 		{
 			if (_instance != null)
 			{
-				Debug.LogError("Instance is already set");
-				_instance.Cleanup();
+				Debug.LogError("Instance is already set!");
+				_instance.Scripting_Exit();
 			}
+
+			_isAfterFirstUpdate = false;
+			FlaxEditor.Scripting.ScriptsBuilder.ScriptsReloadBegin += Scripting_Exit;
+			Scripting.Exit += Scripting_Exit;
+
 			OnNextUpdate(() =>
 			{
 				_isAfterFirstUpdate = true;
-				_promiseFirstUpdate.SetResult(true);
+				_firstUpdatePromise.SetResult(true);
 			});
 		}
 
-		private void OnDestroy()
+		private void Scripting_Update()
 		{
-			Cleanup();
+			throw new NotImplementedException();
 		}
 
-		private void Cleanup()
+		private void Scripting_Exit()
 		{
-			if (_cleaningUp) return;
-			Debug.Log("cleaner");
-			if (!_isAfterFirstUpdate)
+			if (_isExiting) return;
+			else _isExiting = true;
+
+			if (_isAfterFirstUpdate == false)
 			{
-				_promiseFirstUpdate.SetCanceled();
+				_firstUpdatePromise.SetCanceled();
 			}
-			_cleaningUp = true;
+			_isAfterFirstUpdate = false;
+			_actions.Clear();
+
 			_instance = null;
-			if (this.Actor)
-			{
-				Destroy(this.Actor);
-			}
-		}
-
-		private void CreateContainerActor()
-		{
-			var containerActor = New<EmptyActor>();
-			containerActor.HideFlags = HideFlags.FullyHidden;
-			SceneManager.SpawnActor(containerActor);
-			containerActor.AddScript(_instance);
 		}
 
 		public static ActionRunner Instance
@@ -64,43 +61,46 @@ namespace CartoonShader.Source.RenderingPipeline
 			{
 				if (_instance == null)
 				{
-					_instance = New<ActionRunner>();
-					_instance.CreateContainerActor();
+					_instance = new ActionRunner();
 				}
 				return _instance;
 			}
 		}
 
-		private readonly LinkedList<Action> _actions = new LinkedList<Action>();
-
-		public void OnNextUpdate(Action onSingleUpdate)
+		public void AfterFirstUpdate(Action action)
 		{
-			if (onSingleUpdate == null) return;
+			if (action == null) return;
 
-			bool isEmpty = _actions.Count <= 0;
-			_actions.AddLast(onSingleUpdate);
-			if (isEmpty)
+			if (_isAfterFirstUpdate)
 			{
-				Scripting.Update += ExecuteActions;
+				action.Invoke();
+			}
+			else
+			{
+				OnNextUpdate(action);
 			}
 		}
 
-		//TODO: Fancy async/await tricks!
-
-		public void AfterFirstUpdate(Action action)
+		public void OnNextUpdate(Action action)
 		{
-			if (_isAfterFirstUpdate) action?.Invoke();
-			else OnNextUpdate(action);
+			if (action == null) return;
+
+			bool isEmpty = _actions.Count <= 0;
+			_actions.AddLast(action);
+			if (isEmpty)
+			{
+				Scripting.Update += ExecuteActionsOnUpdate;
+			}
 		}
 
 		public async Task FirstUpdate()
 		{
 			if (_isAfterFirstUpdate) return;
 
-			await _promiseFirstUpdate.Task;
+			await _firstUpdatePromise.Task;
 		}
 
-		private void ExecuteActions()
+		private void ExecuteActionsOnUpdate()
 		{
 			List<Action> currentActions = _actions.ToList();
 			_actions.Clear();
@@ -109,7 +109,6 @@ namespace CartoonShader.Source.RenderingPipeline
 			{
 				try
 				{
-					// TODO: Don't let 1 exception affect the rest
 					action.Invoke();
 				}
 				catch (Exception ex)
@@ -118,8 +117,8 @@ namespace CartoonShader.Source.RenderingPipeline
 				}
 			}
 
-			// TODO: Multithreaded code = race condition
-			Scripting.Update -= ExecuteActions;
+			// TODO: Multithreaded code = race condition?
+			Scripting.Update -= ExecuteActionsOnUpdate;
 		}
 	}
 }
