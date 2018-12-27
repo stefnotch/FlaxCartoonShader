@@ -1,7 +1,7 @@
 {
 	"ID": "548825a24f649b2351aa94aa3ce035ef",
 	"TypeName": "FlaxEngine.SceneAsset",
-	"EngineBuild": 6169,
+	"EngineBuild": 6174,
 	"Data": [
 		{
 			"TypeID": 9,
@@ -9,6 +9,26 @@
 			"ParentID": "00000000000000000000000000000000",
 			"Name": "Scene",
 			"LightmapSettings": {}
+		},
+		{
+			"TypeID": 2,
+			"ID": "84b05b204af217bf6d3b8cba740dbf17",
+			"ParentID": "548825a24f649b2351aa94aa3ce035ef",
+			"IsActive": false,
+			"Name": "Scene Camera 0",
+			"Transform": {
+				"Translation": {
+					"X": -379.49029541015627,
+					"Y": 336.3359680175781,
+					"Z": -1100.69970703125
+				},
+				"Orientation": {
+					"X": 0.069997139275074,
+					"Y": 0.9249128699302673,
+					"Z": -0.3097671866416931,
+					"W": 0.2089996039867401
+				}
+			}
 		},
 		{
 			"TypeID": 10,
@@ -207,6 +227,7 @@
 			"TypeID": 13,
 			"ID": "db23d2b6416604ff7a5eb6aaee2f2695",
 			"ParentID": "db675b124cf4496897b81cb20ea17d2f",
+			"IsActive": false,
 			"Name": "Edge Detection PostFX",
 			"Size": {
 				"X": 100.0,
@@ -334,9 +355,20 @@
 			"Name": "Cube",
 			"Transform": {
 				"Translation": {
-					"X": -70.52467346191406,
-					"Y": 56.49678039550781,
-					"Z": 708.187744140625
+					"X": 299.5401306152344,
+					"Y": 2.0227203369140627,
+					"Z": 786.7680053710938
+				},
+				"Orientation": {
+					"X": 0.04676014557480812,
+					"Y": 0.236417755484581,
+					"Z": -0.07023335248231888,
+					"W": 0.9679811596870422
+				},
+				"Scale": {
+					"X": 10.0,
+					"Y": 10.0,
+					"Z": 10.0
 				}
 			},
 			"Model": "b43f0f8f4aaba3f3156896a5a22ba493",
