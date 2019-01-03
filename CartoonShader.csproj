@@ -70,6 +70,7 @@
     <Compile Include="Source\RenderingPipeline\RenderingDebugSurface.cs" />
     <Compile Include="Source\RenderingPipeline\RenderPipeline.cs" />
     <Compile Include="Source\RenderingPipeline\RenderToMaterial.cs" />
+    <Compile Include="Source\RenderingPipeline\SimpleDisposer.cs" />
     <Compile Include="Source\RenderingPipeline\Renderers\PostFxRenderer.cs" />
     <Compile Include="Source\RenderingPipeline\Renderers\RendererWithTask.cs" />
     <Compile Include="Source\RenderingPipeline\Renderers\SceneRenderer.cs" />

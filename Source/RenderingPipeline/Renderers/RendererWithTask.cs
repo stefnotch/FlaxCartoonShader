@@ -28,10 +28,9 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 		[NoSerialize]
 		protected readonly RendererInputs _inputs = new RendererInputs();
 
+		protected SimpleDisposer _simpleDisposer = new SimpleDisposer();
+
 		// TODO: Dispose of all the outputs
-		// TODO: Do I really need "RendererOutputs"?
-		[NoSerialize]
-		protected readonly RendererOutputs _outputs = new RendererOutputs();
 
 		public RendererWithTask()
 		{
@@ -47,9 +46,6 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 
 		[NoSerialize]
 		public RenderTarget DefaultOutput => _defaultOutput;
-
-		[NoSerialize]
-		public IRendererOutputs Outputs => _outputs;
 
 		// TODO: Serialize & Deserialize this!!!
 		[NoSerialize]
@@ -261,6 +257,9 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 					_task?.Dispose();
 					FlaxEngine.Object.Destroy(ref _task);
 					FlaxEngine.Object.Destroy(ref _defaultOutput);
+
+					_simpleDisposer.Dispose();
+					_simpleDisposer = null;
 				}
 				_disposedValue = true;
 			}

@@ -13,8 +13,6 @@ namespace CartoonShader.Source.RenderingPipeline
 	{
 		RenderTarget DefaultOutput { get; }
 
-		IRendererOutputs Outputs { get; }
-
 		IRendererInputs Inputs { get; }
 
 		Vector2 Size { get; set; }

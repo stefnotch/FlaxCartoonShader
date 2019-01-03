@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FlaxEngine;
+using FlaxEngine.Rendering;
 
 namespace CartoonShader.Source.RenderingPipeline.Renderers
 {
@@ -14,14 +15,8 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 		/// </summary>
 		public Camera SourceCamera;
 
-		public const string DepthBuffer = "DepthBuffer";
-		public const string MotionVectors = "MotionVectors";
-
-		public SceneRenderer() : base()
-		{
-			_outputs.SetOutput(DepthBuffer, null);
-			_outputs.SetOutput(MotionVectors, null);
-		}
+		public RenderTarget DepthBufferOutput { get; protected set; }
+		public RenderTarget MotionVectorsOutput { get; protected set; }
 
 		protected override void EnableChanged(bool enabled)
 		{
@@ -39,8 +34,9 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 			{
 				ActionRunner.Instance.OnNextUpdate(() =>
 				{
-					_outputs.SetOutput(DepthBuffer, _task.Buffers.DepthBuffer);
-					_outputs.SetOutput(MotionVectors, _task.Buffers.MotionVectors);
+					// No need to dispose of those things, _task takes care of it
+					DepthBufferOutput = _task.Buffers.DepthBuffer;
+					MotionVectorsOutput = _task.Buffers.MotionVectors;
 				});
 			}
 		}
