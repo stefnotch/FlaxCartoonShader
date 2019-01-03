@@ -45,7 +45,7 @@ namespace CartoonShader.Source.RenderingPipeline.RenderDisplayer
 			var param = Material?.GetParam(name);
 			if (param != null)
 			{
-				param.Value = rendererOutput;
+				param.Value = rendererOutput.RenderTarget;
 			}
 			//});
 		}

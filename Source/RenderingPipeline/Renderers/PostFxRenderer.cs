@@ -152,16 +152,6 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 			_inputs.UpdateInputs(GetRendererInputNames(_materialInstance), previousRendererInputNames);
 
 			if (_modelActor) _modelActor.Entries[0].Material = _materialInstance;
-
-			// TODO: Material input updating: Remove the previous inputs
-			// TODO: Material input updating:
-			// 1) Set up the pipeline BEFORE DOING ANYTHING
-			// 2) You won't need the code below anymore
-
-			foreach (var input in Inputs)
-			{
-				UpdateMaterialInput(input.Key, input.Value?.RenderTarget);
-			}
 		}
 
 		private void UpdateMaterialInput(string name, RenderTarget renderTarget)
@@ -177,6 +167,7 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 				var materialParam = _materialInstance.GetParam(name);
 				if (materialParam != null)
 				{
+					// Warning: If you ever change the code to RenderOutput, the compiler won't warn you here...
 					materialParam.Value = renderTarget;
 				}
 			});
