@@ -65,12 +65,13 @@
     <Compile Include="Source\RenderingPipeline\ActionRunner.cs" />
     <Compile Include="Source\RenderingPipeline\IRenderer.cs" />
     <Compile Include="Source\RenderingPipeline\IRendererDisplayer.cs" />
+    <Compile Include="Source\RenderingPipeline\IRendererDisplayerExtensions.cs" />
     <Compile Include="Source\RenderingPipeline\RendererInputs.cs" />
-    <Compile Include="Source\RenderingPipeline\RendererOutputs.cs" />
     <Compile Include="Source\RenderingPipeline\RenderingDebugSurface.cs" />
+    <Compile Include="Source\RenderingPipeline\RenderOutput.cs" />
     <Compile Include="Source\RenderingPipeline\RenderPipeline.cs" />
-    <Compile Include="Source\RenderingPipeline\RenderToMaterial.cs" />
     <Compile Include="Source\RenderingPipeline\SimpleDisposer.cs" />
+    <Compile Include="Source\RenderingPipeline\RenderDisplayer\RenderToMaterial.cs" />
     <Compile Include="Source\RenderingPipeline\Renderers\PostFxRenderer.cs" />
     <Compile Include="Source\RenderingPipeline\Renderers\RendererWithTask.cs" />
     <Compile Include="Source\RenderingPipeline\Renderers\SceneRenderer.cs" />

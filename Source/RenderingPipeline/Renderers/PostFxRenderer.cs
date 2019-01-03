@@ -119,11 +119,6 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 			return _orthographicCamera;
 		}
 
-		protected override void OrderChanged(int order)
-		{
-			base.OrderChanged(order);
-		}
-
 		protected override void SizeChanged(Vector2 size)
 		{
 			base.SizeChanged(size);
@@ -165,7 +160,7 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 
 			foreach (var input in Inputs)
 			{
-				UpdateMaterialInput(input.Key, input.Value);
+				UpdateMaterialInput(input.Key, input.Value?.RenderTarget);
 			}
 		}
 
@@ -198,9 +193,9 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 			return inputParameters;
 		}
 
-		protected override void RendererInputChanged(string name, RenderTarget newRendererOutput)
+		protected override void RendererInputChanged(string name, RenderOutput newRendererOutput)
 		{
-			UpdateMaterialInput(name, newRendererOutput);
+			UpdateMaterialInput(name, newRendererOutput?.RenderTarget);
 		}
 
 		#region IDisposable Support

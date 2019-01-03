@@ -9,15 +9,11 @@ using FlaxEngine.Rendering;
 namespace CartoonShader.Source.RenderingPipeline
 {
 	// TODO: Think up better names
-	public interface IRenderer : IDisposable
+	public interface IRenderer : IRendererDisplayer
 	{
-		RenderTarget DefaultOutput { get; }
-
-		IRendererInputs Inputs { get; }
+		RenderOutput DefaultOutput { get; }
 
 		Vector2 Size { get; set; }
-
-		bool Enabled { get; set; }
 
 		// TODO: PostFX
 	}

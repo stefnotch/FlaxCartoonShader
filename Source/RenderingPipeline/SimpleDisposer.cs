@@ -20,25 +20,25 @@ namespace CartoonShader.Source.RenderingPipeline
 
 		public void DisposeLater(FlaxEngine.Object flaxObject)
 		{
-			if (disposedValue) throw new ObjectDisposedException(nameof(SimpleDisposer));
+			if (_disposedValue) throw new ObjectDisposedException(nameof(SimpleDisposer));
 
 			_flaxObjects.AddLast(flaxObject);
 		}
 
 		public void DisposeLater(IDisposable disposeable)
 		{
-			if (disposedValue) throw new ObjectDisposedException(nameof(SimpleDisposer));
+			if (_disposedValue) throw new ObjectDisposedException(nameof(SimpleDisposer));
 
 			_disposables.AddLast(disposeable);
 		}
 
 		#region IDisposable Support
 
-		private bool disposedValue = false; // To detect redundant calls
+		private bool _disposedValue = false; // To detect redundant calls
 
 		protected virtual void Dispose(bool disposing)
 		{
-			if (!disposedValue)
+			if (!_disposedValue)
 			{
 				if (disposing)
 				{
@@ -58,7 +58,7 @@ namespace CartoonShader.Source.RenderingPipeline
 				_flaxObjects = null;
 				_disposables = null;
 
-				disposedValue = true;
+				_disposedValue = true;
 			}
 		}
 

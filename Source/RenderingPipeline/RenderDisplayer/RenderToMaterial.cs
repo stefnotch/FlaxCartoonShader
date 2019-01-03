@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using FlaxEngine;
 using FlaxEngine.Rendering;
 
-namespace CartoonShader.Source.RenderingPipeline
+namespace CartoonShader.Source.RenderingPipeline.RenderDisplayer
 {
 	public class RenderToMaterial : IRendererDisplayer
 	{
@@ -28,12 +28,12 @@ namespace CartoonShader.Source.RenderingPipeline
 			_inputs.RendererInputChanged += _inputs_RendererInputChanged;
 		}
 
-		private void _inputs_RendererInputChanged(string name, RenderTarget rendererOutput)
+		private void _inputs_RendererInputChanged(string name, RenderOutput rendererOutput)
 		{
 			_inputs_RendererInputChangedAsync(name, rendererOutput);
 		}
 
-		private async void _inputs_RendererInputChangedAsync(string name, RenderTarget rendererOutput)
+		private async void _inputs_RendererInputChangedAsync(string name, RenderOutput rendererOutput)
 		{
 			// Not sure which one is "better"
 			await ActionRunner.Instance.FirstUpdate();

@@ -8,22 +8,27 @@ using FlaxEngine.Rendering;
 
 namespace CartoonShader.Source.RenderingPipeline
 {
-	//TODO: IObservable
+	//TODO: IObservable?
 	//TODO: I don't really need this interface, do I?
 
-	public interface IRendererInputs : IReadOnlyDictionary<string, RenderTarget>, IReadOnlyCollection<KeyValuePair<string, RenderTarget>>, IEnumerable<KeyValuePair<string, RenderTarget>>
+	public interface IRendererInputs : IReadOnlyDictionary<string, RenderOutput>, IReadOnlyCollection<KeyValuePair<string, RenderOutput>>, IEnumerable<KeyValuePair<string, RenderOutput>>
 	{
-		new RenderTarget this[string key] { get; set; }
+		new RenderOutput this[string key] { get; set; }
+
+		// TODO: Should this really be in the interface?
+
+		event Action<string, RenderOutput> RendererInputChanged;
 	}
 
 	public class RendererInputs : IRendererInputs
 	{
-		private readonly Dictionary<string, RenderTarget> _rendererInputs = new Dictionary<string, RenderTarget>();
+		private readonly Dictionary<string, RenderOutput> _rendererInputs = new Dictionary<string, RenderOutput>();
 
+		// TODO: Should this class contain a reference to the parent?
 		/// <summary>
-		/// Raised whenever a RenderTarget is changed
+		/// Raised whenever a RenderOutput is changed
 		/// </summary>
-		public event Action<string, RenderTarget> RendererInputChanged;
+		public event Action<string, RenderOutput> RendererInputChanged;
 
 		public RendererInputs()
 		{
@@ -34,7 +39,7 @@ namespace CartoonShader.Source.RenderingPipeline
 			UpdateInputs(rendererInputNames);
 		}
 
-		public RenderTarget this[string key]
+		public RenderOutput this[string key]
 		{
 			get
 			{
@@ -72,15 +77,15 @@ namespace CartoonShader.Source.RenderingPipeline
 
 		public IEnumerable<string> Keys => _rendererInputs.Keys;
 
-		public IEnumerable<RenderTarget> Values => _rendererInputs.Values;
+		public IEnumerable<RenderOutput> Values => _rendererInputs.Values;
 
 		public int Count => _rendererInputs.Count;
 
 		public bool ContainsKey(string key) => _rendererInputs.ContainsKey(key);
 
-		public IEnumerator<KeyValuePair<string, RenderTarget>> GetEnumerator() => _rendererInputs.GetEnumerator();
+		public IEnumerator<KeyValuePair<string, RenderOutput>> GetEnumerator() => _rendererInputs.GetEnumerator();
 
-		public bool TryGetValue(string key, out RenderTarget value) => _rendererInputs.TryGetValue(key, out value);
+		public bool TryGetValue(string key, out RenderOutput value) => _rendererInputs.TryGetValue(key, out value);
 
 		IEnumerator IEnumerable.GetEnumerator() => _rendererInputs.GetEnumerator();
 	}

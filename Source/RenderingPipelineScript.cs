@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CartoonShader.Source.RenderingPipeline;
+using CartoonShader.Source.RenderingPipeline.RenderDisplayer;
 using CartoonShader.Source.RenderingPipeline.Renderers;
 using FlaxEngine;
 
