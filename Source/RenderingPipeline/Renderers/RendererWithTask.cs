@@ -28,6 +28,8 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 		[NoSerialize]
 		protected readonly RendererInputs _inputs = new RendererInputs();
 
+		// TODO: Dispose of all the outputs
+		// TODO: Do I really need "RendererOutputs"?
 		[NoSerialize]
 		protected readonly RendererOutputs _outputs = new RendererOutputs();
 
