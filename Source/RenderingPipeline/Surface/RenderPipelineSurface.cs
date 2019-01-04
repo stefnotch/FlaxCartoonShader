@@ -132,7 +132,7 @@ namespace CartoonShader.Source.RenderingPipeline.Surface
 			{
 				if (graphNode.Value is IRenderer renderer)
 				{
-					foreach (var input in renderer.Inputs.Values)
+					foreach (var input in renderer.Inputs.Values.Where(input => input != null))
 					{
 						var inputGraphNode = graphNodes.First(n => n.Value == input.Renderer);
 						graphEdges.Add(GraphEdge.CreateBetween(inputGraphNode, graphNode));
@@ -140,7 +140,7 @@ namespace CartoonShader.Source.RenderingPipeline.Surface
 				}
 				else if (graphNode.Value is IRendererDisplayer rendererDisplayer)
 				{
-					foreach (var input in rendererDisplayer.Inputs.Values)
+					foreach (var input in rendererDisplayer.Inputs.Values.Where(input => input != null))
 					{
 						var inputGraphNode = graphNodes.First(n => n.Value == input.Renderer);
 						graphEdges.Add(GraphEdge.CreateBetween(inputGraphNode, graphNode));

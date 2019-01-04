@@ -66,26 +66,39 @@ namespace CartoonShader.Source.RenderingPipeline.Surface
 			InitializeLater(image);
 		}
 
-		private async Task InitializeLater(Image image)
+		private void InitializeLater(Image image)
 		{
-			ActionRunner.Instance.AfterFirstUpdate(() =>
+			if (GraphNode?.Value == null) return;
+
+			if (GraphNode.Value is IRenderer renderer)
 			{
-				if (GraphNode?.Value == null) return;
-
-				if (GraphNode.Value is IRenderer renderer)
+				renderer.DefaultOutput.Subscribe((renderOutput) =>
 				{
-					if (renderer.DefaultOutput?.RenderTarget == null) return;
+					if (renderOutput.RenderTarget != null)
+					{
+						image.Brush = new RenderTargetBrush(renderOutput.RenderTarget);
+					}
+				},
+				() => image.Brush = null);
+			}
+			else if (GraphNode.Value is IRendererDisplayer rendererDisplayer)
+			{
+				var firstInput = rendererDisplayer
+					.Inputs
+					.Select(i => i.Value)
+					.Where(i => i != null)
+					.DefaultIfEmpty(null)
+					.FirstOrDefault();
 
-					image.Brush = new RenderTargetBrush(renderer.DefaultOutput.RenderTarget);
-				}
-				else if (GraphNode.Value is IRendererDisplayer rendererDisplayer)
+				firstInput?.Subscribe((renderOutput) =>
 				{
-					var firstInput = rendererDisplayer.Inputs.First().Value;
-					if (firstInput?.RenderTarget == null) return;
-
-					image.Brush = new RenderTargetBrush(firstInput.RenderTarget);
-				}
-			});
+					if (renderOutput.RenderTarget != null)
+					{
+						image.Brush = new RenderTargetBrush(renderOutput.RenderTarget);
+					}
+				},
+				() => image.Brush = null);
+			}
 		}
 
 		public RenderPipelineSurface Surface { get; }

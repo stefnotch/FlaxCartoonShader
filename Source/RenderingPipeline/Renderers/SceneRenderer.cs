@@ -15,8 +15,17 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 		/// </summary>
 		public Camera SourceCamera;
 
-		public RenderOutput DepthBufferOutput { get; protected set; }
-		public RenderOutput MotionVectorsOutput { get; protected set; }
+		public RenderOutput DepthBufferOutput { get; }
+		public RenderOutput MotionVectorsOutput { get; }
+
+		public SceneRenderer()
+		{
+			DepthBufferOutput = new RenderOutput(this);
+			MotionVectorsOutput = new RenderOutput(this);
+
+			_simpleDisposer.DisposeLater(DepthBufferOutput);
+			_simpleDisposer.DisposeLater(MotionVectorsOutput);
+		}
 
 		protected override void EnableChanged(bool enabled)
 		{
@@ -34,9 +43,9 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 			{
 				ActionRunner.Instance.OnNextUpdate(() =>
 				{
-					// No need to dispose of those things, _task takes care of it
-					DepthBufferOutput = new RenderOutput(_task.Buffers.DepthBuffer, this);
-					MotionVectorsOutput = new RenderOutput(_task.Buffers.MotionVectors, this);
+					// No need to dispose of the RenderTargets, _task takes care of it
+					DepthBufferOutput.RenderTarget = _task.Buffers.DepthBuffer;
+					MotionVectorsOutput.RenderTarget = _task.Buffers.MotionVectors;
 				});
 			}
 		}

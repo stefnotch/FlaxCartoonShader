@@ -14,6 +14,7 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 		private StaticModel _modelActor;
 		private Model _model;
 		private const float ZPos = 100f;
+		private readonly Dictionary<string, IDisposable> _disposables = new Dictionary<string, IDisposable>();
 
 		[Serialize]
 		protected MaterialBase _material;
@@ -154,23 +155,20 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 			if (_modelActor) _modelActor.Entries[0].Material = _materialInstance;
 		}
 
-		private void UpdateMaterialInput(string name, RenderTarget renderTarget)
+		private void SetMaterialInput(string name, RenderTarget renderTarget)
 		{
-			ActionRunner.Instance.AfterFirstUpdate(() =>
-			{
-				if (name == null || !renderTarget) return;
+			if (name == null || !renderTarget) return;
 
-				if (_materialInstance == null)
-				{
-					Debug.LogError("Missing material instance");
-				}
-				var materialParam = _materialInstance.GetParam(name);
-				if (materialParam != null)
-				{
-					// Warning: If you ever change the code to RenderOutput, the compiler won't warn you here...
-					materialParam.Value = renderTarget;
-				}
-			});
+			if (_materialInstance == null)
+			{
+				Debug.LogError("Missing material instance");
+			}
+			var materialParam = _materialInstance.GetParam(name);
+			if (materialParam != null)
+			{
+				// Warning: If you ever change the code to RenderOutput, the compiler won't warn you here...
+				materialParam.Value = renderTarget;
+			}
 		}
 
 		private IEnumerable<string> GetRendererInputNames(MaterialInstance materialInstance)
@@ -186,7 +184,15 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 
 		protected override void RendererInputChanged(string name, RenderOutput newRendererOutput)
 		{
-			UpdateMaterialInput(name, newRendererOutput?.RenderTarget);
+			if (_disposables.TryGetValue(name, out IDisposable value))
+			{
+				value.Dispose();
+			}
+			_disposables.Add(name,
+			newRendererOutput.Subscribe(
+				(renderOutput) => SetMaterialInput(name, renderOutput?.RenderTarget),
+				() => SetMaterialInput(name, null)
+			));
 		}
 
 		#region IDisposable Support

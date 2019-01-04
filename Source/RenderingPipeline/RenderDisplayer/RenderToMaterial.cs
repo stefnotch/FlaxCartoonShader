@@ -13,9 +13,7 @@ namespace CartoonShader.Source.RenderingPipeline.RenderDisplayer
 		[NoSerialize]
 		protected RendererInputs _inputs = new RendererInputs(new string[] { "Default" });
 
-		//[Serialize]
-		//[Limit(1)]
-		//protected Vector2 _size;
+		private readonly Dictionary<string, IDisposable> _disposables = new Dictionary<string, IDisposable>();
 
 		[Serialize]
 		protected bool _enabled;
@@ -33,39 +31,34 @@ namespace CartoonShader.Source.RenderingPipeline.RenderDisplayer
 			_inputs_RendererInputChangedAsync(name, rendererOutput);
 		}
 
-		private async void _inputs_RendererInputChangedAsync(string name, RenderOutput rendererOutput)
+		private void _inputs_RendererInputChangedAsync(string name, RenderOutput rendererOutput)
 		{
-			// Not sure which one is "better"
-			await ActionRunner.Instance.FirstUpdate();
-			//ActionRunner.Instance.AfterFirstUpdate(() =>
-			//{
+			if (_disposables.TryGetValue(name, out IDisposable value))
+			{
+				value.Dispose();
+			}
+			_disposables.Add(name,
+			rendererOutput.Subscribe(
+				(renderOutput) => SetMaterialInput(name, renderOutput?.RenderTarget),
+				() => SetMaterialInput(name, null)
+			));
+		}
+
+		private void SetMaterialInput(string name, RenderTarget renderTarget)
+		{
 			if (!Material) return;
 
 			Material.WaitForLoaded();
 			var param = Material?.GetParam(name);
 			if (param != null)
 			{
-				param.Value = rendererOutput.RenderTarget;
+				param.Value = renderTarget;
 			}
 			//});
 		}
 
 		[NoSerialize]
 		public IRendererInputs Inputs => _inputs;
-
-		/*[NoSerialize]
-		public Vector2 Size
-		{
-			get => _size;
-			set
-			{
-				if (_size != value)
-				{
-					_size = value;
-					SizeChangedInternal(_size);
-				}
-			}
-		}*/
 
 		[NoSerialize]
 		public bool Enabled
@@ -107,15 +100,6 @@ namespace CartoonShader.Source.RenderingPipeline.RenderDisplayer
 				_inputs_RendererInputChanged(input.Key, input.Value);
 			}
 		}
-
-		/*private void SizeChangedInternal(Vector2 size)
-		{
-			if (Enabled) SizeChanged(size);
-		}
-
-		protected void SizeChanged(Vector2 size)
-		{
-		}*/
 
 		protected void EnableChanged(bool enabled)
 		{

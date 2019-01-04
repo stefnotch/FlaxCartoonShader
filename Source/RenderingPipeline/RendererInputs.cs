@@ -14,10 +14,6 @@ namespace CartoonShader.Source.RenderingPipeline
 	public interface IRendererInputs : IReadOnlyDictionary<string, RenderOutput>, IReadOnlyCollection<KeyValuePair<string, RenderOutput>>, IEnumerable<KeyValuePair<string, RenderOutput>>
 	{
 		new RenderOutput this[string key] { get; set; }
-
-		// TODO: Should this really be in the interface?
-
-		event Action<string, RenderOutput> RendererInputChanged;
 	}
 
 	public class RendererInputs : IRendererInputs

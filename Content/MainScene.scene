@@ -230,8 +230,7 @@
 			"V": {
 	"Camera": "db675b124cf4496897b81cb20ea17d2f",
 	"Material": "d8629e504bf7d4c654242fbc21b15522",
-	"FxMaterial": "9d5e5f894135f85f023c1d9fdddde254",
-	"RenderPipelineSurface": "cf5b23ef4625d9a598fbc39709247481"
+	"FxMaterial": "9d5e5f894135f85f023c1d9fdddde254"
 }
 		},
 		{
@@ -451,7 +450,8 @@
 	"SceneCamera": "db675b124cf4496897b81cb20ea17d2f",
 	"BlurHorizontal": "ec34ae8e47a40a6866150c9b816c954b",
 	"BlurVertical": "6c1f203e408ea90415c4979ac9ea6ffc",
-	"OutputMaterial": "8c1149fd4dad82f683d47886e587ad45"
+	"OutputMaterial": "8c1149fd4dad82f683d47886e587ad45",
+	"RenderPipelineSurface": "cf5b23ef4625d9a598fbc39709247481"
 }
 		},
 		{
