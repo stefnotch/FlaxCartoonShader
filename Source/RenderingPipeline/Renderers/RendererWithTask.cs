@@ -30,14 +30,13 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 
 		protected SimpleDisposer _simpleDisposer = new SimpleDisposer();
 
-		// TODO: Dispose of all the outputs
-
 		public RendererWithTask()
 		{
 			if (!_task) _task = RenderTask.Create<SceneRenderTask>();
 			_task.Enabled = false;
 
-			_defaultOutput = new RenderOutput(RenderTarget.New(), this);
+			_defaultOutput = new RenderOutput(this);
+			_defaultOutput.RenderTarget = RenderTarget.New();
 
 			_task.Output = _defaultOutput.RenderTarget;
 
@@ -65,7 +64,6 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 			}
 		}
 
-		//TODO: Set the size! (from some other class)
 		[NoSerialize]
 		public Vector2 Size
 		{
@@ -80,7 +78,6 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 			}
 		}
 
-		//TODO: Enable every renderer upon startup! (from some other class)
 		[NoSerialize]
 		public bool Enabled
 		{
@@ -130,7 +127,6 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 			}
 		}
 
-		// TODO: Improve this (as soon as you turn on an output, the pipeline gets Enabled automatically!!!)
 		protected virtual void EnableRenderTask(bool enabled)
 		{
 			if (enabled)
@@ -156,91 +152,6 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 			}
 		}
 
-		/*protected void SetOutput(string name, RenderOutput RenderOutput)
-		{
-			if (name == null) return;
-
-			if (_outputs.TryGetValue(name, out IRendererOutput existingOutput))
-			{
-				if (existingOutput.RenderOutput != RenderOutput)
-				{
-					RenderOutput rt = existingOutput.RenderOutput;
-					FlaxEngine.Object.Destroy(ref rt);
-
-					_outputs[name].RenderOutput = RenderOutput;
-				}
-			}
-			else
-			{
-				var output = new RendererOutput(name);
-				output.RenderOutput = RenderOutput;
-				_outputs.Add(name, output);
-			}
-		}
-
-		protected void RemoveOutput(string name)
-		{
-			RenderOutput rt = _outputs[name].RenderOutput;
-			FlaxEngine.Object.Destroy(ref rt);
-			_outputs[name].RenderOutput = null;
-			_outputs.Remove(name);
-		}*/
-
-		/*
-		protected RenderOutput _defaultOutput;
-
-		public override sealed RendererOutput DefaultOutput { get; protected set; }
-
-		protected override void Enable(bool enabled)
-		{
-			if (enabled)
-			{
-				if (!_defaultOutput)
-				{
-					_defaultOutput = RenderOutput.New();
-					AddOutput(new RendererOutput("Default", _defaultOutput));
-				}
-				if (!_task) _task = RenderTask.Create<SceneRenderTask>();
-				_task.Enabled = false;
-			}
-			else
-			{
-				EnableRenderTask(false);
-			}
-			base.Enable(enabled);
-			if (enabled)
-			{
-				_task.Output = _defaultOutput;
-
-				ActionRunner.Instance.OnUpdate_Once(() =>
-				{
-					EnableRenderTask(true);
-				});
-			}
-			else
-			{
-			}
-		}
-
-		protected virtual void EnableRenderTask(bool enabled)
-		{
-			if (enabled)
-			{
-				_task.Enabled = true;
-			}
-			else
-			{
-				_task.Enabled = false;
-			}
-		}
-
-		protected override void MaterialChanged(MaterialBase material)
-		{
-			base.MaterialChanged(material);
-			if (!material) return;
-		}
-		*/
-
 		#region IDisposable Support
 
 		private bool _disposedValue = false; // To detect redundant calls
@@ -251,12 +162,12 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 			{
 				if (disposing)
 				{
-					// TODO: Send a bunch of null render targets?
 					_inputs.RendererInputChanged -= RendererInputChanged;
 					Enabled = false;
 					_task?.Dispose();
 					FlaxEngine.Object.Destroy(ref _task);
 					FlaxEngine.Object.Destroy(_defaultOutput.RenderTarget);
+					_defaultOutput.Dispose();
 					_defaultOutput = null;
 
 					_simpleDisposer.Dispose();

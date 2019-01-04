@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using CartoonShader.Source.RenderingPipeline;
 using CartoonShader.Source.RenderingPipeline.RenderDisplayer;
 using CartoonShader.Source.RenderingPipeline.Renderers;
+using CartoonShader.Source.RenderingPipeline.Surface;
 using FlaxEngine;
 
 namespace CartoonShader.Source
@@ -30,6 +31,7 @@ namespace CartoonShader.Source
 		private RenderToMaterial _renderToMaterial;
 		*/
 		private RenderPipeline _renderPipeline;
+		public UIControl RenderPipelineSurface;
 
 		private void OnEnable()
 		{
@@ -46,7 +48,7 @@ namespace CartoonShader.Source
 				{
 					Material = BlurHorizontal
 				})
-				.SetInput("Image", sceneRenderer.MotionVectorsOutput);
+				.SetInput("Image", sceneRenderer.DefaultOutput);
 
 			var blurVerticalRenderer = _renderPipeline
 				.AddRenderer(new PostFxRenderer()
@@ -67,6 +69,12 @@ namespace CartoonShader.Source
 				.SetInput("Image", blurVerticalRenderer.DefaultOutput);
 
 			_renderPipeline.Enabled = true;
+
+			var surface = RenderPipelineSurface?.Get<RenderPipelineSurface>();
+			if (surface != null)
+			{
+				surface.RenderPipeline = _renderPipeline;
+			}
 			/*
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 			RendererSetup();

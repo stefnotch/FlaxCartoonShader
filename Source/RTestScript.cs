@@ -53,7 +53,7 @@ namespace CartoonShader
 
 			renderPipeline.Enabled = true;
 
-			var surface = RenderPipelineSurface.Get<RenderPipelineSurface>();
+			var surface = RenderPipelineSurface?.Get<RenderPipelineSurface>();
 			if (surface != null)
 			{
 				surface.RenderPipeline = renderPipeline;
