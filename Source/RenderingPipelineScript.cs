@@ -34,9 +34,13 @@ namespace CartoonShader.Source
 			var sceneRenderer = _renderPipeline
 				.AddRenderer(SceneCamera);
 
+			var sceneNormalsRenderer = _renderPipeline
+				.AddRenderer(SceneCamera);
+			sceneNormalsRenderer.SceneRenderTask.Mode = FlaxEngine.Rendering.ViewMode.Normals;
+
 			var blurHorizontalRenderer = _renderPipeline
 				.AddRenderer(BlurHorizontal)
-				.SetInput("Image", sceneRenderer.DefaultOutput);
+				.SetInput("Image", sceneRenderer.MotionVectorsOutput);
 
 			var blurVerticalRenderer = _renderPipeline
 				.AddRenderer(BlurHorizontal)
@@ -44,7 +48,10 @@ namespace CartoonShader.Source
 
 			var edgeDetectionRenderer = _renderPipeline
 				.AddRenderer(EdgeDetection)
-				.SetInput("Image", sceneRenderer.DefaultOutput);
+				.SetInput("Image", sceneNormalsRenderer.DefaultOutput);
+
+			var edgeDetectionOutput = edgeDetectionRenderer.DefaultOutput;
+			var motionVectorsOutput = blurVerticalRenderer.DefaultOutput;
 
 			// Output to material
 			OutputMaterial.WaitForLoaded();
@@ -56,7 +63,7 @@ namespace CartoonShader.Source
 				{
 					Material = _outputMaterialInstance
 				})
-				.SetInput("Image", edgeDetectionRenderer.DefaultOutput);
+				.SetInput("Image", sceneRenderer.DefaultOutput);
 
 			// Enable and debug surface
 			_renderPipeline.Enabled = true;

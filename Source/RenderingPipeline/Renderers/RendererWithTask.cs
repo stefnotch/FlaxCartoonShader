@@ -44,6 +44,9 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 		}
 
 		[NoSerialize]
+		public SceneRenderTask SceneRenderTask => _task;
+
+		[NoSerialize]
 		public RenderOutput DefaultOutput => _defaultOutput;
 
 		// TODO: Serialize & Deserialize this!!!
