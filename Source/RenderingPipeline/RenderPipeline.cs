@@ -13,6 +13,7 @@ namespace CartoonShader.Source.RenderingPipeline
 	{
 		private HashSet<IRenderer> _renderers = new HashSet<IRenderer>();
 		private HashSet<IRendererDisplayer> _renderDisplayers = new HashSet<IRendererDisplayer>();
+		private bool _enabled;
 
 		public Vector2 DefaultSize { get; internal set; }
 
@@ -22,6 +23,20 @@ namespace CartoonShader.Source.RenderingPipeline
 			set
 			{
 				_enabled = value;
+				if (_enabled)
+				{
+					// Order setup
+					foreach (var renderer in _renderers.OfType<RendererWithTask>())
+					{
+						renderer.Order = -1000000;
+					}
+					// Inefficient, but who cares
+					foreach (var renderer in _renderers.OfType<RendererWithTask>())
+					{
+						SetupRendererOrder(renderer, renderer.Order);
+					}
+				}
+
 				foreach (var renderer in _renderers)
 				{
 					renderer.Enabled = _enabled;
@@ -30,6 +45,18 @@ namespace CartoonShader.Source.RenderingPipeline
 				{
 					rendererDisplayer.Enabled = _enabled;
 				}
+			}
+		}
+
+		private void SetupRendererOrder(IRenderer renderer, int maxOrder)
+		{
+			if (renderer is RendererWithTask rendererWithTask && rendererWithTask.Order > maxOrder)
+			{
+				rendererWithTask.Order = maxOrder;
+			}
+			foreach (var input in renderer.Inputs.Values)
+			{
+				SetupRendererOrder(input.Renderer, maxOrder - 1);
 			}
 		}
 
@@ -57,7 +84,6 @@ namespace CartoonShader.Source.RenderingPipeline
 		#region IDisposable Support
 
 		private bool _disposedValue = false; // To detect redundant calls
-		private bool _enabled;
 
 		protected virtual void Dispose(bool disposing)
 		{
@@ -65,6 +91,7 @@ namespace CartoonShader.Source.RenderingPipeline
 			{
 				if (disposing)
 				{
+					Enabled = false;
 					// TODO: dispose managed state (managed objects).
 					foreach (var renderer in _renderers)
 					{
