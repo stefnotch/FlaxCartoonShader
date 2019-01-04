@@ -22,19 +22,59 @@ namespace CartoonShader.Source
 
 		private MaterialInstance _outputMaterialInstance;
 
+		/*
 		private SceneRenderer _sceneRenderer;
 		private PostFxRenderer _blurHorizontalRenderer;
 		private PostFxRenderer _blurVerticalRenderer;
 
 		private RenderToMaterial _renderToMaterial;
+		*/
+		private RenderPipeline _renderPipeline;
 
 		private void OnEnable()
 		{
+			_renderPipeline = new RenderPipeline();
+			_renderPipeline.DefaultSize = Screen.Size;
+			var sceneRenderer = _renderPipeline
+				.AddRenderer(new SceneRenderer()
+				{
+					SourceCamera = SceneCamera
+				});
+
+			var blurHorizontalRenderer = _renderPipeline
+				.AddRenderer(new PostFxRenderer()
+				{
+					Material = BlurHorizontal
+				})
+				.SetInput("Image", sceneRenderer.MotionVectorsOutput);
+
+			var blurVerticalRenderer = _renderPipeline
+				.AddRenderer(new PostFxRenderer()
+				{
+					Material = BlurHorizontal
+				})
+				.SetInput("Image", blurHorizontalRenderer.DefaultOutput);
+
+			OutputMaterial.WaitForLoaded();
+			_outputMaterialInstance = OutputMaterial.CreateVirtualInstance();
+			(Actor as StaticModel).Entries[0].Material = _outputMaterialInstance;
+
+			var renderToMaterial = _renderPipeline
+				.AddRendererDisplayer(new RenderToMaterial()
+				{
+					Material = _outputMaterialInstance
+				})
+				.SetInput("Image", blurVerticalRenderer.DefaultOutput);
+
+			_renderPipeline.Enabled = true;
+			/*
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 			RendererSetup();
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+*/
 		}
 
+		/*
 		private async Task RendererSetup()
 		{
 			await ActionRunner.Instance.FirstUpdate();
@@ -70,14 +110,18 @@ namespace CartoonShader.Source
 			_blurVerticalRenderer.Enabled = true;
 			_renderToMaterial.Enabled = true;
 		}
+		*/
 
 		private void OnDisable()
 		{
+			/*
 			_sceneRenderer?.Dispose();
 			_blurHorizontalRenderer?.Dispose();
 			_blurVerticalRenderer?.Dispose();
 			_renderToMaterial?.Dispose();
-
+			*/
+			_renderPipeline?.Dispose();
+			_renderPipeline = null;
 			(Actor as StaticModel).Entries[0].Material = null;
 			Destroy(ref _outputMaterialInstance);
 		}
