@@ -81,6 +81,22 @@ namespace CartoonShader.Source.RenderingPipeline
 			return renderer;
 		}
 
+		public SceneRenderer AddRenderer(Camera camera)
+		{
+			return AddRenderer(new SceneRenderer()
+			{
+				SourceCamera = camera
+			});
+		}
+
+		public PostFxRenderer AddRenderer(MaterialBase material)
+		{
+			return AddRenderer(new PostFxRenderer()
+			{
+				Material = material
+			});
+		}
+
 		#region IDisposable Support
 
 		private bool _disposedValue = false; // To detect redundant calls
