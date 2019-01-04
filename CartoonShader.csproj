@@ -74,9 +74,11 @@
     <Compile Include="Source\RenderingPipeline\Renderers\PostFxRenderer.cs" />
     <Compile Include="Source\RenderingPipeline\Renderers\RendererWithTask.cs" />
     <Compile Include="Source\RenderingPipeline\Renderers\SceneRenderer.cs" />
+    <Compile Include="Source\RenderingPipeline\Surface\Box.cs" />
     <Compile Include="Source\RenderingPipeline\Surface\GraphEdge.cs" />
     <Compile Include="Source\RenderingPipeline\Surface\GraphNode.cs" />
     <Compile Include="Source\RenderingPipeline\Surface\RenderPipelineSurface.cs" />
+    <Compile Include="Source\RenderingPipeline\Surface\SurfaceNode.cs" />
     <Compile Include="Cache\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

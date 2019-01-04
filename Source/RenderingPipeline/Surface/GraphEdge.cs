@@ -11,6 +11,9 @@ namespace CartoonShader.Source.RenderingPipeline.Surface
 		public GraphNode FromNode;
 		public GraphNode ToNode;
 
+		public Box FromBox;
+		public Box ToBox;
+
 		public GraphEdge(GraphNode from, GraphNode to)
 		{
 			FromNode = from;

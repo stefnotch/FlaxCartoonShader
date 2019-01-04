@@ -10,8 +10,15 @@ namespace CartoonShader.Source.RenderingPipeline.Surface
 {
 	public class RenderPipelineSurface : ContainerControl
 	{
+		[NoSerialize]
 		private RenderPipeline _renderPipeline;
 
+		public RenderPipelineSurface()
+		{
+			BackgroundColor = Color.GhostWhite;
+		}
+
+		[NoSerialize]
 		public RenderPipeline RenderPipeline
 		{
 			get
@@ -25,25 +32,18 @@ namespace CartoonShader.Source.RenderingPipeline.Surface
 			}
 		}
 
-		private TextBox textBox;
-
-		public RenderPipelineSurface()
-		{
-			textBox = new TextBox()
-			{
-				Parent = this
-			};
-			textBox.DockStyle = DockStyle.Fill;
-			textBox.IsMultiline = true;
-			textBox.PerformLayout();
-		}
+		private List<GraphEdge> _graphEdges;
 
 		private void RenderPipelineChanged(RenderPipeline newRenderPipeline)
 		{
-			var graphNodes = CreateGraph(newRenderPipeline);
+			var graph = CreateGraph(newRenderPipeline);
+
+			var graphNodes = graph.Item1;
+			_graphEdges = graph.Item2;
+
 			if (graphNodes.Count == 0)
 			{
-				textBox.Clear();
+				DisposeChildren();
 				return;
 			}
 			AssignX(graphNodes);
@@ -54,12 +54,13 @@ namespace CartoonShader.Source.RenderingPipeline.Surface
 			{
 				graphNodesInLevel[i] = graphNodes.FindAll(n => n.Position.X == i);
 			}
-			DrawNodes(graphNodesInLevel);
+			SpawnNodes(graphNodesInLevel);
 		}
 
-		private void DrawNodes(List<GraphNode>[] graphNodesInLevel)
+		private void SpawnNodes(List<GraphNode>[] graphNodesInLevel)
 		{
-			var maxSize = new Int2(100);
+			var maxSize = new Vector2(100);
+			var padding = new Vector2(20);
 
 			for (int i = 0; i < graphNodesInLevel.Length; i++)
 			{
@@ -68,8 +69,12 @@ namespace CartoonShader.Source.RenderingPipeline.Surface
 					var graphNode = graphNodesInLevel[i][j];
 					graphNode.Position.Y = j;
 
-					//graphNode.Position *= maxSize;
-					// Create a child and attach it to this....
+					// Create the SurfaceNodes..
+					Vector2 pos = new Vector2(graphNode.Position.X, graphNode.Position.Y);
+					var surfaceNode = new SurfaceNode(this, graphNode, pos * (maxSize + padding), maxSize)
+					{
+						Parent = this
+					};
 				}
 			}
 		}
@@ -109,7 +114,7 @@ namespace CartoonShader.Source.RenderingPipeline.Surface
 			}
 		}
 
-		private List<GraphNode> CreateGraph(RenderPipeline newRenderPipeline)
+		private Tuple<List<GraphNode>, List<GraphEdge>> CreateGraph(RenderPipeline newRenderPipeline)
 		{
 			// List of GraphNodes
 			var graphNodes = new List<GraphNode>();
@@ -122,6 +127,7 @@ namespace CartoonShader.Source.RenderingPipeline.Surface
 				graphNodes.Add(new GraphNode(rendererDisplayer));
 			}
 			// Graph Edges
+			var graphEdges = new List<GraphEdge>();
 			foreach (var graphNode in graphNodes)
 			{
 				if (graphNode.Value is IRenderer renderer)
@@ -129,7 +135,7 @@ namespace CartoonShader.Source.RenderingPipeline.Surface
 					foreach (var input in renderer.Inputs.Values)
 					{
 						var inputGraphNode = graphNodes.First(n => n.Value == input.Renderer);
-						GraphEdge.CreateBetween(inputGraphNode, graphNode);
+						graphEdges.Add(GraphEdge.CreateBetween(inputGraphNode, graphNode));
 					}
 				}
 				else if (graphNode.Value is IRendererDisplayer rendererDisplayer)
@@ -137,12 +143,62 @@ namespace CartoonShader.Source.RenderingPipeline.Surface
 					foreach (var input in rendererDisplayer.Inputs.Values)
 					{
 						var inputGraphNode = graphNodes.First(n => n.Value == input.Renderer);
-						GraphEdge.CreateBetween(inputGraphNode, graphNode);
+						graphEdges.Add(GraphEdge.CreateBetween(inputGraphNode, graphNode));
 					}
 				}
 			}
 
-			return graphNodes;
+			return Tuple.Create(graphNodes, graphEdges);
+		}
+
+		public override void Draw()
+		{
+			base.Draw();
+			if (_graphEdges == null) return;
+
+			Color color = Color.DarkBlue;
+			var boxCenterPos = new Vector2(Box.SideLength / 2f);
+			for (int i = 0; i < _graphEdges.Count; i++)
+			{
+				var edge = _graphEdges[i];
+
+				Vector2 start = edge.FromBox.PointToParent(this, boxCenterPos);
+				Vector2 end = edge.ToBox.PointToParent(this, boxCenterPos);
+
+				DrawConnection(ref start, ref end, ref color);
+			}
+		}
+
+		#region FlaxAPI Copy Pasta
+
+		// Copyright (c) 2012-2018 Wojciech Figat. All rights reserved.
+		private void DrawConnection(ref Vector2 start, ref Vector2 end, ref Color color)
+		{
+			// Calculate control points
+			var dst = (end - start) * new Vector2(0.5f, 0.05f);
+			Vector2 control1 = new Vector2(start.X + dst.X, start.Y + dst.Y);
+			Vector2 control2 = new Vector2(end.X - dst.X, end.Y + dst.Y);
+
+			// Draw line
+			Render2D.DrawBezier(start, control1, control2, end, color, 2.2f);
+
+			/*
+			// Debug drawing control points
+			Vector2 bSize = new Vector2(4, 4);
+			Render2D.FillRectangle(new Rectangle(control1 - bSize * 0.5f, bSize), Color.Blue);
+			Render2D.FillRectangle(new Rectangle(control2 - bSize * 0.5f, bSize), Color.Gold);
+			*/
+		}
+
+		// End of Copyright (c) 2012-2018 Wojciech Figat. All rights reserved.
+
+		#endregion FlaxAPI Copy Pasta
+
+		public override void OnDestroy()
+		{
+			base.OnDestroy();
+			_renderPipeline = null;
+			_graphEdges = null;
 		}
 	}
 }

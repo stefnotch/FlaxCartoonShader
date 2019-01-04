@@ -11,7 +11,6 @@ using FlaxEngine;
 
 namespace CartoonShader
 {
-	[ExecuteInEditMode]
 	public class RTestScript : Script
 	{
 		public Camera Camera;
@@ -20,7 +19,6 @@ namespace CartoonShader
 
 		public UIControl RenderPipelineSurface;
 
-		[Serialize]
 		private RenderPipeline renderPipeline;
 
 		public void OnEnable()
@@ -53,7 +51,7 @@ namespace CartoonShader
 				})
 				.SetInput("Default", postFxRenderer.DefaultOutput); // Chaining
 
-			//renderPipeline.Enabled = true;
+			renderPipeline.Enabled = true;
 
 			var surface = RenderPipelineSurface.Get<RenderPipelineSurface>();
 			if (surface != null)
