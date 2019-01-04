@@ -20,6 +20,9 @@ namespace CartoonShader.Source
 		public MaterialBase BlurVertical;
 		public MaterialBase EdgeDetection;
 
+		public MaterialBase MotionVectorsAndSceneCombination;
+		public Camera DisplacedCamera;
+
 		public MaterialBase OutputMaterial;
 
 		private MaterialInstance _outputMaterialInstance;
@@ -50,8 +53,20 @@ namespace CartoonShader.Source
 				.AddRenderer(EdgeDetection)
 				.SetInput("Image", sceneNormalsRenderer.DefaultOutput);
 
+			// Now we got those things to work with:
 			var edgeDetectionOutput = edgeDetectionRenderer.DefaultOutput;
 			var motionVectorsOutput = blurVerticalRenderer.DefaultOutput;
+
+			var displacedCombination = _renderPipeline
+				.AddRendererDisplayer(new RenderToMaterial()
+				{
+					Material = MotionVectorsAndSceneCombination
+				})
+				.SetInput("Image", edgeDetectionOutput)
+				.SetInput("MotionVectors", motionVectorsOutput);
+
+			var displacedRenderer = _renderPipeline
+				.AddRenderer(DisplacedCamera);
 
 			// Output to material
 			OutputMaterial.WaitForLoaded();
@@ -63,7 +78,7 @@ namespace CartoonShader.Source
 				{
 					Material = _outputMaterialInstance
 				})
-				.SetInput("Image", sceneRenderer.DefaultOutput);
+				.SetInput("Image", displacedRenderer.DefaultOutput);
 
 			// Enable and debug surface
 			_renderPipeline.Enabled = true;

@@ -139,7 +139,7 @@
 			"TypeID": 13,
 			"ID": "9ba93b1f4b3250a618437fbccf3e6fec",
 			"ParentID": "6fe54f8e458df263c707b99e144c3666",
-			"Name": "Only custom PostFx",
+			"Name": "No effects",
 			"Size": {
 				"X": 100.0,
 				"Y": 100.0,
@@ -185,53 +185,8 @@
 				"SSR": {
 					"Intensity": 0.0,
 					"OverrideFlags": 1
-				},
-				"PostFxMaterials": [
-					"07029e4d48a07938bc047c9269970c6b"
-				]
-			}
-		},
-		{
-			"TypeID": 1,
-			"ID": "947ee5ed458b1f4cb8bc469db7697181",
-			"ParentID": "6fe54f8e458df263c707b99e144c3666",
-			"Name": "Cube",
-			"Transform": {
-				"Translation": {
-					"X": 0.0,
-					"Y": 0.0,
-					"Z": 203.86947631835938
 				}
-			},
-			"Model": "b43f0f8f4aaba3f3156896a5a22ba493",
-			"Buffer": {
-				"Entries": [
-					{
-						"Material": "d8629e504bf7d4c654242fbc21b15522",
-						"LightmapIndex": 0,
-						"LightmapArea": {
-							"Location": {
-								"X": 0.0751953125,
-								"Y": 0.841796875
-							},
-							"Size": {
-								"X": 0.0244140625,
-								"Y": 0.0244140625
-							}
-						}
-					}
-				]
 			}
-		},
-		{
-			"TypeID": "CartoonShader.RTestScript",
-			"ID": "512e58db4a844ce6ad2bccbc668e44b0",
-			"ParentID": "947ee5ed458b1f4cb8bc469db7697181",
-			"V": {
-	"Camera": "db675b124cf4496897b81cb20ea17d2f",
-	"Material": "d8629e504bf7d4c654242fbc21b15522",
-	"FxMaterial": "9d5e5f894135f85f023c1d9fdddde254"
-}
 		},
 		{
 			"TypeID": 2,
@@ -451,6 +406,8 @@
 	"BlurHorizontal": "ec34ae8e47a40a6866150c9b816c954b",
 	"BlurVertical": "6c1f203e408ea90415c4979ac9ea6ffc",
 	"EdgeDetection": "0633756547538e4eb240c4940e0d4bec",
+	"MotionVectorsAndSceneCombination": "8cd59aee45d01927bfe1219d5c7f3407",
+	"DisplacedCamera": "6fe54f8e458df263c707b99e144c3666",
 	"OutputMaterial": "8c1149fd4dad82f683d47886e587ad45",
 	"RenderPipelineSurface": "cf5b23ef4625d9a598fbc39709247481"
 }
