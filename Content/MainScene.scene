@@ -10,9 +10,9 @@
 			"Name": "Scene",
 			"Lightmaps": [
 				{
-					"Lightmap0": "ecbd697e4998089ed4c5389825b8306e",
-					"Lightmap1": "d569bbb8496778e6e74ee48a2f3dec1e",
-					"Lightmap2": "4ee4a5ae4646c05fe911ac87097e50c9"
+					"Lightmap0": "00000000000000000000000000000000",
+					"Lightmap1": "00000000000000000000000000000000",
+					"Lightmap2": "00000000000000000000000000000000"
 				}
 			],
 			"LightmapSettings": {}
@@ -230,7 +230,15 @@
 			"V": {
 	"Camera": "db675b124cf4496897b81cb20ea17d2f",
 	"Material": "d8629e504bf7d4c654242fbc21b15522",
-	"FxMaterial": "9d5e5f894135f85f023c1d9fdddde254"
+	"FxMaterial": "9d5e5f894135f85f023c1d9fdddde254",
+	"RenderPipelineSurface": "cf5b23ef4625d9a598fbc39709247481",
+	"renderPipeline": {
+		"DefaultSize": {
+			"X": 100.0,
+			"Y": 100.0
+		},
+		"Enabled": false
+	}
 }
 		},
 		{
@@ -498,8 +506,15 @@
 					"W": 1.910685465164705e-15
 				}
 			},
-			"Control": "CartoonShader.Source.RenderingPipeline.RenderingDebugSurface",
+			"Control": "CartoonShader.Source.RenderingPipeline.Surface.RenderPipelineSurface",
 			"Data": {
+	"RenderPipeline": {
+		"DefaultSize": {
+			"X": 100.0,
+			"Y": 100.0
+		},
+		"Enabled": false
+	},
 	"ClipChildren": true,
 	"Size": {
 		"X": 500.0,
@@ -519,13 +534,145 @@
 	},
 	"Rotation": 0.0,
 	"BackgroundColor": {
-		"R": 1.001,
-		"G": 1.001,
-		"B": 1.001,
+		"R": 0.0,
+		"G": 0.0,
+		"B": 0.0,
+		"A": 0.0
+	},
+	"DockStyle": 5,
+	"AnchorStyle": 0,
+	"Enabled": true,
+	"Visible": true,
+	"CanFocus": true
+}
+		},
+		{
+			"TypeID": 33,
+			"ID": "132b7b6348710824a4f7138d470e136e",
+			"ParentID": "548825a24f649b2351aa94aa3ce035ef",
+			"Name": "UICanvas 0",
+			"Transform": {
+				"Translation": {
+					"X": -333.7097473144531,
+					"Y": 0.0,
+					"Z": -382.31060791015627
+				},
+				"Orientation": {
+					"X": 1.0,
+					"Y": 4.371138828673793e-8,
+					"Z": 4.371138828673793e-8,
+					"W": 1.910685465164705e-15
+				}
+			},
+			"V": {
+	"RenderMode": 2,
+	"RenderLocation": 0,
+	"Order": 0,
+	"ReceivesEvents": true,
+	"IgnoreDepth": false,
+	"RenderCamera": "00000000000000000000000000000000",
+	"Distance": 500.0,
+	"Size": {
+		"X": 500.0,
+		"Y": 500.0
+	}
+}
+		},
+		{
+			"TypeID": 34,
+			"ID": "a17f2e0f4cae68180834aaa6889dce9e",
+			"ParentID": "132b7b6348710824a4f7138d470e136e",
+			"Name": "UIControl 0",
+			"Transform": {
+				"Translation": {
+					"X": 0.0,
+					"Y": 0.0,
+					"Z": -0.0001316941634286195
+				},
+				"Orientation": {
+					"X": 1.0,
+					"Y": 4.371138828673793e-8,
+					"Z": 4.371138828673793e-8,
+					"W": 1.910685465164705e-15
+				}
+			},
+			"Control": "FlaxEngine.GUI.TextBox",
+			"Data": {
+	"IsMultiline": true,
+	"MaxLength": 32000,
+	"IsReadOnly": false,
+	"Text": "ratdratars",
+	"Font": {
+		"Font": "4508d98f4aa1f0bd59362b81d47e38f4",
+		"Size": 9
+	},
+	"BackgroundSelectedColor": {
+		"R": 0.247058824,
+		"G": 0.247058824,
+		"B": 0.274509817,
+		"A": 1.0
+	},
+	"TextColor": {
+		"R": 1.0,
+		"G": 1.0,
+		"B": 1.0,
+		"A": 1.0
+	},
+	"WatermarkTextColor": {
+		"R": 0.7,
+		"G": 0.7,
+		"B": 0.7,
+		"A": 0.7
+	},
+	"SelectionColor": {
+		"R": 0.0,
+		"G": 0.478431374,
+		"B": 0.8,
+		"A": 1.0
+	},
+	"CaretColor": {
+		"R": 1.0,
+		"G": 1.0,
+		"B": 1.0,
+		"A": 1.0
+	},
+	"BorderColor": {
+		"R": 0.0,
+		"G": 0.0,
+		"B": 0.0,
+		"A": 0.0
+	},
+	"BorderSelectedColor": {
+		"R": 0.0,
+		"G": 0.478431374,
+		"B": 0.8,
+		"A": 1.0
+	},
+	"Size": {
+		"X": 500.0,
+		"Y": 500.0
+	},
+	"Scale": {
+		"X": 1.0,
+		"Y": 1.0
+	},
+	"Pivot": {
+		"X": 0.5,
+		"Y": 0.5
+	},
+	"Shear": {
+		"X": 0.0,
+		"Y": 0.0
+	},
+	"Rotation": 0.0,
+	"BackgroundColor": {
+		"R": 0.2,
+		"G": 0.2,
+		"B": 0.215686277,
 		"A": 1.0
 	},
 	"DockStyle": 5,
-	"AnchorStyle": 5,
+	"AnchorStyle": 0,
 	"Enabled": true,
 	"Visible": true,
 	"CanFocus": true

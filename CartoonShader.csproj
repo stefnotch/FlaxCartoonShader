@@ -67,7 +67,6 @@
     <Compile Include="Source\RenderingPipeline\IRendererDisplayer.cs" />
     <Compile Include="Source\RenderingPipeline\IRendererDisplayerExtensions.cs" />
     <Compile Include="Source\RenderingPipeline\RendererInputs.cs" />
-    <Compile Include="Source\RenderingPipeline\RenderingDebugSurface.cs" />
     <Compile Include="Source\RenderingPipeline\RenderOutput.cs" />
     <Compile Include="Source\RenderingPipeline\RenderPipeline.cs" />
     <Compile Include="Source\RenderingPipeline\SimpleDisposer.cs" />
@@ -75,6 +74,9 @@
     <Compile Include="Source\RenderingPipeline\Renderers\PostFxRenderer.cs" />
     <Compile Include="Source\RenderingPipeline\Renderers\RendererWithTask.cs" />
     <Compile Include="Source\RenderingPipeline\Renderers\SceneRenderer.cs" />
+    <Compile Include="Source\RenderingPipeline\Surface\GraphEdge.cs" />
+    <Compile Include="Source\RenderingPipeline\Surface\GraphNode.cs" />
+    <Compile Include="Source\RenderingPipeline\Surface\RenderPipelineSurface.cs" />
     <Compile Include="Cache\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

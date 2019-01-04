@@ -6,26 +6,35 @@ using System.Threading.Tasks;
 using CartoonShader.Source.RenderingPipeline;
 using CartoonShader.Source.RenderingPipeline.RenderDisplayer;
 using CartoonShader.Source.RenderingPipeline.Renderers;
+using CartoonShader.Source.RenderingPipeline.Surface;
 using FlaxEngine;
 
 namespace CartoonShader
 {
+	[ExecuteInEditMode]
 	public class RTestScript : Script
 	{
 		public Camera Camera;
 		public Material Material;
 		public Material FxMaterial;
 
-		private RenderToMaterial r;
-		private SceneRenderer sr;
-		private PostFxRenderer pfxr;
+		public UIControl RenderPipelineSurface;
 
+		[Serialize]
 		private RenderPipeline renderPipeline;
 
 		public void OnEnable()
 		{
-			renderPipeline = new RenderPipeline();
-			renderPipeline.DefaultSize = new Vector2(100);
+			if (renderPipeline != null)
+			{
+				renderPipeline.Dispose();
+				renderPipeline = null;
+			}
+			renderPipeline = new RenderPipeline
+			{
+				DefaultSize = new Vector2(100)
+			};
+
 			var sceneRenderer = renderPipeline
 				.AddRenderer(new SceneRenderer()
 				{
@@ -44,12 +53,19 @@ namespace CartoonShader
 				})
 				.SetInput("Default", postFxRenderer.DefaultOutput); // Chaining
 
-			renderPipeline.Enabled = true;
+			//renderPipeline.Enabled = true;
+
+			var surface = RenderPipelineSurface.Get<RenderPipelineSurface>();
+			if (surface != null)
+			{
+				surface.RenderPipeline = renderPipeline;
+			}
 		}
 
 		private void OnDisable()
 		{
 			renderPipeline?.Dispose();
+			renderPipeline = null;
 		}
 	}
 }
