@@ -34,23 +34,24 @@ namespace CartoonShader.Source
 		{
 			_renderPipeline = new RenderPipeline();
 			_renderPipeline.DefaultSize = Screen.Size;
+
 			var sceneRenderer = _renderPipeline
-				.AddRenderer(SceneCamera);
+				.AddRenderer(SceneCamera, "Scene");
 
 			var sceneNormalsRenderer = _renderPipeline
-				.AddRenderer(SceneCamera);
+				.AddRenderer(SceneCamera, "Normal Vectors");
 			sceneNormalsRenderer.SceneRenderTask.Mode = FlaxEngine.Rendering.ViewMode.Normals;
 
 			var blurHorizontalRenderer = _renderPipeline
-				.AddRenderer(BlurHorizontal)
+				.AddRenderer(BlurHorizontal, "Blur Horizontal (Motion Vectors)")
 				.SetInput("Image", sceneRenderer.MotionVectorsOutput);
 
 			var blurVerticalRenderer = _renderPipeline
-				.AddRenderer(BlurHorizontal)
+				.AddRenderer(BlurVertical, "Blur Vertical")
 				.SetInput("Image", blurHorizontalRenderer.DefaultOutput);
 
 			var edgeDetectionRenderer = _renderPipeline
-				.AddRenderer(EdgeDetection)
+				.AddRenderer(EdgeDetection, "Edge Detection")
 				.SetInput("Image", sceneNormalsRenderer.DefaultOutput);
 
 			// Now we got those things to work with:

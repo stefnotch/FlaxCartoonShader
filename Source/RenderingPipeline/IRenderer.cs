@@ -11,6 +11,8 @@ namespace CartoonShader.Source.RenderingPipeline
 	// TODO: Think up better names
 	public interface IRenderer : IRendererDisplayer
 	{
+		string Name { get; set; }
+
 		RenderOutput DefaultOutput { get; }
 
 		Vector2 Size { get; set; }

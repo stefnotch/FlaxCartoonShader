@@ -95,6 +95,8 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 			}
 		}
 
+		public string Name { get; set; }
+
 		protected virtual void RendererInputChanged(string name, RenderOutput newRendererOutput)
 		{
 		}

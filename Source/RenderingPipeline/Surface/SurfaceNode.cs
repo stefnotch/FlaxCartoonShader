@@ -16,12 +16,14 @@ namespace CartoonShader.Source.RenderingPipeline.Surface
 			BackgroundColor = FlaxEngine.Color.Gray;
 			GraphNode = graphNode;
 
+			string name = (graphNode.Value as IRenderer)?.Name ?? graphNode.Value.GetType().Name;
+
 			var header = new TextBox()
 			{
 				IsReadOnly = true,
 				AnchorStyle = AnchorStyle.Upper,
 				DockStyle = DockStyle.Top,
-				Text = graphNode.Value.GetType().Name,
+				Text = name,
 				Parent = this
 			};
 

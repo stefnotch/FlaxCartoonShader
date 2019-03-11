@@ -72,28 +72,32 @@ namespace CartoonShader.Source.RenderingPipeline
 			return rendererDisplayer;
 		}
 
-		public T AddRenderer<T>(T renderer) where T : IRenderer
+		public T AddRenderer<T>(T renderer, string name = null) where T : IRenderer
 		{
 			// TODO: Only change the renderer size if the renderer size has not been modified yet
 			renderer.Size = DefaultSize;
+
+			if (name != null) renderer.Name = name;
 
 			_renderers.Add(renderer);
 			return renderer;
 		}
 
-		public SceneRenderer AddRenderer(Camera camera)
+		public SceneRenderer AddRenderer(Camera camera, string name = null)
 		{
 			return AddRenderer(new SceneRenderer()
 			{
-				SourceCamera = camera
+				SourceCamera = camera,
+				Name = name
 			});
 		}
 
-		public PostFxRenderer AddRenderer(MaterialBase material)
+		public PostFxRenderer AddRenderer(MaterialBase material, string name = null)
 		{
 			return AddRenderer(new PostFxRenderer()
 			{
-				Material = material
+				Material = material,
+				Name = name
 			});
 		}
 

@@ -18,6 +18,14 @@
 			"LightmapSettings": {}
 		},
 		{
+			"TypeID": "CartoonShader.Source.SetMainCamera",
+			"ID": "e4bd948846c889278efc6599ab0d70a8",
+			"ParentID": "548825a24f649b2351aa94aa3ce035ef",
+			"V": {
+	"Main": "6fe54f8e458df263c707b99e144c3666"
+}
+		},
+		{
 			"TypeID": 2,
 			"ID": "84b05b204af217bf6d3b8cba740dbf17",
 			"ParentID": "548825a24f649b2351aa94aa3ce035ef",
