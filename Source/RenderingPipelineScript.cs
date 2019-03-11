@@ -20,6 +20,8 @@ namespace CartoonShader.Source
 		public MaterialBase BlurVertical;
 		public MaterialBase EdgeDetection;
 
+		public MaterialBase MotionVectorsDebug;
+
 		public MaterialBase MotionVectorsAndSceneCombination;
 		public Camera DisplacedCamera;
 
@@ -80,6 +82,10 @@ namespace CartoonShader.Source
 					Material = _outputMaterialInstance
 				})
 				.SetInput("Image", displacedRenderer.DefaultOutput);
+
+			var motionVectorsDebug = _renderPipeline
+				.AddRenderer(MotionVectorsDebug, "Motion Vectors") // Can't use the RendererDisplayers cause the debug view can't display their materials yet..
+				.SetInput("Image", sceneRenderer.MotionVectorsOutput);
 
 			// Enable and debug surface
 			_renderPipeline.Enabled = true;

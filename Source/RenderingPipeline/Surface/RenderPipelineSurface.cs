@@ -77,6 +77,8 @@ namespace CartoonShader.Source.RenderingPipeline.Surface
 					};
 				}
 			}
+
+			this.PerformLayout(true);
 		}
 
 		private void AssignX(List<GraphNode> graphNodes)
