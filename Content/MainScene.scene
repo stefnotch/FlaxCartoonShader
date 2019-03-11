@@ -1,7 +1,7 @@
 {
 	"ID": "548825a24f649b2351aa94aa3ce035ef",
 	"TypeName": "FlaxEngine.SceneAsset",
-	"EngineBuild": 6175,
+	"EngineBuild": 6179,
 	"Data": [
 		{
 			"TypeID": 9,
@@ -185,7 +185,8 @@
 				"SSR": {
 					"Intensity": 0.0,
 					"OverrideFlags": 1
-				}
+				},
+				"AA": {}
 			}
 		},
 		{
@@ -239,6 +240,7 @@
 					"OverrideFlags": 8
 				},
 				"SSR": {},
+				"AA": {},
 				"PostFxMaterials": [
 					"0633756547538e4eb240c4940e0d4bec"
 				]
@@ -251,7 +253,7 @@
 			"Name": "SingleBone",
 			"StaticFlags": 0,
 			"SkinnedModel": "31f37d0e44afc3fdd77abd8dba70828d",
-			"AnimationGraph": "c1804202432a129d97f52890ca5cad4c",
+			"AnimationGraph": "3e556364468c3cc06971dba088c71880",
 			"Buffer": {
 				"Entries": [
 					{}
