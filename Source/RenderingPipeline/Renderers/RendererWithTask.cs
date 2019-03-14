@@ -121,7 +121,7 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 				SizeChangedInternal(Size);
 				OrderChangedInternal(Order);
 
-				ActionRunner.Instance.OnNextUpdate(() =>
+				Scripting.InvokeOnUpdate(() =>
 				{
 					EnableRenderTask(true);
 				});

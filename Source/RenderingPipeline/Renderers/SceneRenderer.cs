@@ -41,13 +41,20 @@ namespace CartoonShader.Source.RenderingPipeline.Renderers
 			base.EnableRenderTask(enabled);
 			if (enabled)
 			{
-				ActionRunner.Instance.OnNextUpdate(() =>
-				{
-					// No need to dispose of the RenderTargets, _task takes care of it
-					DepthBufferOutput.RenderTarget = _task.Buffers.DepthBuffer;
-					MotionVectorsOutput.RenderTarget = _task.Buffers.MotionVectors;
-				});
+				_task.Begin -= OnRenderTaskBegin;
+				_task.Begin += OnRenderTaskBegin;
 			}
+			else
+			{
+				_task.Begin -= OnRenderTaskBegin;
+			}
+		}
+
+		private void OnRenderTaskBegin(SceneRenderTask task, GPUContext context)
+		{
+			// No need to dispose of the RenderTargets, _task takes care of it
+			DepthBufferOutput.RenderTarget = _task.Buffers.DepthBuffer;
+			MotionVectorsOutput.RenderTarget = _task.Buffers.MotionVectors;
 		}
 	}
 }
