@@ -31,7 +31,7 @@ namespace CartoonShader.Source
 
 		private void OnEnable()
 		{
-			Scripting.InvokeOnUpdate(() =>
+			Scripting.InvokeOnUpdate(async () =>
 			{
 				_renderPipeline = new RenderPipeline(Screen.Size);
 
@@ -44,7 +44,7 @@ namespace CartoonShader.Source
 
 				var blurHorizontalRenderer = _renderPipeline
 					.AddPostEffectRenderer(BlurHorizontal, "Blur Horizontal (Motion Vectors)")
-					.SetInput("Image", sceneRenderer.MotionVectorsOutput);
+					.SetInput("Image", await sceneRenderer.MotionVectorsOutput);
 
 				var blurVerticalRenderer = _renderPipeline
 					.AddPostEffectRenderer(BlurVertical, "Blur Vertical")
@@ -77,10 +77,17 @@ namespace CartoonShader.Source
 				// Output the motion vectors (debug purrposes)
 				var motionVectorsDebug = _renderPipeline
 					.AddPostEffectRenderer(MotionVectorsDebug, "Motion Vectors") // Can't use the RendererDisplayers cause the debug view can't display their materials yet..
-					.SetInput("Image", sceneRenderer.MotionVectorsOutput);
+					.SetInput("Image", await sceneRenderer.MotionVectorsOutput);
 
 				// Enable and debug surface
 				_renderPipeline.Enabled = true;
+
+				// I have to set the MotionVectorsOutput **after** starting the render pipeline (which starts the tasks)
+				// (Because the MotionVectorsOutput only exists after the tasks have started)
+				/*blurHorizontalRenderer
+					.SetInput("Image", await sceneRenderer.MotionVectorsOutput);
+				motionVectorsDebug
+					.SetInput("Image", await sceneRenderer.MotionVectorsOutput);*/
 
 				var surface = RenderPipelineSurface?.Get<RenderPipelineSurface>();
 				if (surface != null)

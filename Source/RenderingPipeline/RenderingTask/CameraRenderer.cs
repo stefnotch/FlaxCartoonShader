@@ -11,6 +11,9 @@ namespace CartoonShader.Source.RenderingPipeline.RenderingTask
 {
 	public class CameraRenderer : IRenderer
 	{
+		private TaskCompletionSource<RenderOutput> _depthBufferPromise = new TaskCompletionSource<RenderOutput>();
+		private TaskCompletionSource<RenderOutput> _motionVectorsPromise = new TaskCompletionSource<RenderOutput>();
+
 		public CameraRenderer(Camera camera, Vector2 size, string name = "")
 		{
 			Name = name;
@@ -22,11 +25,16 @@ namespace CartoonShader.Source.RenderingPipeline.RenderingTask
 			Task.Camera = camera;
 			Task.Output = Output.RenderTarget;
 
-			// TODO: Enable the task!
+			// TODO: Information about having to enable the task!
+
+			DepthBufferOutput = _depthBufferPromise.Task;
+			MotionVectorsOutput = _motionVectorsPromise.Task;
 
 			Task.Begin += OnRenderTaskBegin;
-			//Task.Buffers = RenderBuffers.New(); // Pre-initialize the buffers
+			Task.Enabled = true;
 
+			// TODO: This causes an exception
+			//Task.Buffers = RenderBuffers.New(); // Pre-initialize the buffers
 			//DepthBufferOutput = new RenderOutput(Task.Buffers.DepthBuffer, this);
 			//MotionVectorsOutput = new RenderOutput(Task.Buffers.MotionVectors, this);
 		}
@@ -41,9 +49,10 @@ namespace CartoonShader.Source.RenderingPipeline.RenderingTask
 
 		public RenderOutput Output { get; }
 
-		public RenderOutput DepthBufferOutput { get; set; }
+		// TODO: This has been refactored to promises, because the alternative (ctor^) caused an exception
+		public Task<RenderOutput> DepthBufferOutput { get; set; }
 
-		public RenderOutput MotionVectorsOutput { get; set; }
+		public Task<RenderOutput> MotionVectorsOutput { get; set; }
 
 		public Camera Camera => Task.Camera;
 
@@ -51,8 +60,11 @@ namespace CartoonShader.Source.RenderingPipeline.RenderingTask
 		private void OnRenderTaskBegin(SceneRenderTask task, GPUContext context)
 		{
 			// No need to dispose of the RenderTargets, _task takes care of it
-			DepthBufferOutput = new RenderOutput(Task.Buffers.DepthBuffer, this);
-			MotionVectorsOutput = new RenderOutput(Task.Buffers.MotionVectors, this);
+			//DepthBufferOutput = new RenderOutput(Task.Buffers.DepthBuffer, this);
+			//MotionVectorsOutput = new RenderOutput(Task.Buffers.MotionVectors, this);
+			_depthBufferPromise.SetResult(new RenderOutput(Task.Buffers.DepthBuffer, this));
+			_motionVectorsPromise.SetResult(new RenderOutput(Task.Buffers.MotionVectors, this));
+
 			Task.Begin -= OnRenderTaskBegin;
 		}
 
@@ -66,6 +78,8 @@ namespace CartoonShader.Source.RenderingPipeline.RenderingTask
 			{
 				if (disposing)
 				{
+					_depthBufferPromise.TrySetCanceled();
+					_motionVectorsPromise.TrySetCanceled();
 					if (Task)
 					{
 						Task.Begin -= OnRenderTaskBegin;
