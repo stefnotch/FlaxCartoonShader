@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CartoonShader.Source.RenderingPipeline.RenderingTask;
 using FlaxEngine;
 using FlaxEngine.GUI;
 
@@ -74,16 +75,17 @@ namespace CartoonShader.Source.RenderingPipeline.Surface
 
 			if (GraphNode.Value is IRenderer renderer)
 			{
-				renderer.DefaultOutput.Subscribe((renderOutput) =>
+				Scripting.InvokeOnUpdate(() =>
 				{
-					if (renderOutput.RenderTarget != null)
+					var rt = renderer.Output.RenderTarget;
+
+					if (rt != null)
 					{
-						image.Brush = new RenderTargetBrush(renderOutput.RenderTarget);
+						image.Brush = new RenderTargetBrush(rt);
 					}
-				},
-				() => image.Brush = null);
+				});
 			}
-			else if (GraphNode.Value is IRendererDisplayer rendererDisplayer)
+			/*else if (GraphNode.Value is IRendererDisplayer rendererDisplayer)
 			{
 				var firstInput = rendererDisplayer
 					.Inputs
@@ -100,7 +102,7 @@ namespace CartoonShader.Source.RenderingPipeline.Surface
 					}
 				},
 				() => image.Brush = null);
-			}
+			}*/
 		}
 
 		public RenderPipelineSurface Surface { get; }

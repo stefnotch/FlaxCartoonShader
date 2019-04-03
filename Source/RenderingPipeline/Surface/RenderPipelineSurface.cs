@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CartoonShader.Source.RenderingPipeline.RenderingTask;
 using FlaxEngine;
 using FlaxEngine.GUI;
 
@@ -124,10 +125,10 @@ namespace CartoonShader.Source.RenderingPipeline.Surface
 			{
 				graphNodes.Add(new GraphNode(renderer));
 			}
-			foreach (var rendererDisplayer in newRenderPipeline.RenderDisplayers)
+			/*foreach (var rendererDisplayer in newRenderPipeline.RenderDisplayers)
 			{
 				graphNodes.Add(new GraphNode(rendererDisplayer));
-			}
+			}*/
 			// Graph Edges
 			var graphEdges = new List<GraphEdge>();
 			foreach (var graphNode in graphNodes)
@@ -140,6 +141,7 @@ namespace CartoonShader.Source.RenderingPipeline.Surface
 						graphEdges.Add(GraphEdge.CreateBetween(inputGraphNode, graphNode));
 					}
 				}
+				/*
 				else if (graphNode.Value is IRendererDisplayer rendererDisplayer)
 				{
 					foreach (var input in rendererDisplayer.Inputs.Values.Where(input => input != null))
@@ -147,7 +149,7 @@ namespace CartoonShader.Source.RenderingPipeline.Surface
 						var inputGraphNode = graphNodes.First(n => n.Value == input.Renderer);
 						graphEdges.Add(GraphEdge.CreateBetween(inputGraphNode, graphNode));
 					}
-				}
+				}*/
 			}
 
 			return Tuple.Create(graphNodes, graphEdges);

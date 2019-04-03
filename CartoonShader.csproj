@@ -22,7 +22,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DefineConstants>DEBUG;FLAX_ASSERTIONS;TRACE;FLAX_0;FLAX_0_4;FLAX_0_4_6180;FLAX_EDITOR;FLAX_WINDOWS;FLAX_EDITOR_WIN</DefineConstants>
+    <DefineConstants>DEBUG;FLAX_ASSERTIONS;TRACE;FLAX_0;FLAX_0_4;FLAX_0_4_6181;FLAX_EDITOR;FLAX_WINDOWS;FLAX_EDITOR_WIN</DefineConstants>
 	<UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -33,7 +33,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DefineConstants>TRACE;FLAX_0;FLAX_0_4;FLAX_0_4_6180;FLAX_EDITOR;FLAX_WINDOWS;FLAX_EDITOR_WIN</DefineConstants>
+    <DefineConstants>TRACE;FLAX_0;FLAX_0_4;FLAX_0_4_6181;FLAX_EDITOR;FLAX_WINDOWS;FLAX_EDITOR_WIN</DefineConstants>
 	<UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <ItemGroup>
@@ -63,17 +63,14 @@
     <Compile Include="Source\MeshGenerators\QuadGenerator.cs" />
     <Compile Include="Source\MeshGenerators\ScreenPixelQuadsGenerator.cs" />
     <Compile Include="Source\RenderingPipeline\ActionRunner.cs" />
-    <Compile Include="Source\RenderingPipeline\IRenderer.cs" />
-    <Compile Include="Source\RenderingPipeline\IRendererDisplayer.cs" />
-    <Compile Include="Source\RenderingPipeline\IRendererDisplayerExtensions.cs" />
-    <Compile Include="Source\RenderingPipeline\RendererInputs.cs" />
-    <Compile Include="Source\RenderingPipeline\RenderOutput.cs" />
     <Compile Include="Source\RenderingPipeline\RenderPipeline.cs" />
-    <Compile Include="Source\RenderingPipeline\SimpleDisposer.cs" />
-    <Compile Include="Source\RenderingPipeline\RenderDisplayer\RenderToMaterial.cs" />
-    <Compile Include="Source\RenderingPipeline\Renderers\PostFxRenderer.cs" />
-    <Compile Include="Source\RenderingPipeline\Renderers\RendererWithTask.cs" />
-    <Compile Include="Source\RenderingPipeline\Renderers\SceneRenderer.cs" />
+    <Compile Include="Source\RenderingPipeline\RenderingOutput\RenderOutput.cs" />
+    <Compile Include="Source\RenderingPipeline\RenderingOutput\RenderOutputToMaterial.cs" />
+    <Compile Include="Source\RenderingPipeline\RenderingTask\CameraRenderer.cs" />
+    <Compile Include="Source\RenderingPipeline\RenderingTask\IRenderer.cs" />
+    <Compile Include="Source\RenderingPipeline\RenderingTask\MaterialRenderInputs.cs" />
+    <Compile Include="Source\RenderingPipeline\RenderingTask\PixelsRenderer.cs" />
+    <Compile Include="Source\RenderingPipeline\RenderingTask\PostEffectRenderer.cs" />
     <Compile Include="Source\RenderingPipeline\Surface\Box.cs" />
     <Compile Include="Source\RenderingPipeline\Surface\GraphEdge.cs" />
     <Compile Include="Source\RenderingPipeline\Surface\GraphNode.cs" />

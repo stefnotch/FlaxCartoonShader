@@ -4,8 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CartoonShader.Source.RenderingPipeline;
-using CartoonShader.Source.RenderingPipeline.RenderDisplayer;
-using CartoonShader.Source.RenderingPipeline.Renderers;
 using CartoonShader.Source.RenderingPipeline.Surface;
 using FlaxEngine;
 
@@ -28,29 +26,21 @@ namespace CartoonShader
 				renderPipeline.Dispose();
 				renderPipeline = null;
 			}
-			renderPipeline = new RenderPipeline
-			{
-				DefaultSize = new Vector2(100)
-			};
+			renderPipeline = new RenderPipeline(new Vector2(100));
 
 			var sceneRenderer = renderPipeline
-				.AddRenderer(new SceneRenderer()
-				{
-					SourceCamera = Camera
-				});
+				.AddCameraRenderer(Camera, "Scene");
 			var postFxRenderer = renderPipeline
-				.AddRenderer(new PostFxRenderer()
-				{
-					Material = FxMaterial
-				})
-				.SetInput("Image", sceneRenderer.DefaultOutput);
-			renderPipeline
+				.AddPostEffectRenderer(FxMaterial, "Post Processing")
+				.SetInput("Image", sceneRenderer.Output);
+
+			/*renderPipeline
 				.AddRendererDisplayer(new RenderToMaterial()
 				{
 					Material = Material
 				})
 				.SetInput("Default", postFxRenderer.DefaultOutput); // Chaining
-
+				*/
 			renderPipeline.Enabled = true;
 
 			var surface = RenderPipelineSurface?.Get<RenderPipelineSurface>();

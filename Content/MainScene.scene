@@ -1,7 +1,7 @@
 {
 	"ID": "548825a24f649b2351aa94aa3ce035ef",
 	"TypeName": "FlaxEngine.SceneAsset",
-	"EngineBuild": 6179,
+	"EngineBuild": 6181,
 	"Data": [
 		{
 			"TypeID": 9,
@@ -416,8 +416,9 @@
 	"BlurHorizontal": "ec34ae8e47a40a6866150c9b816c954b",
 	"BlurVertical": "6c1f203e408ea90415c4979ac9ea6ffc",
 	"EdgeDetection": "0633756547538e4eb240c4940e0d4bec",
+	"MotionVectorsDebug": "7cdda960491afcaa9c379bb5c2a4468d",
 	"MotionVectorsAndSceneCombination": "8cd59aee45d01927bfe1219d5c7f3407",
-	"DisplacedCamera": "6fe54f8e458df263c707b99e144c3666",
+	"OutputMaterialActor": "751782824a2ecf7740ce5fa2cdea35d4",
 	"OutputMaterial": "8c1149fd4dad82f683d47886e587ad45",
 	"RenderPipelineSurface": "cf5b23ef4625d9a598fbc39709247481"
 }
@@ -499,6 +500,56 @@
 	"Visible": true,
 	"CanFocus": true
 }
+		},
+		{
+			"TypeID": 30,
+			"ID": "3c53c41744d7e3834c268b961a5836e9",
+			"ParentID": "548825a24f649b2351aa94aa3ce035ef",
+			"Name": "SingleBone",
+			"Transform": {
+				"Translation": {
+					"X": -395.5089111328125,
+					"Y": 0.0,
+					"Z": 0.0
+				}
+			},
+			"StaticFlags": 0,
+			"SkinnedModel": "31f37d0e44afc3fdd77abd8dba70828d",
+			"AnimationGraph": "3e556364468c3cc06971dba088c71880",
+			"Buffer": {
+				"Entries": [
+					{}
+				]
+			}
+		},
+		{
+			"TypeID": 31,
+			"ID": "f454569243e4429e03cb63b572fac16b",
+			"ParentID": "3c53c41744d7e3834c268b961a5836e9",
+			"Name": "BoneSocket",
+			"StaticFlags": 0
+		},
+		{
+			"TypeID": 1,
+			"ID": "c135b8764d9969338ef027a40739031c",
+			"ParentID": "f454569243e4429e03cb63b572fac16b",
+			"Name": "Plane",
+			"Transform": {
+				"Translation": {
+					"X": 0.0,
+					"Y": 0.0,
+					"Z": -142.07266235351563
+				}
+			},
+			"StaticFlags": 0,
+			"Model": "54a1ff4a42af9f018234f7b39b1366b3",
+			"Buffer": {
+				"Entries": [
+					{
+						"Material": "7d946f724cffb015b4268091089793d8"
+					}
+				]
+			}
 		}
 	]
 }

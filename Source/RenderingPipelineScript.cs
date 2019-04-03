@@ -4,8 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CartoonShader.Source.RenderingPipeline;
-using CartoonShader.Source.RenderingPipeline.RenderDisplayer;
-using CartoonShader.Source.RenderingPipeline.Renderers;
+using CartoonShader.Source.RenderingPipeline.RenderingOutput;
 using CartoonShader.Source.RenderingPipeline.Surface;
 using FlaxEngine;
 
@@ -23,8 +22,8 @@ namespace CartoonShader.Source
 		public MaterialBase MotionVectorsDebug;
 
 		public MaterialBase MotionVectorsAndSceneCombination;
-		public Camera DisplacedCamera;
 
+		public StaticModel OutputMaterialActor;
 		public MaterialBase OutputMaterial;
 
 		private MaterialInstance _outputMaterialInstance;
@@ -34,57 +33,50 @@ namespace CartoonShader.Source
 
 		private void OnEnable()
 		{
-			_renderPipeline = new RenderPipeline();
-			_renderPipeline.DefaultSize = Screen.Size;
+			_renderPipeline = new RenderPipeline(Screen.Size);
 
 			var sceneRenderer = _renderPipeline
-				.AddRenderer(SceneCamera, "Scene");
+				.AddCameraRenderer(SceneCamera, "Scene");
 
 			var sceneNormalsRenderer = _renderPipeline
-				.AddRenderer(SceneCamera, "Normal Vectors");
-			sceneNormalsRenderer.SceneRenderTask.Mode = FlaxEngine.Rendering.ViewMode.Normals;
+				.AddCameraRenderer(SceneCamera, "Normal Vectors");
+			sceneNormalsRenderer.Task.Mode = FlaxEngine.Rendering.ViewMode.Normals;
 
 			var blurHorizontalRenderer = _renderPipeline
-				.AddRenderer(BlurHorizontal, "Blur Horizontal (Motion Vectors)")
+				.AddPostEffectRenderer(BlurHorizontal, "Blur Horizontal (Motion Vectors)")
 				.SetInput("Image", sceneRenderer.MotionVectorsOutput);
 
 			var blurVerticalRenderer = _renderPipeline
-				.AddRenderer(BlurVertical, "Blur Vertical")
-				.SetInput("Image", blurHorizontalRenderer.DefaultOutput);
+				.AddPostEffectRenderer(BlurVertical, "Blur Vertical")
+				.SetInput("Image", blurHorizontalRenderer.Output);
 
 			var edgeDetectionRenderer = _renderPipeline
-				.AddRenderer(EdgeDetection, "Edge Detection")
-				.SetInput("Image", sceneNormalsRenderer.DefaultOutput);
+				.AddPostEffectRenderer(EdgeDetection, "Edge Detection")
+				.SetInput("Image", sceneNormalsRenderer.Output);
 
 			// Now we got those things to work with:
-			var edgeDetectionOutput = edgeDetectionRenderer.DefaultOutput;
-			var motionVectorsOutput = blurVerticalRenderer.DefaultOutput;
+			var edgeDetectionOutput = edgeDetectionRenderer.Output;
+			var motionVectorsOutput = blurVerticalRenderer.Output;
 
 			var displacedCombination = _renderPipeline
-				.AddRendererDisplayer(new RenderToMaterial()
-				{
-					Material = MotionVectorsAndSceneCombination
-				})
+				.AddPixelsRenderer(MotionVectorsAndSceneCombination, "Displaced Combination")
 				.SetInput("Image", edgeDetectionOutput)
 				.SetInput("MotionVectors", motionVectorsOutput);
 
-			var displacedRenderer = _renderPipeline
-				.AddRenderer(DisplacedCamera);
+			// TODO: Output displacedCombination to a cube or something
 
-			// Output to material
-			OutputMaterial.WaitForLoaded();
-			_outputMaterialInstance = OutputMaterial.CreateVirtualInstance();
-			(Actor as StaticModel).Entries[0].Material = _outputMaterialInstance;
+			//var displacedRenderer = _renderPipeline
+			//	.AddRenderer(DisplacedCamera);
 
-			var renderToMaterial = _renderPipeline
-				.AddRendererDisplayer(new RenderToMaterial()
-				{
-					Material = _outputMaterialInstance
-				})
-				.SetInput("Image", displacedRenderer.DefaultOutput);
+			//TODO: Output to material
 
+			// Output the displaced combination to a material
+			//var renderToMaterial = _renderPipeline
+			//	.ShowRenderOutput(displacedCombination.Output, OutputMaterialActor, OutputMaterial);
+
+			// Output the motion vectors (debug purrposes)
 			var motionVectorsDebug = _renderPipeline
-				.AddRenderer(MotionVectorsDebug, "Motion Vectors") // Can't use the RendererDisplayers cause the debug view can't display their materials yet..
+				.AddPostEffectRenderer(MotionVectorsDebug, "Motion Vectors") // Can't use the RendererDisplayers cause the debug view can't display their materials yet..
 				.SetInput("Image", sceneRenderer.MotionVectorsOutput);
 
 			// Enable and debug surface
