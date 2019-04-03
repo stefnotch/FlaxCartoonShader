@@ -69,7 +69,7 @@ namespace CartoonShader.Source.RenderingPipeline.RenderingTask
 
 		public PixelsRenderer SetInput(string name, RenderOutput renderOutput)
 		{
-			Inputs["name"] = renderOutput;
+			Inputs[name] = renderOutput;
 			return this;
 		}
 

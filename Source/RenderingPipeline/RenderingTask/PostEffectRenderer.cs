@@ -42,7 +42,7 @@ namespace CartoonShader.Source.RenderingPipeline.RenderingTask
 
 		public PostEffectRenderer SetInput(string name, RenderOutput renderOutput)
 		{
-			Inputs["name"] = renderOutput;
+			Inputs[name] = renderOutput;
 			return this;
 		}
 

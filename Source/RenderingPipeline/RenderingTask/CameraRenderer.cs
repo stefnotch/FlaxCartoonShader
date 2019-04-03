@@ -26,6 +26,9 @@ namespace CartoonShader.Source.RenderingPipeline.RenderingTask
 
 			Task.Begin += OnRenderTaskBegin;
 			//Task.Buffers = RenderBuffers.New(); // Pre-initialize the buffers
+
+			//DepthBufferOutput = new RenderOutput(Task.Buffers.DepthBuffer, this);
+			//MotionVectorsOutput = new RenderOutput(Task.Buffers.MotionVectors, this);
 		}
 
 		public string Name { get; set; }
@@ -44,6 +47,7 @@ namespace CartoonShader.Source.RenderingPipeline.RenderingTask
 
 		public Camera Camera => Task.Camera;
 
+		// TODO: Delete this including the Task.Begin -= OnRenderTaskBegin;
 		private void OnRenderTaskBegin(SceneRenderTask task, GPUContext context)
 		{
 			// No need to dispose of the RenderTargets, _task takes care of it
