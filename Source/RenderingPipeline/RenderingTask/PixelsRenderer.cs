@@ -59,7 +59,7 @@ namespace CartoonShader.Source.RenderingPipeline.RenderingTask
 
 			Task.AllowGlobalCustomPostFx = false;
 			Task.ActorsSource = ActorsSources.CustomActors;
-			//Task.Mode = ViewMode.Emissive;
+			Task.Mode = ViewMode.Emissive; // Appawently this doesn't work with Additive mode
 
 			Task.Begin += OnRenderTaskBegin;
 
