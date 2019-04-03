@@ -35,9 +35,6 @@ namespace CartoonShader.Source.RenderingPipeline.RenderingTask
 			// TODO: Enable the task!
 			Task.Output = Output.RenderTarget;
 
-			Task.Begin += OnRenderTaskBegin;
-			//Task.Buffers = RenderBuffers.New(); // Pre-initialize the buffers
-
 			if (!_model)
 			{
 				_model = Content.CreateVirtualAsset<Model>();
@@ -53,24 +50,23 @@ namespace CartoonShader.Source.RenderingPipeline.RenderingTask
 			if (!_orthographicCamera)
 			{
 				_orthographicCamera = CreateOrthographicCamera();
+
 				Task.Camera = _orthographicCamera;
 				Task.CustomActors.Add(_orthographicCamera);
 			}
 
+			SizeChanged(_size);
+
 			Task.AllowGlobalCustomPostFx = false;
 			Task.ActorsSource = ActorsSources.CustomActors;
-			Task.Mode = ViewMode.Emissive;
+			//Task.Mode = ViewMode.Emissive;
+
+			Task.Begin += OnRenderTaskBegin;
 
 			Scripting.InvokeOnUpdate(() =>
 			{
-				if (_modelActor) _modelActor.Entries[0].Material = Inputs.Material;
+				if (_modelActor) _modelActor.Entries[0].Material = Material;
 			});
-		}
-
-		public PixelsRenderer SetInput(string name, RenderOutput renderOutput)
-		{
-			Inputs[name] = renderOutput;
-			return this;
 		}
 
 		public string Name { get; set; }
@@ -85,6 +81,12 @@ namespace CartoonShader.Source.RenderingPipeline.RenderingTask
 
 		public MaterialBase Material => Inputs.Material;
 
+		public PixelsRenderer SetInput(string name, RenderOutput renderOutput)
+		{
+			Inputs[name] = renderOutput;
+			return this;
+		}
+
 		private void OnRenderTaskBegin(SceneRenderTask task, GPUContext context)
 		{
 			if (Output.Size != _size)
@@ -92,6 +94,7 @@ namespace CartoonShader.Source.RenderingPipeline.RenderingTask
 				_size = Output.Size;
 				SizeChanged(_size);
 			}
+			//context.DrawScene()
 		}
 
 		private void SizeChanged(Vector2 size)
@@ -120,11 +123,11 @@ namespace CartoonShader.Source.RenderingPipeline.RenderingTask
 		private Camera CreateOrthographicCamera()
 		{
 			_orthographicCamera = FlaxEngine.Object.New<Camera>();
-			_orthographicCamera.UsePerspective = false;
 			_orthographicCamera.NearPlane = 2;
 			_orthographicCamera.FarPlane = 1000;
 			_orthographicCamera.OrthographicScale = 1;
 			_orthographicCamera.LocalPosition = Vector3.Zero;
+			_orthographicCamera.UsePerspective = false;
 			return _orthographicCamera;
 		}
 

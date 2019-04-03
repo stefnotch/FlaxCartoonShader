@@ -21,7 +21,6 @@ namespace CartoonShader.Source.RenderingPipeline.RenderingTask
 
 			if (!Task) Task = RenderTask.Create<CustomRenderTask>();
 			Task.Enabled = false;
-			//Task.Output = Output.RenderTarget;
 
 			// TODO: Enable the task!
 
