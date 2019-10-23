@@ -8,11 +8,11 @@ using FlaxEngine.Rendering;
 
 namespace CartoonShader.Source.RenderingPipeline.RenderingTask
 {
-	public interface IRenderer : IDisposable
-	{
-		string Name { get; set; }
-		MaterialRenderInputs Inputs { get; }
-		RenderTask Task { get; }
-		RenderOutput Output { get; }
-	}
+    public interface IRenderer : IDisposable
+    {
+        string Name { get; set; }
+        MaterialRenderInputs Inputs { get; }
+        RenderTask Task { get; }
+        RenderOutput Output { get; }
+    }
 }

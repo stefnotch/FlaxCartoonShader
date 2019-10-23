@@ -22,7 +22,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DefineConstants>DEBUG;FLAX_ASSERTIONS;TRACE;FLAX_0;FLAX_0_4;FLAX_0_4_6181;FLAX_EDITOR;FLAX_WINDOWS;FLAX_EDITOR_WIN</DefineConstants>
+    <DefineConstants>DEBUG;FLAX_ASSERTIONS;TRACE;FLAX_0;FLAX_0_5;FLAX_0_5_6186;FLAX_EDITOR;FLAX_WINDOWS;FLAX_EDITOR_WIN</DefineConstants>
 	<UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -33,7 +33,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DefineConstants>TRACE;FLAX_0;FLAX_0_4;FLAX_0_4_6181;FLAX_EDITOR;FLAX_WINDOWS;FLAX_EDITOR_WIN</DefineConstants>
+    <DefineConstants>TRACE;FLAX_0;FLAX_0_5;FLAX_0_5_6186;FLAX_EDITOR;FLAX_WINDOWS;FLAX_EDITOR_WIN</DefineConstants>
 	<UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <ItemGroup>
@@ -42,13 +42,13 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
 	<Reference Include="FlaxEngine">
-		<HintPath>Cache\Assemblies\Release\FlaxEngine.dll</HintPath>
+		<HintPath>Cache\Assemblies\FlaxEngine.dll</HintPath>
 	</Reference>
 	<Reference Include="Newtonsoft.Json">
-		<HintPath>Cache\Assemblies\Release\Newtonsoft.Json.dll</HintPath>
+		<HintPath>Cache\Assemblies\Newtonsoft.Json.dll</HintPath>
 	</Reference>
 	<Reference Include="FlaxEditor">
-		<HintPath>Cache\Assemblies\Release\FlaxEditor.dll</HintPath>
+		<HintPath>Cache\Assemblies\FlaxEditor.dll</HintPath>
 	</Reference>
   </ItemGroup>
   <ItemGroup>
@@ -62,20 +62,21 @@
     <Compile Include="Source\MeshGenerators\OptionalMeshDatatypes.cs" />
     <Compile Include="Source\MeshGenerators\QuadGenerator.cs" />
     <Compile Include="Source\MeshGenerators\ScreenPixelQuadsGenerator.cs" />
-    <Compile Include="Source\RenderingPipeline\ActionRunner.cs" />
-    <Compile Include="Source\RenderingPipeline\RenderPipeline.cs" />
-    <Compile Include="Source\RenderingPipeline\RenderingOutput\RenderOutput.cs" />
-    <Compile Include="Source\RenderingPipeline\RenderingOutput\RenderOutputToMaterial.cs" />
-    <Compile Include="Source\RenderingPipeline\RenderingTask\CameraRenderer.cs" />
-    <Compile Include="Source\RenderingPipeline\RenderingTask\IRenderer.cs" />
-    <Compile Include="Source\RenderingPipeline\RenderingTask\MaterialRenderInputs.cs" />
-    <Compile Include="Source\RenderingPipeline\RenderingTask\PixelsRenderer.cs" />
-    <Compile Include="Source\RenderingPipeline\RenderingTask\PostEffectRenderer.cs" />
-    <Compile Include="Source\RenderingPipeline\Surface\Box.cs" />
-    <Compile Include="Source\RenderingPipeline\Surface\GraphEdge.cs" />
-    <Compile Include="Source\RenderingPipeline\Surface\GraphNode.cs" />
-    <Compile Include="Source\RenderingPipeline\Surface\RenderPipelineSurface.cs" />
-    <Compile Include="Source\RenderingPipeline\Surface\SurfaceNode.cs" />
+    <Compile Include="Source\RenderingPipeline\IRenderer.cs" />
+    <Compile Include="Source\RenderingPipelineOld\ActionRunner.cs" />
+    <Compile Include="Source\RenderingPipelineOld\RenderPipeline.cs" />
+    <Compile Include="Source\RenderingPipelineOld\RenderingOutput\RenderOutput.cs" />
+    <Compile Include="Source\RenderingPipelineOld\RenderingOutput\RenderOutputToMaterial.cs" />
+    <Compile Include="Source\RenderingPipelineOld\RenderingTask\CameraRenderer.cs" />
+    <Compile Include="Source\RenderingPipelineOld\RenderingTask\IRenderer.cs" />
+    <Compile Include="Source\RenderingPipelineOld\RenderingTask\MaterialRenderInputs.cs" />
+    <Compile Include="Source\RenderingPipelineOld\RenderingTask\PixelsRenderer.cs" />
+    <Compile Include="Source\RenderingPipelineOld\RenderingTask\PostEffectRenderer.cs" />
+    <Compile Include="Source\RenderingPipelineOld\Surface\Box.cs" />
+    <Compile Include="Source\RenderingPipelineOld\Surface\GraphEdge.cs" />
+    <Compile Include="Source\RenderingPipelineOld\Surface\GraphNode.cs" />
+    <Compile Include="Source\RenderingPipelineOld\Surface\RenderPipelineSurface.cs" />
+    <Compile Include="Source\RenderingPipelineOld\Surface\SurfaceNode.cs" />
     <Compile Include="Cache\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
