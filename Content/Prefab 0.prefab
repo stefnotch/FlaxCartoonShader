@@ -1,0 +1,13 @@
+{
+	"ID": "6ee53428485dc1e584255a9c13c4123e",
+	"TypeName": "FlaxEngine.Prefab",
+	"EngineBuild": 6181,
+	"Data": [
+	{
+		"TypeID": 3,
+		"ID": "d8e301524aa37e1a019591af99973e9e",
+		"ParentID": "00000000000000000000000000000000",
+		"Name": "Root"
+	}
+]
+}

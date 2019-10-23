@@ -17,6 +17,25 @@ namespace CartoonShader.Source
 			return child;
 		}
 
+		public static StaticModel TemporaryStaticModel(this Actor actor)
+		{
+			// TODO: Do I have to dispose of the temp model?
+			throw new NotImplementedException();
+			Model tempModel = Content.CreateVirtualAsset<Model>();
+			tempModel.SetupLODs(1);
+
+			StaticModel modelActor = FlaxEngine.Object.New<StaticModel>();
+			modelActor.HideFlags = HideFlags.DontSave;
+			modelActor.Model = tempModel;
+
+			return modelActor;
+		}
+
+		public static Mesh GetMesh(this StaticModel model, int meshIndex, int lodIndex = 0)
+		{
+			return model.Model.LODs[lodIndex].Meshes[meshIndex];
+		}
+
 		/// <summary>
 		/// A depth first traversal of the actor tree
 		/// </summary>

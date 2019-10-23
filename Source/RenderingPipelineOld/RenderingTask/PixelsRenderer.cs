@@ -39,11 +39,15 @@ namespace CartoonShader.Source.RenderingPipeline.RenderingTask
 			{
 				_model = Content.CreateVirtualAsset<Model>();
 				_model.SetupLODs(1);
+				_model.SetupMaterialSlots(1);
+				_model.MaterialSlots[0].ShadowsMode = ShadowsCastingMode.None;
 			}
 			if (!_modelActor)
 			{
 				_modelActor = FlaxEngine.Object.New<StaticModel>();
 				_modelActor.Model = _model;
+				_modelActor.Entries[0].ReceiveDecals = false;
+				_modelActor.Entries[0].ShadowsMode = ShadowsCastingMode.None;
 				Task.CustomActors.Add(_modelActor);
 			}
 
@@ -52,14 +56,17 @@ namespace CartoonShader.Source.RenderingPipeline.RenderingTask
 				_orthographicCamera = CreateOrthographicCamera();
 
 				Task.Camera = _orthographicCamera;
-				Task.CustomActors.Add(_orthographicCamera);
 			}
+
+			SceneManager.SpawnActor(_orthographicCamera, SceneManager.FindActor("SpawnHere"));
+			SceneManager.SpawnActor(_modelActor, SceneManager.FindActor("SpawnHere"));
 
 			SizeChanged(_size);
 
 			Task.AllowGlobalCustomPostFx = false;
 			Task.ActorsSource = ActorsSources.CustomActors;
 			Task.Mode = ViewMode.Emissive; // Appawently this doesn't work with Additive mode
+			Task.Flags = ViewFlags.None;
 
 			Task.Begin += OnRenderTaskBegin;
 
@@ -117,6 +124,7 @@ namespace CartoonShader.Source.RenderingPipeline.RenderingTask
 			int width = Mathf.CeilToInt(_size.X);
 			int height = Mathf.CeilToInt(_size.Y);
 
+			// TODO: Use instanced rendering https://learnopengl.com/Advanced-OpenGL/Instancing
 			new MeshGenerators.ScreenPixelQuadsGenerator(new Int2(width, height)).Generate(mesh);
 		}
 

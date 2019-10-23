@@ -7,6 +7,7 @@ using CartoonShader.Source.RenderingPipeline;
 using CartoonShader.Source.RenderingPipeline.RenderingOutput;
 using CartoonShader.Source.RenderingPipeline.Surface;
 using FlaxEngine;
+using FlaxEngine.Rendering;
 
 namespace CartoonShader.Source
 {
@@ -14,7 +15,7 @@ namespace CartoonShader.Source
 	public class RenderingPipelineScript : Script
 	{
 		public Camera SceneCamera;
-
+		public MaterialBase BrightenMotionVectors;
 		public MaterialBase BlurHorizontal;
 		public MaterialBase BlurVertical;
 		public MaterialBase EdgeDetection;
@@ -37,14 +38,20 @@ namespace CartoonShader.Source
 
 				var sceneRenderer = _renderPipeline
 					.AddCameraRenderer(SceneCamera, "Scene");
-
+				// TODO: Motion Vectors Full Resolution
+				// https://github.com/FlaxEngine/FlaxAPI/blob/c1c8b5673a3610f019265cf17b5bdf3d12e5d2eb/FlaxEngine/Rendering/PostProcessSettings.cs#L1924
 				var sceneNormalsRenderer = _renderPipeline
 					.AddCameraRenderer(SceneCamera, "Normal Vectors");
-				sceneNormalsRenderer.Task.Mode = FlaxEngine.Rendering.ViewMode.Normals;
+				sceneNormalsRenderer.Task.Mode = ViewMode.Normals;
+
+				var motionVectorsBrightenRenderer = _renderPipeline
+					.AddPostEffectRenderer(BrightenMotionVectors, "Brighten MVs") // TODO: Pass RenderBuffers
+					.SetInput("Image", await sceneRenderer.MotionVectorsOutput)
+					.SetInput("Depth", await sceneRenderer.DepthBufferOutput);
 
 				var blurHorizontalRenderer = _renderPipeline
 					.AddPostEffectRenderer(BlurHorizontal, "Blur Horizontal (Motion Vectors)")
-					.SetInput("Image", await sceneRenderer.MotionVectorsOutput);
+					.SetInput("Image", motionVectorsBrightenRenderer.Output);
 
 				var blurVerticalRenderer = _renderPipeline
 					.AddPostEffectRenderer(BlurVertical, "Blur Vertical")
@@ -58,6 +65,7 @@ namespace CartoonShader.Source
 				var edgeDetectionOutput = edgeDetectionRenderer.Output;
 				var motionVectorsOutput = blurVerticalRenderer.Output;
 
+				// TODO: Use instanced rendering https://learnopengl.com/Advanced-OpenGL/Instancing
 				var displacedCombination = _renderPipeline
 					.AddPixelsRenderer(MotionVectorsAndSceneCombination, "Displaced Combination")
 					.SetInput("Image", edgeDetectionOutput)
@@ -78,6 +86,10 @@ namespace CartoonShader.Source
 				var motionVectorsDebug = _renderPipeline
 					.AddPostEffectRenderer(MotionVectorsDebug, "Motion Vectors") // Can't use the RendererDisplayers cause the debug view can't display their materials yet..
 					.SetInput("Image", await sceneRenderer.MotionVectorsOutput);
+
+				var blurredMotionVectorsDebug = _renderPipeline
+					.AddPostEffectRenderer(MotionVectorsDebug, "Blurred Motion Vectors") // Can't use the RendererDisplayers cause the debug view can't display their materials yet..
+					.SetInput("Image", blurVerticalRenderer.Output);
 
 				// Enable and debug surface
 				_renderPipeline.Enabled = true;
