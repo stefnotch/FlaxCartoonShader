@@ -22,7 +22,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DefineConstants>DEBUG;FLAX_ASSERTIONS;TRACE;FLAX_0;FLAX_0_5;FLAX_0_5_6186;FLAX_EDITOR;FLAX_WINDOWS;FLAX_EDITOR_WIN</DefineConstants>
+    <DefineConstants>DEBUG;FLAX_ASSERTIONS;TRACE;FLAX_0;FLAX_0_5;FLAX_0_5_6187;FLAX_EDITOR;FLAX_WINDOWS;FLAX_EDITOR_WIN</DefineConstants>
 	<UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -33,7 +33,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DefineConstants>TRACE;FLAX_0;FLAX_0_5;FLAX_0_5_6186;FLAX_EDITOR;FLAX_WINDOWS;FLAX_EDITOR_WIN</DefineConstants>
+    <DefineConstants>TRACE;FLAX_0;FLAX_0_5;FLAX_0_5_6187;FLAX_EDITOR;FLAX_WINDOWS;FLAX_EDITOR_WIN</DefineConstants>
 	<UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <ItemGroup>
@@ -55,15 +55,17 @@
     <Compile Include="Source\FullscreenQuad.cs" />
     <Compile Include="Source\RenderingPipelineScript.cs" />
     <Compile Include="Source\RTestScript.cs" />
+    <Compile Include="Source\TestNewRenderers.cs" />
     <Compile Include="Source\MeshGenerators\IMeshGenerator.cs" />
     <Compile Include="Source\MeshGenerators\OptionalMeshDatatypes.cs" />
     <Compile Include="Source\MeshGenerators\QuadGenerator.cs" />
     <Compile Include="Source\MeshGenerators\ScreenPixelQuadsGenerator.cs" />
-    <Compile Include="Source\RenderingPipeline\AbstractRenderer.cs" />
     <Compile Include="Source\RenderingPipeline\CameraRenderer.cs" />
+    <Compile Include="Source\RenderingPipeline\GenericRenderer.cs" />
     <Compile Include="Source\RenderingPipeline\IRenderer.cs" />
     <Compile Include="Source\RenderingPipeline\PixelsRenderer.cs" />
     <Compile Include="Source\RenderingPipeline\PostFxRenderer.cs" />
+    <Compile Include="Source\RenderingPipeline\RendererPipeline.cs" />
     <Compile Include="Source\RenderingPipelineOld\ActionRunner.cs" />
     <Compile Include="Source\RenderingPipelineOld\RenderPipeline.cs" />
     <Compile Include="Source\RenderingPipelineOld\RenderingOutput\RenderOutput.cs" />

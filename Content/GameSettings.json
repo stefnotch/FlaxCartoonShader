@@ -1,12 +1,12 @@
 {
 	"ID": "5807b0bd4b5b2ae80bcfae876cb66d92",
 	"TypeName": "FlaxEditor.Content.Settings.GameSettings",
-	"EngineBuild": 6169,
+	"EngineBuild": 6186,
 	"Data": {
 	"ProductName": "Basic Scene",
 	"CompanyName": "My Company",
 	"Version": "1.0",
-	"FirstScene": "548825a24f649b2351aa94aa3ce035ef",
+	"FirstScene": "4f0f027a43ea626c417fbd8b7e60b9ef",
 	"Time": "5ba5e0ad4abea5addf8a94bc9c37dd77",
 	"Audio": "87d80be44c5a57039e6433931e2119b5",
 	"LayersAndTags": "22afb41f4cb39c257ee3628e7ef95ba6",

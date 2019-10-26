@@ -1,0 +1,111 @@
+{
+	"ID": "4f0f027a43ea626c417fbd8b7e60b9ef",
+	"TypeName": "FlaxEngine.SceneAsset",
+	"EngineBuild": 6187,
+	"Data": [
+		{
+			"TypeName": "FlaxEngine.Scene",
+			"ID": "4f0f027a43ea626c417fbd8b7e60b9ef",
+			"ParentID": "00000000000000000000000000000000",
+			"Name": "Scene",
+			"LightmapSettings": {}
+		},
+		{
+			"TypeName": "FlaxEngine.Sky",
+			"ID": "fc552d7045e8ef1803c5a29f1212835d",
+			"ParentID": "4f0f027a43ea626c417fbd8b7e60b9ef",
+			"Name": "Sky",
+			"Transform": {
+				"Translation": {
+					"X": 40.0,
+					"Y": 150.0,
+					"Z": 0.0
+				}
+			},
+			"Sun": "4a125e1942ba18a10cd61298d4a2dd44"
+		},
+		{
+			"TypeName": "FlaxEngine.DirectionalLight",
+			"ID": "4a125e1942ba18a10cd61298d4a2dd44",
+			"ParentID": "4f0f027a43ea626c417fbd8b7e60b9ef",
+			"Name": "Sun",
+			"Transform": {
+				"Translation": {
+					"X": 40.0,
+					"Y": 160.0,
+					"Z": 0.0
+				},
+				"Orientation": {
+					"X": 0.3826834559440613,
+					"Y": 0.0,
+					"Z": 0.0,
+					"W": 0.9238795042037964
+				}
+			},
+			"Brightness": 10.0
+		},
+		{
+			"TypeName": "FlaxEngine.SkyLight",
+			"ID": "7ba8e5b14b9133387717059efd804f8b",
+			"ParentID": "4f0f027a43ea626c417fbd8b7e60b9ef",
+			"Name": "SkyLight",
+			"Brightness": 1.7999999523162842,
+			"CustomTexture": "c54410104ff39427bc11e5bc761d66b0"
+		},
+		{
+			"TypeName": "FlaxEngine.StaticModel",
+			"ID": "14ad2fbb4655c3d0ceb582b168433dee",
+			"ParentID": "4f0f027a43ea626c417fbd8b7e60b9ef",
+			"Name": "Cube",
+			"Transform": {
+				"Orientation": {
+					"X": 0.0,
+					"Y": 0.0,
+					"Z": 0.2641890347003937,
+					"W": 0.9644709825515747
+				},
+				"Scale": {
+					"X": 4.0,
+					"Y": 4.0,
+					"Z": 4.0
+				}
+			},
+			"Model": "b43f0f8f4aaba3f3156896a5a22ba493",
+			"Buffer": {
+				"Entries": [
+					{}
+				]
+			}
+		},
+		{
+			"TypeName": "CartoonShader.Source.TestNewRenderers",
+			"ID": "695f12cf4eb7b93692821096a223107c",
+			"ParentID": "14ad2fbb4655c3d0ceb582b168433dee",
+			"V": {
+	"Camera": "cf72a40c44c8608b115645951388097c",
+	"EffectMaterial": "a1a99049495a8adcf5656693d9c9e5a0",
+	"PixelsEffectMaterial": "07029e4d48a07938bc047c9269970c6b",
+	"OutputMaterial": "e80f7396457a34d18f4160aa4db068cd"
+}
+		},
+		{
+			"TypeName": "FlaxEngine.Camera",
+			"ID": "cf72a40c44c8608b115645951388097c",
+			"ParentID": "4f0f027a43ea626c417fbd8b7e60b9ef",
+			"Name": "Camera",
+			"Transform": {
+				"Translation": {
+					"X": -89.22969818115235,
+					"Y": 640.10595703125,
+					"Z": -863.5413818359375
+				},
+				"Orientation": {
+					"X": 0.37923139333724978,
+					"Y": 0.15868042409420014,
+					"Z": -0.06618716567754746,
+					"W": 0.9091883301734924
+				}
+			}
+		}
+	]
+}
