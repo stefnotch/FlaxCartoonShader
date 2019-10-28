@@ -43,24 +43,21 @@ namespace CartoonShader.Source
             var pixelsRenderer = DisposeLater(new PixelsRenderer(pixelsMaterial, screenSize), 0);
             pixelsRenderer.SetInput("Image", effectRenderer.Output);
 
+            // TODO: 
             pixelsRenderer.Output.ContinueWith(output =>
             {
-                // TODO: Do I need to run this later?
                 // Add materials
-                Scripting.InvokeOnUpdate(() =>
+                ModelEntryInfo[] entries = GetEntries(Actor);
+
+                for (int i = 0; i < entries.Length; i++)
                 {
-                    ModelEntryInfo[] entries = GetEntries(Actor);
-
-                    for (int i = 0; i < entries.Length; i++)
+                    if (!entries[i].Material)
                     {
-                        if (!entries[i].Material)
-                        {
-                            entries[i].Material = outputMaterial;
-                        }
+                        entries[i].Material = outputMaterial;
                     }
-                });
+                }
 
-                SetAsMaterialInputs(output.Result);
+                SetAsMaterialInputs(entries, output.Result);
             });
         }
 
@@ -77,24 +74,18 @@ namespace CartoonShader.Source
             return obj;
         }
 
-        public void SetAsMaterialInputs(RenderTarget renderTarget)
+        public static void SetAsMaterialInputs(ModelEntryInfo[] entries, RenderTarget renderTarget)
         {
             if (renderTarget == null) return;
 
-            // TODO: Do I need to run this later?
-            Scripting.InvokeOnUpdate(() =>
+            for (int i = 0; i < entries.Length; i++)
             {
-                ModelEntryInfo[] entries = GetEntries(Actor);
+                var material = entries[i].Material;
+                if (!material) continue;
 
-                for (int i = 0; i < entries.Length; i++)
-                {
-                    var material = entries[i].Material;
-                    if (!material) continue;
-
-                    material.WaitForLoaded();
-                    material.GetParam("Image").Value = renderTarget;
-                }
-            });
+                material.WaitForLoaded();
+                material.GetParam("Image").Value = renderTarget;
+            }
         }
 
         private static ModelEntryInfo[] GetEntries(Actor actor)
