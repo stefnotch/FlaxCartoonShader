@@ -4,20 +4,20 @@ using FlaxEngine;
 
 namespace CartoonShader.Source
 {
-	public class SetMainCamera : Script
-	{
-		private Camera _previousMain;
-		public Camera Main;
+    public class SetMainCamera : Script
+    {
+        private Camera _previousMain;
+        public Camera Main;
 
-		private void OnEnable()
-		{
-			_previousMain = Camera.MainCamera;
-			Camera.MainCamera = Main;
-		}
+        public override void OnEnable()
+        {
+            _previousMain = Camera.MainCamera;
+            Camera.MainCamera = Main;
+        }
 
-		private void DisableEnable()
-		{
-			if (_previousMain) Camera.MainCamera = _previousMain;
-		}
-	}
+        public override void OnDisable()
+        {
+            if (_previousMain) Camera.MainCamera = _previousMain;
+        }
+    }
 }

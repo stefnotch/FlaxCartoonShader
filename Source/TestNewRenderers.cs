@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FlaxEngine;
-using FlaxEngine.Rendering;
 using RenderingPipeline;
 
 namespace CartoonShader.Source
@@ -74,9 +73,9 @@ namespace CartoonShader.Source
             return obj;
         }
 
-        public static void SetAsMaterialInputs(ModelEntryInfo[] entries, RenderTarget renderTarget)
+        public static void SetAsMaterialInputs(ModelEntryInfo[] entries, GPUTexture texture)
         {
-            if (renderTarget == null) return;
+            if (texture == null) return;
 
             for (int i = 0; i < entries.Length; i++)
             {
@@ -84,7 +83,7 @@ namespace CartoonShader.Source
                 if (!material) continue;
 
                 material.WaitForLoaded();
-                material.GetParam("Image").Value = renderTarget;
+                material.GetParam("Image").Value = texture;
             }
         }
 
