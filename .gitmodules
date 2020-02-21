@@ -1,3 +1,0 @@
-[submodule "Source/RenderingPipeline"]
-	path = Source/RenderingPipeline
-	url = git@github.com:stefnotch/flax-rendering-pipeline-library.git
