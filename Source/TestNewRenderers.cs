@@ -36,11 +36,11 @@ namespace CartoonShader.Source
 
             // var cameraRenderer = DisposeLater(new CameraRenderer(Camera, screenSizeGetter), 0);
 
-            var effectRenderer = DisposeLater(new PostFxRenderer(effectMaterial, screenSizeGetter), 0);
+            //var effectRenderer = DisposeLater(new PostFxRenderer(effectMaterial, screenSizeGetter), 0);
             //  effectRenderer.SetInput(cameraRenderer.Output);
 
             var pixelsRenderer = DisposeLater(new PixelsRenderer(pixelsMaterial, screenSizeGetter), 0);
-            pixelsRenderer.SetInput("Image", effectRenderer.Output);
+           // pixelsRenderer.SetInput("Image", effectRenderer.Output);
 
             // TODO: 
             pixelsRenderer.Output.ContinueWith(output =>
