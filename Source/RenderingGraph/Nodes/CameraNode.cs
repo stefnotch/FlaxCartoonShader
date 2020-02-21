@@ -69,8 +69,9 @@ namespace RenderingGraph.Nodes
 
             Context.GPUContext.DrawScene(Context.RenderTask, Output, _buffers, ref _view, _customActors, _actorsSources, _postFx);
 
-            // TODO: Scene depth and motion vectors
             Return(0, Output);
+            Return(1, _buffers.DepthBuffer);
+            Return(2, _buffers.MotionVectors);
         }
     }
 }

@@ -52,8 +52,6 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Source\FullscreenQuad.cs" />
-    <Compile Include="Source\TestNewRenderers.cs" />
     <Compile Include="Source\MeshGenerators\IMeshGenerator.cs" />
     <Compile Include="Source\MeshGenerators\OptionalMeshDatatypes.cs" />
     <Compile Include="Source\MeshGenerators\QuadGenerator.cs" />
@@ -67,12 +65,10 @@
     <Compile Include="Source\RenderingGraph\RenderingNode.cs" />
     <Compile Include="Source\RenderingGraph\Nodes\CameraNode.cs" />
     <Compile Include="Source\RenderingGraph\Nodes\EffectNode.cs" />
-    <Compile Include="Source\RenderingGraph\Nodes\GenericRenderer.cs" />
-    <Compile Include="Source\RenderingGraph\Nodes\IRenderer.cs" />
     <Compile Include="Source\RenderingGraph\Nodes\MainNode.cs" />
     <Compile Include="Source\RenderingGraph\Nodes\OutputNode.cs" />
     <Compile Include="Source\RenderingGraph\Nodes\ParameterNode.cs" />
-    <Compile Include="Source\RenderingGraph\Nodes\PixelsRenderer.cs" />
+    <Compile Include="Source\RenderingGraph\Nodes\PixelsEffectNode.cs" />
     <Compile Include="Source\RenderingGraph\Nodes\PostEffectNode.cs" />
     <Compile Include="Source\RenderingGraph\Nodes\TextureNode.cs" />
     <Compile Include="Source\Utils\ActorExtensions.cs" />

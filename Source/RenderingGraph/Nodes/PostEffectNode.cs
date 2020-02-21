@@ -18,25 +18,23 @@ namespace RenderingGraph.Nodes
         {
             base.OnEnable();
             var material = Content.Load<MaterialBase>(ParseGuid(Definition.Values[0]));
-            if (material && material.IsPostFx)
+            if (!material || !material.IsPostFx) return;
+            _materialInstance = material.CreateVirtualInstance();
+
+            var instanceParameters = _materialInstance.Parameters;
+            int parameterCount = 0;
+            for (int i = 0; i < instanceParameters.Length; i++)
             {
-                _materialInstance = material.CreateVirtualInstance();
+                if (!instanceParameters[i].IsPublic) continue;
+                parameterCount++;
+            }
 
-                var instanceParameters = _materialInstance.Parameters;
-                int parameterCount = 0;
-                for (int i = 0; i < instanceParameters.Length; i++)
-                {
-                    if (!instanceParameters[i].IsPublic) continue;
-                    parameterCount++;
-                }
-
-                _inputParameters = new MaterialParameter[parameterCount];
-                for (int i = 0, j = 0; i < instanceParameters.Length; i++)
-                {
-                    if (!instanceParameters[i].IsPublic) continue;
-                    _inputParameters[j] = instanceParameters[i];
-                    j++;
-                }
+            _inputParameters = new MaterialParameter[parameterCount];
+            for (int i = 0, j = 0; i < instanceParameters.Length; i++)
+            {
+                if (!instanceParameters[i].IsPublic) continue;
+                _inputParameters[j] = instanceParameters[i];
+                j++;
             }
         }
 
@@ -59,6 +57,10 @@ namespace RenderingGraph.Nodes
                 }
 
                 Context.GPUContext.DrawPostFxMaterial(_materialInstance, Output, inputTexture);
+            }
+            else
+            {
+                Context.GPUContext.Clear(Output, Color.Zero);
             }
 
             Return(0, Output);

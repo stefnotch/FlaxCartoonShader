@@ -80,7 +80,8 @@ namespace NodeGraphs
 
         public void Return(int index, object returnValue)
         {
-            Context.Variables[Definition.OutputIndices[index]] = returnValue;
+            int outputIndex = Definition.OutputIndices[index];
+            if(outputIndex != -1) Context.Variables[outputIndex] = returnValue;
         }
 
         public struct NodeDefinition

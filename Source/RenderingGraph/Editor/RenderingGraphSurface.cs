@@ -21,12 +21,16 @@ namespace RenderingGraph.Editor
             private AssetPicker _assetPicker;
             private MaterialBase _material;
             private readonly Vector2 _baseSize;
+            private readonly int _inputCount;
+            private readonly int _highestBoxId;
 
             public MaterialNodeParamsSet(uint id, VisjectSurfaceContext context, NodeArchetype nodeArch,
                 GroupArchetype groupArch)
                 : base(id, context, nodeArch, groupArch)
             {
                 _baseSize = Archetype.Size;
+                _inputCount = Archetype.Elements.Count(e => e.Type == NodeElementType.Input);
+                _highestBoxId = Archetype.Elements.Max(e => e.BoxID);
             }
 
             private void UpdateAssetPicker()
@@ -48,18 +52,18 @@ namespace RenderingGraph.Editor
                 float height = _baseSize.Y;
                 if (_material)
                 {
-                    int yLevel = 2;
-                    int elementId = 3;
+                    int yLevel = _inputCount;
+                    int boxId = _highestBoxId + 1;
                     foreach (var parameter in _material.Parameters)
                     {
                         if(!parameter.IsPublic) continue;
                         
                         var connectionType = GetConnectionType(parameter.Type);
-                        var archetype = NodeElementArchetype.Factory.Input(yLevel, parameter.Name, true, connectionType, elementId);
+                        var archetype = NodeElementArchetype.Factory.Input(yLevel, parameter.Name, true, connectionType, boxId);
                         var element = AddElement(archetype);
                         _dynamicChildren.Add(element);
                         yLevel++;
-                        elementId++;
+                        boxId++;
                     }
 
                     height += Mathf.Max(0, _dynamicChildren.Count - 2) * 20f;
@@ -250,6 +254,28 @@ namespace RenderingGraph.Editor
                     NodeElementArchetype.Factory.Input(0, "Size", true, ConnectionType.Vector2, 0),
                     NodeElementArchetype.Factory.Input(1, "Input", true, ConnectionType.Object, 1),
                     NodeElementArchetype.Factory.Output(0, "", ConnectionType.Object, 2),
+                    // TODO: Only allow PostFx materials
+                    NodeElementArchetype.Factory.Asset(100, FlaxEditor.Surface.Constants.LayoutOffsetY, 0, ContentDomain.Material)
+                }
+            },
+            new NodeArchetype
+            {
+                TypeID = 2,
+                Create = (id, context, arch, groupArch) => new MaterialNodeParamsSet(id, context, arch, groupArch),
+                Title = "Pixels Effect",
+                Description = "Effect with control over pixel positions",
+                Flags = NodeFlags.AllGraphs,
+                Size = new Vector2(200, 90),
+                DefaultValues = new object[]
+                {
+                    Guid.Empty
+                },
+                Elements = new[]
+                {
+                    NodeElementArchetype.Factory.Input(0, "Size", true, ConnectionType.Vector2, 0),
+                    // TODO: Actual Input Texture from where the size is taken
+                    NodeElementArchetype.Factory.Output(0, "", ConnectionType.Object, 2),
+                    // TODO: Only allow Surface materials
                     NodeElementArchetype.Factory.Asset(100, FlaxEditor.Surface.Constants.LayoutOffsetY, 0, ContentDomain.Material)
                 }
             }
@@ -424,6 +450,11 @@ namespace RenderingGraph.Editor
                         if (typeId == 1)
                         {
                             return new PostEffectNode(nodeDefinition);
+                        }
+
+                        if (typeId == 2)
+                        {
+                            return new PixelsEffectNode(nodeDefinition);
                         }
                     }
                     else if (groupId == ParameterNodeGroupId)
