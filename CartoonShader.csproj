@@ -74,7 +74,6 @@
     <Compile Include="Source\RenderingGraph\Nodes\ParameterNode.cs" />
     <Compile Include="Source\RenderingGraph\Nodes\PixelsRenderer.cs" />
     <Compile Include="Source\RenderingGraph\Nodes\PostEffectNode.cs" />
-    <Compile Include="Source\RenderingGraph\Nodes\PostFxRenderer.cs" />
     <Compile Include="Source\RenderingGraph\Nodes\TextureNode.cs" />
     <Compile Include="Source\Utils\ActorExtensions.cs" />
     <Compile Include="Source\Utils\SceneReloadEventRaiser.cs" />
