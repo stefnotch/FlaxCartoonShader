@@ -54,6 +54,42 @@
 		},
 		{
 			"TypeName": "FlaxEngine.StaticModel",
+			"ID": "3b5938a8416f09351371558103056108",
+			"ParentID": "4f0f027a43ea626c417fbd8b7e60b9ef",
+			"Name": "Cube 0",
+			"Transform": {
+				"Translation": {
+					"X": -172.7431182861328,
+					"Y": -179.7578582763672,
+					"Z": -109.0
+				},
+				"Orientation": {
+					"X": 0.0,
+					"Y": 0.0,
+					"Z": 0.2641890347003937,
+					"W": 0.9644709825515747
+				}
+			},
+			"Model": "b43f0f8f4aaba3f3156896a5a22ba493",
+			"Buffer": {
+				"Entries": [
+					{}
+				]
+			}
+		},
+		{
+			"TypeName": "CartoonShader.Source.TestNewRenderers",
+			"ID": "8d12e30241970b5c8897a290b2f084b3",
+			"ParentID": "3b5938a8416f09351371558103056108",
+			"V": {
+	"Camera": "cf72a40c44c8608b115645951388097c",
+	"EffectMaterial": "a1a99049495a8adcf5656693d9c9e5a0",
+	"PixelsEffectMaterial": "07029e4d48a07938bc047c9269970c6b",
+	"OutputMaterial": "e80f7396457a34d18f4160aa4db068cd"
+}
+		},
+		{
+			"TypeName": "FlaxEngine.StaticModel",
 			"ID": "14ad2fbb4655c3d0ceb582b168433dee",
 			"ParentID": "4f0f027a43ea626c417fbd8b7e60b9ef",
 			"Name": "Cube",
@@ -95,36 +131,18 @@
 			"Name": "Camera",
 			"Transform": {
 				"Translation": {
-					"X": -295.0858459472656,
-					"Y": 718.9511108398438,
-					"Z": -934.0054321289063
+					"X": -98.54803466796875,
+					"Y": -352.0709533691406,
+					"Z": -506.6856994628906
 				},
 				"Orientation": {
-					"X": 0.36068761348724368,
-					"Y": 0.11084181070327759,
-					"Z": -0.04321765527129173,
-					"W": 0.9250679612159729
+					"X": -0.30879348516464236,
+					"Y": 0.041864022612571719,
+					"Z": 0.013606150634586811,
+					"W": 0.9501098990440369
 				}
 			},
 			"StaticFlags": 0
-		},
-		{
-			"TypeName": "CartoonShader.Source.TestScript",
-			"ID": "31fcd6c446a655120cb58f88155276e3",
-			"ParentID": "cf72a40c44c8608b115645951388097c",
-			"V": {
-	"DefaultValues": {
-		"$type": "System.Object[], mscorlib",
-		"$values": [
-			{
-				"$type": "FlaxEngine.Vector2, FlaxEngine",
-				"X": 0.0,
-				"Y": 0.0
-			},
-			"00000000-0000-0000-0000-000000000000"
-		]
-	}
-}
 		}
 	]
 }

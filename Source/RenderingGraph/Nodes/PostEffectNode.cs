@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FlaxEngine;
+﻿using FlaxEngine;
 
 namespace RenderingGraph.Nodes
 {
@@ -12,8 +7,9 @@ namespace RenderingGraph.Nodes
     /// </summary>
     public class PostEffectNode : EffectNode
     {
+        private MaterialParameter[] _inputParameters;
         private MaterialInstance _materialInstance;
-        
+
         public PostEffectNode(NodeDefinition definition) : base(definition)
         {
         }
@@ -25,12 +21,28 @@ namespace RenderingGraph.Nodes
             if (material && material.IsPostFx)
             {
                 _materialInstance = material.CreateVirtualInstance();
+
+                var instanceParameters = _materialInstance.Parameters;
+                int parameterCount = 0;
+                for (int i = 0; i < instanceParameters.Length; i++)
+                {
+                    if (!instanceParameters[i].IsPublic) continue;
+                    parameterCount++;
+                }
+
+                _inputParameters = new MaterialParameter[parameterCount];
+                for (int i = 0, j = 0; i < instanceParameters.Length; i++)
+                {
+                    if (!instanceParameters[i].IsPublic) continue;
+                    _inputParameters[j] = instanceParameters[i];
+                    j++;
+                }
             }
         }
 
         public override void OnDisable()
         {
-            FlaxEngine.Object.Destroy(ref _materialInstance);
+            Object.Destroy(ref _materialInstance);
             base.OnDisable();
         }
 
@@ -38,10 +50,17 @@ namespace RenderingGraph.Nodes
         {
             base.OnUpdate();
             var inputTexture = InputTexture;
-            if (inputTexture && _materialInstance)
+            if (_materialInstance)
             {
+                for (int i = 0; i < _inputParameters.Length; i++)
+                {
+                    if (!HasInput(i + 2)) continue;
+                    _inputParameters[i].Value = GetInput(i + 2);
+                }
+
                 Context.GPUContext.DrawPostFxMaterial(_materialInstance, Output, inputTexture);
             }
+
             Return(0, Output);
         }
     }

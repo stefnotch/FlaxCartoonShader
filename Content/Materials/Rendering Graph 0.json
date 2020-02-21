@@ -1,0 +1,93 @@
+{
+	"ID": "0f540ee44c1ae6519ef12d8b0cdc8960",
+	"TypeName": "RenderingGraph.RenderingGraph",
+	"EngineBuild": 6192,
+	"Data": {
+		"Nodes": [
+			{
+				"$type": "RenderingGraph.Nodes.TextureNode, Game",
+				"Definition": {
+					"GroupId": 1,
+					"TypeId": 4,
+					"Values": [
+						"d2c35ae6-58ab-415b-add6-2a2603bab761"
+					],
+					"InputIndices": [
+						-1
+					],
+					"OutputIndices": [
+						0
+					]
+				}
+			},
+			{
+				"$type": "RenderingGraph.Nodes.CameraNode, Game",
+				"Definition": {
+					"GroupId": 1,
+					"TypeId": 2,
+					"InputIndices": [
+						-1,
+						-1
+					],
+					"OutputIndices": [
+						1,
+						-1,
+						-1
+					]
+				}
+			},
+			{
+				"$type": "RenderingGraph.Nodes.PostEffectNode, Game",
+				"Definition": {
+					"GroupId": 2,
+					"TypeId": 1,
+					"Values": [
+						"75456ff7-fa7e-4828-b1e7-795aa1393972"
+					],
+					"InputIndices": [
+						-1,
+						1,
+						0
+					],
+					"OutputIndices": [
+						0
+					]
+				}
+			},
+			{
+				"$type": "RenderingGraph.Nodes.PostEffectNode, Game",
+				"Definition": {
+					"GroupId": 2,
+					"TypeId": 1,
+					"Values": [
+						"a0af7dc3-e960-492a-a310-591f839f0a6d"
+					],
+					"InputIndices": [
+						-1,
+						0,
+						-1,
+						-1,
+						-1,
+						-1
+					],
+					"OutputIndices": [
+						0
+					]
+				}
+			},
+			{
+				"$type": "RenderingGraph.Nodes.MainNode, Game",
+				"Definition": {
+					"GroupId": 1,
+					"TypeId": 1,
+					"InputIndices": [
+						0
+					],
+					"OutputIndices": []
+				}
+			}
+		],
+		"VisjectSurface": "VkcJdeYXAAAAAAAAAAAAAAUAAAAAAAAAAQAAAAEAAQACAAAAAgABAAMAAAABAAIABAAAAAQAAQAFAAAAAQACAAAAAAABAAAAAQAAAQAFAAAAAgEAAAALAAAAAAAAAAAAAAAMAAAAk2GzQ4wn48IAAAAAAAAAAAUAABAAAAAAAAEAAQAAAAACAAEAAAEAAwAAAAEDAAEAAAAABAABAAAAAAEAAAALAAAAAAAAAAAAAAAMAAAAjhrmw4xs58IAAAAAAQAAAAf3b0V1fvooSLHneVqhOTlyBAAAEAAAAAAAAQABAAABAAIAAAACAgABAAABAAUAAAABAwABAAABAAQAAAACAQAAAAsAAAAAAAAAAAAAAAwAAAAaNVLDjGznwgAAAAABAAAAB+Zaw9KrWFtBrdYqJgO6t2ECAAAQAAAAAAACAAEAAAEAAwAAAAMBAAAACwAAAAAAAAAAAAAADAAAAOaa78O/PTdCAAAAAAEAAAAHw32voGDpKkmjEFkfg58KbQcAABAAAAAAAAEAAQAAAQADAAAAAgIAAQAAAQABAAAAAAMIAAAAAAAECAAAAAAABQgAAAAAAAYgAAAAAAABAAAACwAAAAAAAAAAAAAADAAAAJgrH0KMbOfCAAAAAAEAAAAKAAAAAAAAAAAAAAAMAAAAuDMXQ/Inp0KWjFc/CQ==",
+		"Parameters": []
+	}
+}

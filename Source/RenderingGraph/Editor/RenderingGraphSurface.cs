@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FlaxEditor;
+using FlaxEditor.GUI;
 using FlaxEditor.Surface;
 using FlaxEditor.Surface.Elements;
 using FlaxEngine;
@@ -14,6 +15,158 @@ namespace RenderingGraph.Editor
 {
     public class RenderingGraphSurface : VisjectSurface
     {
+        public class MaterialNodeParamsSet : SurfaceNode
+        {
+            private readonly List<ISurfaceNodeElement> _dynamicChildren = new List<ISurfaceNodeElement>();
+            private AssetPicker _assetPicker;
+            private MaterialBase _material;
+            private readonly Vector2 _baseSize;
+
+            public MaterialNodeParamsSet(uint id, VisjectSurfaceContext context, NodeArchetype nodeArch,
+                GroupArchetype groupArch)
+                : base(id, context, nodeArch, groupArch)
+            {
+                _baseSize = Archetype.Size;
+            }
+
+            private void UpdateAssetPicker()
+            {
+                if (_assetPicker == null)
+                {
+                    _assetPicker = GetChild<AssetPicker>();
+                    _assetPicker.SelectedItemChanged += SelectedItemChanged;
+                }
+            }
+
+            private void UpdateLayout()
+            {
+                Guid materialGuid = (Guid) Values[0];
+                if (_material && materialGuid == _material.ID) return;
+
+                _material = Content.Load<MaterialBase>(materialGuid);
+                ClearDynamicElements();
+                float height = _baseSize.Y;
+                if (_material)
+                {
+                    int yLevel = 2;
+                    int elementId = 3;
+                    foreach (var parameter in _material.Parameters)
+                    {
+                        if(!parameter.IsPublic) continue;
+                        
+                        var connectionType = GetConnectionType(parameter.Type);
+                        var archetype = NodeElementArchetype.Factory.Input(yLevel, parameter.Name, true, connectionType, elementId);
+                        var element = AddElement(archetype);
+                        _dynamicChildren.Add(element);
+                        yLevel++;
+                        elementId++;
+                    }
+
+                    height += Mathf.Max(0, _dynamicChildren.Count - 2) * 20f;
+                }
+                Resize(_baseSize.X, height);
+            }
+
+            private static ConnectionType GetConnectionType(MaterialParameterType parameter)
+            {
+                if (parameter == MaterialParameterType.Invalid)
+                {
+                    return ConnectionType.Invalid;
+                }
+
+                if (parameter == MaterialParameterType.Bool)
+                {
+                    return ConnectionType.Bool;
+                }
+
+                if (parameter == MaterialParameterType.Integer)
+                {
+                    return ConnectionType.Integer;
+                }
+
+                if (parameter == MaterialParameterType.Float)
+                {
+                    return ConnectionType.Float;
+                }
+
+                if (parameter == MaterialParameterType.Vector2)
+                {
+                    return ConnectionType.Vector2;
+                }
+
+                if (parameter == MaterialParameterType.Vector3)
+                {
+                    return ConnectionType.Vector3;
+                }
+
+                if (parameter == MaterialParameterType.Vector4)
+                {
+                    return ConnectionType.Vector4;
+                }
+
+                if (parameter == MaterialParameterType.Color)
+                {
+                    return ConnectionType.Vector4;
+                }
+
+                // TODO: Automatically cast between GPUTexture and Texture
+                if (parameter == MaterialParameterType.Texture || parameter == MaterialParameterType.CubeTexture ||
+                    parameter == MaterialParameterType.NormalMap || parameter == MaterialParameterType.SceneTexture ||
+                    parameter == MaterialParameterType.GPUTexture ||
+                    parameter == MaterialParameterType.GPUTextureArray ||
+                    parameter == MaterialParameterType.GPUTextureVolume ||
+                    parameter == MaterialParameterType.GPUTextureCube)
+                {
+                    return ConnectionType.Object;
+                }
+
+                if (parameter == MaterialParameterType.Matrix)
+                {
+                    return ConnectionType.Object;
+                }
+
+                if (parameter == MaterialParameterType.ChannelMask)
+                {
+                    return ConnectionType.Object;
+                }
+
+                return ConnectionType.Invalid;
+            }
+
+            private void ClearDynamicElements()
+            {
+                for (int i = 0; i < _dynamicChildren.Count; i++)
+                {
+                    RemoveElement(_dynamicChildren[i]);
+                }
+
+                _dynamicChildren.Clear();
+            }
+
+            private void SelectedItemChanged()
+            {
+                UpdateLayout();
+            }
+
+            /// <inheritdoc />
+            public override void OnLoaded()
+            {
+                base.OnLoaded();
+
+                UpdateAssetPicker();
+                UpdateLayout();
+            }
+
+            /// <inheritdoc />
+            public override void OnValuesChanged()
+            {
+                base.OnValuesChanged();
+
+                UpdateAssetPicker();
+                UpdateLayout();
+            }
+        }
+
         public const int MainNodeGroupId = 1;
         public const int MainNodeTypeId = 1;
         public const int EffectNodeGroupId = 2;
@@ -79,12 +232,11 @@ namespace RenderingGraph.Editor
 
         public static readonly NodeArchetype[] RenderingGraphEffectNodes =
         {
-            // TODO: PostFx node
             // TODO: PixelsRenderer node
-            // TODO: 
             new NodeArchetype
             {
                 TypeID = 1,
+                Create = (id, context, arch, groupArch) => new MaterialNodeParamsSet(id, context, arch, groupArch),
                 Title = "PostFx",
                 Description = "Post Processing Effect",
                 Flags = NodeFlags.AllGraphs,
@@ -97,13 +249,7 @@ namespace RenderingGraph.Editor
                 {
                     NodeElementArchetype.Factory.Input(0, "Size", true, ConnectionType.Vector2, 0),
                     NodeElementArchetype.Factory.Input(1, "Input", true, ConnectionType.Object, 1),
-
-                    // TODO: Material parameter inputs
-                    //NodeElementArchetype.Factory.Input(2, "", true, ConnectionType.All, 1),
-                   // NodeElementArchetype.Factory.TextBox(20, 40, 80, 20, -1, false),
-
                     NodeElementArchetype.Factory.Output(0, "", ConnectionType.Object, 2),
-
                     NodeElementArchetype.Factory.Asset(100, FlaxEditor.Surface.Constants.LayoutOffsetY, 0, ContentDomain.Material)
                 }
             }
