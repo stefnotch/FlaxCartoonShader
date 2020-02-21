@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FlaxEngine;
-using RenderingPipeline;
+using RenderingGraph;
 
 namespace CartoonShader.Source
 {
@@ -32,14 +32,14 @@ namespace CartoonShader.Source
             outputMaterial.WaitForLoaded();
             pixelsMaterial.WaitForLoaded();
 
-            Int2 screenSize = new Int2(Mathf.FloorToInt(Screen.Size.X), Mathf.FloorToInt(Screen.Size.Y));
+            Func<Int2> screenSizeGetter = () => new Int2(Mathf.FloorToInt(Screen.Size.X), Mathf.FloorToInt(Screen.Size.Y));
 
-            var cameraRenderer = DisposeLater(new CameraRenderer(Camera, screenSize), 0);
+            // var cameraRenderer = DisposeLater(new CameraRenderer(Camera, screenSizeGetter), 0);
 
-            var effectRenderer = DisposeLater(new PostFxRenderer(effectMaterial, screenSize), 0);
-            effectRenderer.SetInput(cameraRenderer.Output);
+            var effectRenderer = DisposeLater(new PostFxRenderer(effectMaterial, screenSizeGetter), 0);
+            //  effectRenderer.SetInput(cameraRenderer.Output);
 
-            var pixelsRenderer = DisposeLater(new PixelsRenderer(pixelsMaterial, screenSize), 0);
+            var pixelsRenderer = DisposeLater(new PixelsRenderer(pixelsMaterial, screenSizeGetter), 0);
             pixelsRenderer.SetInput("Image", effectRenderer.Output);
 
             // TODO: 
