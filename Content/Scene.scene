@@ -107,6 +107,24 @@
 				}
 			},
 			"StaticFlags": 0
+		},
+		{
+			"TypeName": "CartoonShader.Source.TestScript",
+			"ID": "31fcd6c446a655120cb58f88155276e3",
+			"ParentID": "cf72a40c44c8608b115645951388097c",
+			"V": {
+	"DefaultValues": {
+		"$type": "System.Object[], mscorlib",
+		"$values": [
+			{
+				"$type": "FlaxEngine.Vector2, FlaxEngine",
+				"X": 0.0,
+				"Y": 0.0
+			},
+			"00000000-0000-0000-0000-000000000000"
+		]
+	}
+}
 		}
 	]
 }
