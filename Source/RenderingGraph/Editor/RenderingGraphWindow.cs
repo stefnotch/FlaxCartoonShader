@@ -121,8 +121,8 @@ namespace RenderingGraph.Editor
         {
             // Setup
             _assetInstance = _asset.CreateInstance<RenderingGraph>();
-            _assetInstance.Enabled = true;
             _preview.RenderingGraph = _assetInstance;
+            _preview.RenderingGraph.Enabled = true;
 
             base.OnAssetLinked();
         }

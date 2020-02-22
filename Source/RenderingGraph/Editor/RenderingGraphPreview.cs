@@ -22,15 +22,24 @@ namespace RenderingGraph.Editor
         public RenderingGraph RenderingGraph
         {
             get => _renderingGraph;
-            set => _renderingGraph = value;
+            set
+            {
+                _renderingGraph = value;
+                if (_renderingGraph != null)
+                {
+                    _renderingGraph.Size = Size;
+                }
+            }
         }
 
         public override void Update(float deltaTime)
         {
             base.Update(deltaTime);
 
-            // Manually update simulation
-            RenderingGraph?.Update(deltaTime);
+            if(RenderingGraph == null) return;
+
+            RenderingGraph.Size = Size;
+            RenderingGraph.Update(deltaTime);
         }
 
         /// <inheritdoc />

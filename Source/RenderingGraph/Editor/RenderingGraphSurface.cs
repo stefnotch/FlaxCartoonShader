@@ -274,7 +274,7 @@ namespace RenderingGraph.Editor
                 {
                     NodeElementArchetype.Factory.Input(0, "Size", true, ConnectionType.Vector2, 0),
                     // TODO: Actual Input Texture from where the size is taken
-                    NodeElementArchetype.Factory.Output(0, "", ConnectionType.Object, 2),
+                    NodeElementArchetype.Factory.Output(0, "", ConnectionType.Object, 1),
                     // TODO: Only allow Surface materials
                     NodeElementArchetype.Factory.Asset(100, FlaxEditor.Surface.Constants.LayoutOffsetY, 0, ContentDomain.Material)
                 }

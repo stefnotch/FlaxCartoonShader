@@ -15,8 +15,16 @@ namespace RenderingGraph
         private CustomRenderTask _renderTask;
         private float _previousTime;
 
+        public Vector2 Size = Vector2.One;
+
         [NoSerialize]
         public GPUTexture Output { get; private set; }
+
+        protected override void OnContextInitialize(RenderingGraphContext context)
+        {
+            base.OnContextInitialize(context);
+            Context.Size = Size;
+        }
 
         protected override void OnEnable()
         {
@@ -37,6 +45,7 @@ namespace RenderingGraph
 
         public void RenderUpdate(GPUContext context)
         {
+            Context.Size = Size;
             Context.GPUContext = context;
             Context.RenderTask = _renderTask;
 

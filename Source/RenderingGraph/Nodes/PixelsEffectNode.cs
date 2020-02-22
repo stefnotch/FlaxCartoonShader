@@ -87,8 +87,8 @@ namespace RenderingGraph.Nodes
             {
                 for (int i = 0; i < _inputParameters.Length; i++)
                 {
-                    if (!HasInput(i + 2)) continue;
-                    _inputParameters[i].Value = GetInput(i + 2);
+                    if (!HasInput(i + 1)) continue;
+                    _inputParameters[i].Value = GetInput(i + 1);
                 }
 
                 var size = Size;

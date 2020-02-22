@@ -8,9 +8,9 @@ namespace NodeGraphs
     public class NodeGraph<TContext> where TContext : GraphContext, new()
     {
         private bool _enabled;
-
+        
         [NoSerialize]
-        public TContext Context;
+        protected TContext Context;
 
         [Serialize]
         protected GraphNode<TContext>[] Nodes;
@@ -61,6 +61,7 @@ namespace NodeGraphs
                 {
                     Variables = new object[maxVariableIndex + 1]
                 };
+                OnContextInitialize(Context);
                 Nodes.ForEach(n => n.Context = Context);
                 Nodes.ForEach(n => n.OnEnable());
             }
@@ -71,6 +72,11 @@ namespace NodeGraphs
                     Variables = new object[0]
                 };
             }
+        }
+
+        protected virtual void OnContextInitialize(TContext context)
+        {
+            
         }
 
         protected virtual void OnDisable()
