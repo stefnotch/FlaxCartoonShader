@@ -18,6 +18,7 @@ namespace NodeGraphs
         /// <summary>
         /// Serialized Visject surface
         /// </summary>
+        [Serialize]
         public byte[] VisjectSurface { get; set; }
 
         [Serialize]
@@ -47,7 +48,6 @@ namespace NodeGraphs
             Nodes = nodes;
             Enabled = enabled;
         }
-
 
         protected virtual void OnEnable()
         {

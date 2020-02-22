@@ -459,7 +459,8 @@ namespace RenderingGraph.Editor
                     }
                     else if (groupId == ParameterNodeGroupId)
                     {
-                        nodeDefinition.InputIndices = new int[1] { graphParams[(Guid) surfaceNode.Values[0]].OutputIndex };
+                        var graphParam = graphParams[(Guid) surfaceNode.Values[0]];
+                        nodeDefinition.InputIndices = new int[1] { graphParam.OutputIndex };
                         return new ParameterNode(nodeDefinition);
                     }
 

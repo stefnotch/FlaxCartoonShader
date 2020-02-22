@@ -15,7 +15,7 @@ namespace RenderingGraph.Nodes
         [NoSerialize]
         private Vector2 _cachedSize;
 
-        protected Vector2 Size => GetInputOrDefault<Vector2>(0, InputTexture?.Size ?? Vector2.One);
+        protected Vector2 Size => Vector2.Max(GetInputOrDefault<Vector2>(0, InputTexture?.Size ?? Vector2.One), Vector2.One);
 
         protected GPUTexture InputTexture => GetInputOrDefault<GPUTexture>(1, null);
 
