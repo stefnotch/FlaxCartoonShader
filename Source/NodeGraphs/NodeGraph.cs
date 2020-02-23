@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using FlaxEngine;
 using FlaxEngine.Utilities;
 
@@ -34,7 +35,10 @@ namespace NodeGraphs
                 {
                     _enabled = value;
                     if (_enabled)
-                        OnEnable();
+                        Scripting.InvokeOnUpdate(async () =>
+                            {
+                                Task.Delay(1000).ContinueWith((a) => { Scripting.InvokeOnUpdate(OnEnable); });
+                            });
                     else
                         OnDisable();
                 }
@@ -51,6 +55,7 @@ namespace NodeGraphs
 
         protected virtual void OnEnable()
         {
+            if(!_enabled) return;
             if (Nodes != null)
             {
                 int maxVariableIndex = Math.Max(

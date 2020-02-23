@@ -1,25 +1,13 @@
 {
-	"ID": "0f540ee44c1ae6519ef12d8b0cdc8960",
+	"ID": "1e05ec9946745e932f9e2a8d0ff2592d",
 	"TypeName": "RenderingGraph.RenderingGraph",
 	"EngineBuild": 6192,
 	"Data": {
+		"Size": {
+			"X": 214.0,
+			"Y": 162.0
+		},
 		"Nodes": [
-			{
-				"$type": "RenderingGraph.Nodes.TextureNode, Game",
-				"Definition": {
-					"GroupId": 1,
-					"TypeId": 4,
-					"Values": [
-						"d2c35ae6-58ab-415b-add6-2a2603bab761"
-					],
-					"InputIndices": [
-						-1
-					],
-					"OutputIndices": [
-						0
-					]
-				}
-			},
 			{
 				"$type": "RenderingGraph.Nodes.CameraNode, Game",
 				"Definition": {
@@ -30,45 +18,23 @@
 						-1
 					],
 					"OutputIndices": [
-						1,
-						-1,
-						-1
-					]
-				}
-			},
-			{
-				"$type": "RenderingGraph.Nodes.PostEffectNode, Game",
-				"Definition": {
-					"GroupId": 2,
-					"TypeId": 1,
-					"Values": [
-						"75456ff7-fa7e-4828-b1e7-795aa1393972"
-					],
-					"InputIndices": [
-						-1,
-						1,
-						0
-					],
-					"OutputIndices": [
-						0
-					]
-				}
-			},
-			{
-				"$type": "RenderingGraph.Nodes.PostEffectNode, Game",
-				"Definition": {
-					"GroupId": 2,
-					"TypeId": 1,
-					"Values": [
-						"a0af7dc3-e960-492a-a310-591f839f0a6d"
-					],
-					"InputIndices": [
-						-1,
 						0,
 						-1,
-						-1,
-						-1,
 						-1
+					]
+				}
+			},
+			{
+				"$type": "RenderingGraph.Nodes.PixelsEffectNode, Game",
+				"Definition": {
+					"GroupId": 2,
+					"TypeId": 2,
+					"Values": [
+						"e80f7396-34d1-457a-aa60-418fcd68b04d"
+					],
+					"InputIndices": [
+						-1,
+						0
 					],
 					"OutputIndices": [
 						0
@@ -87,7 +53,7 @@
 				}
 			}
 		],
-		"VisjectSurface": "VkcJdeYXAAAAAAAAAAAAAAUAAAAAAAAAAQAAAAEAAQACAAAAAgABAAMAAAABAAIABAAAAAQAAQAFAAAAAQACAAAAAAABAAAAAQAAAQAFAAAAAgEAAAALAAAAAAAAAAAAAAAMAAAAk2GzQ4wn48IAAAAAAAAAAAUAABAAAAAAAAEAAQAAAAACAAEAAAEAAwAAAAEDAAEAAAAABAABAAAAAAEAAAALAAAAAAAAAAAAAAAMAAAAjhrmw4xs58IAAAAAAQAAAAf3b0V1fvooSLHneVqhOTlyBAAAEAAAAAAAAQABAAABAAIAAAACAgABAAABAAUAAAABAwABAAABAAQAAAACAQAAAAsAAAAAAAAAAAAAAAwAAAAaNVLDjGznwgAAAAABAAAAB+Zaw9KrWFtBrdYqJgO6t2ECAAAQAAAAAAACAAEAAAEAAwAAAAMBAAAACwAAAAAAAAAAAAAADAAAAOaa78O/PTdCAAAAAAEAAAAHw32voGDpKkmjEFkfg58KbQcAABAAAAAAAAEAAQAAAQADAAAAAgIAAQAAAQABAAAAAAMIAAAAAAAECAAAAAAABQgAAAAAAAYgAAAAAAABAAAACwAAAAAAAAAAAAAADAAAAJgrH0KMbOfCAAAAAAEAAAAKAAAAAAAAAAAAAAAMAAAAuDMXQ/Inp0KWjFc/CQ==",
+		"VisjectSurface": "VkcJdeYXAAAAAAAAAAAAAAMAAAAAAAAAAQAAAAEAAQADAAAAAgABAAIAAAACAAIAAAAAAAEAAAABAAABAAIAAAABAQAAAAsAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAAAAAAAAAAAABQAAEAAAAAAAAQABAAAAAAIAAQAAAQACAAAABAMAAQAAAAAEAAEAAAAAAQAAAAsAAAAAAAAAAAAAAAwAAAAzZP/DxN05wgAAAAABAAAAB5ZzD+jRNHpFqmBBj81osE0DAAAQAAAAAAABAAEAAAEAAQAAAAAEAAEAAAEAAwAAAAIBAAAACwAAAAAAAAAAAAAADAAAAMnldMNpGrTCAAAAAAEAAAAKAAAAAAAAAAAAAAAMAAAAMmQvw8vy+0J/ATY/CQ==",
 		"Parameters": []
 	}
 }

@@ -69,6 +69,7 @@
     <Compile Include="Source\RenderingGraph\Nodes\OutputNode.cs" />
     <Compile Include="Source\RenderingGraph\Nodes\ParameterNode.cs" />
     <Compile Include="Source\RenderingGraph\Nodes\PixelsEffectNode.cs" />
+    <Compile Include="Source\RenderingGraph\Nodes\PixelsEffectNodeBad.cs" />
     <Compile Include="Source\RenderingGraph\Nodes\PostEffectNode.cs" />
     <Compile Include="Source\RenderingGraph\Nodes\TextureNode.cs" />
     <Compile Include="Source\Utils\ActorExtensions.cs" />

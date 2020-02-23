@@ -70,23 +70,13 @@
 					"W": 0.9644709825515747
 				}
 			},
+			"StaticFlags": 0,
 			"Model": "b43f0f8f4aaba3f3156896a5a22ba493",
 			"Buffer": {
 				"Entries": [
 					{}
 				]
 			}
-		},
-		{
-			"TypeName": "CartoonShader.Source.TestNewRenderers",
-			"ID": "8d12e30241970b5c8897a290b2f084b3",
-			"ParentID": "3b5938a8416f09351371558103056108",
-			"V": {
-	"Camera": "cf72a40c44c8608b115645951388097c",
-	"EffectMaterial": "a1a99049495a8adcf5656693d9c9e5a0",
-	"PixelsEffectMaterial": "07029e4d48a07938bc047c9269970c6b",
-	"OutputMaterial": "e80f7396457a34d18f4160aa4db068cd"
-}
 		},
 		{
 			"TypeName": "FlaxEngine.StaticModel",
@@ -106,23 +96,13 @@
 					"Z": 4.0
 				}
 			},
+			"StaticFlags": 0,
 			"Model": "b43f0f8f4aaba3f3156896a5a22ba493",
 			"Buffer": {
 				"Entries": [
 					{}
 				]
 			}
-		},
-		{
-			"TypeName": "CartoonShader.Source.TestNewRenderers",
-			"ID": "695f12cf4eb7b93692821096a223107c",
-			"ParentID": "14ad2fbb4655c3d0ceb582b168433dee",
-			"V": {
-	"Camera": "cf72a40c44c8608b115645951388097c",
-	"EffectMaterial": "a1a99049495a8adcf5656693d9c9e5a0",
-	"PixelsEffectMaterial": "07029e4d48a07938bc047c9269970c6b",
-	"OutputMaterial": "e80f7396457a34d18f4160aa4db068cd"
-}
 		},
 		{
 			"TypeName": "FlaxEngine.Camera",
@@ -143,6 +123,107 @@
 				}
 			},
 			"StaticFlags": 0
+		},
+		{
+			"TypeName": "FlaxEngine.StaticModel",
+			"ID": "da5559184ce5976f210fc2937cde6c42",
+			"ParentID": "4f0f027a43ea626c417fbd8b7e60b9ef",
+			"Name": "Cube",
+			"Transform": {
+				"Translation": {
+					"X": 0.0,
+					"Y": 0.0,
+					"Z": 438.587890625
+				},
+				"Orientation": {
+					"X": 0.18408586084842683,
+					"Y": 0.1611545830965042,
+					"Z": 0.18099500238895417,
+					"W": 0.9525663256645203
+				},
+				"Scale": {
+					"X": 4.0,
+					"Y": 4.0,
+					"Z": 1.0
+				}
+			},
+			"StaticFlags": 0,
+			"Model": "b43f0f8f4aaba3f3156896a5a22ba493",
+			"Buffer": {
+				"Entries": [
+					{}
+				]
+			}
+		},
+		{
+			"TypeName": "FlaxEngine.Camera",
+			"ID": "fa38564f4f378fda7fb514a1548e76b4",
+			"ParentID": "4f0f027a43ea626c417fbd8b7e60b9ef",
+			"Name": "Camera",
+			"UsePerspective": false,
+			"Near": 2.0,
+			"Far": 1000.0
+		},
+		{
+			"TypeName": "FlaxEngine.StaticModel",
+			"ID": "fa10ef5445760d6f1dbb91a47b07a46b",
+			"ParentID": "4f0f027a43ea626c417fbd8b7e60b9ef",
+			"Name": "StaticModel",
+			"Model": "d4d169e8440a81f6f12762bc8b795b42",
+			"DrawModes": 3,
+			"Buffer": {
+				"Entries": [
+					{
+						"Material": "dcbbbfe6485a0f2f641cd595688bbb40",
+						"ShadowsMode": 0,
+						"ReceiveDecals": false
+					}
+				]
+			}
+		},
+		{
+			"TypeName": "FlaxEngine.PostFxVolume",
+			"ID": "f7811f564abd072c536df19694afdb67",
+			"ParentID": "4f0f027a43ea626c417fbd8b7e60b9ef",
+			"Name": "PostFxVolume",
+			"StaticFlags": 0,
+			"Settings": {
+				"AO": {
+					"Enabled": false,
+					"OverrideFlags": 1
+				},
+				"Bloom": {
+					"Enabled": false,
+					"Intensity": 1.0,
+					"Threshold": 3.0,
+					"BlurSigma": 4.0,
+					"Limit": 10.0,
+					"OverrideFlags": 1
+				},
+				"ToneMapping": {},
+				"ColorGrading": {},
+				"EyeAdaptation": {
+					"Mode": 0,
+					"OverrideFlags": 1
+				},
+				"CameraArtifacts": {
+					"VignetteIntensity": 0.0,
+					"GrainAmount": 0.0,
+					"OverrideFlags": 9
+				},
+				"LensFlares": {
+					"Intensity": 0.0,
+					"OverrideFlags": 1
+				},
+				"DepthOfField": {},
+				"MotionBlur": {
+					"Enabled": false,
+					"OverrideFlags": 9
+				},
+				"SSR": {},
+				"AA": {},
+				"PostFxMaterials": {}
+			}
 		}
 	]
 }

@@ -8,6 +8,7 @@ namespace RenderingGraph.Nodes
     public class PostEffectNode : EffectNode
     {
         private MaterialParameter[] _inputParameters;
+        private MaterialBase _material;
         private MaterialInstance _materialInstance;
 
         public PostEffectNode(NodeDefinition definition) : base(definition)
@@ -17,9 +18,9 @@ namespace RenderingGraph.Nodes
         public override void OnEnable()
         {
             base.OnEnable();
-            var material = Content.Load<MaterialBase>(ParseGuid(Definition.Values[0]));
-            if (!material || !material.IsPostFx) return;
-            _materialInstance = material.CreateVirtualInstance();
+            _material = Content.Load<MaterialBase>(ParseGuid(Definition.Values[0]));
+            if (!_material || !_material.IsPostFx) return;
+            _materialInstance = _material.CreateVirtualInstance();
 
             var instanceParameters = _materialInstance.Parameters;
             int parameterCount = 0;
@@ -40,7 +41,8 @@ namespace RenderingGraph.Nodes
 
         public override void OnDisable()
         {
-            Object.Destroy(ref _materialInstance);
+            FlaxEngine.Object.Destroy(ref _materialInstance);
+            FlaxEngine.Object.Destroy(ref _material);
             base.OnDisable();
         }
 
