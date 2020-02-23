@@ -1,77 +1,64 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using FlaxEngine;
-using FlaxEngine.Utilities;
+﻿using FlaxEngine;
 
 namespace RenderingGraph.Nodes
 {
     /// <summary>
     /// Renders a camera or the main camera
     /// </summary>
-    /// <remarks>
-    /// Make sure to keep this in sync with https://github.com/FlaxEngine/FlaxAPI/blob/master/FlaxEngine/Rendering/SceneRenderTask.cs
-    /// </remarks>
     public class CameraNode : OutputNode
     {
-        private ActorsSources _actorsSources = ActorsSources.Scenes;
-        private readonly List<Actor> _customActors = new List<Actor>();
-        private RenderBuffers _buffers;
-        private RenderView _view;
-        private readonly HashSet<PostProcessEffect> _customPostFx = new HashSet<PostProcessEffect>();
-        private bool _allowGlobalCustomPostFx = true;
-        private readonly HashSet<PostProcessEffect> _postFx = new HashSet<PostProcessEffect>();
-
-        protected Camera Camera => GetInputOrDefault<Camera>(1, Camera.MainCamera);
+        protected SceneRenderTask RenderTask;
 
         public CameraNode(NodeDefinition definition) : base(definition)
         {
         }
 
+        protected Camera Camera => GetInputOrDefault(1, Camera.MainCamera);
+
         public override void OnEnable()
         {
             base.OnEnable();
-            _view.Init();
-        }
-
-        public override void OnDisable()
-        {
-            _customActors.Clear();
-            _customPostFx.Clear();
-            base.OnDisable();
+            RenderTask = Object.New<SceneRenderTask>();
+            RenderTask.Enabled = false;
+            RenderTask.Order = Order;
+            RenderTask.Camera = Camera;
+            RenderTask.ActorsSource = ActorsSources.Scenes;
+            RenderTask.Output = Output;
+            RenderTask.Begin += OnRenderTaskBegin;
+            RenderTask.End += OnRenderTaskEnd;
+            RenderTask.Enabled = true;
         }
 
         public override void OnUpdate()
         {
-            base.OnUpdate();
+            // Nothing
+        }
 
-            if (!_buffers) _buffers = RenderBuffers.New();
-            _buffers.Size = Output.Size;
-            var viewport = new Viewport(Vector2.Zero, _buffers.Size);
-            var camera = Camera;
-            if (camera)
-            {
-                _view.CopyFrom(camera, ref viewport);
-            }
+        public void OnRenderTaskBegin(SceneRenderTask task, GPUContext context)
+        {
+            Context.ExecutePreviousNodes(NodeIndex);
+        }
 
-            _postFx.Clear();
-            _postFx.AddRange(_customPostFx);
-            if (_allowGlobalCustomPostFx)
-            {
-                _postFx.AddRange(SceneRenderTask.GlobalCustomPostFx);
-            }
-
-            if (camera)
-            {
-                _postFx.AddRange( Camera.GetScripts<PostProcessEffect>());
-            }
-
-            Context.GPUContext.DrawScene(Context.RenderTask, Output, _buffers, ref _view, _customActors, _actorsSources, _postFx);
+        public void OnRenderTaskEnd(SceneRenderTask task, GPUContext context)
+        {
+            if (!RenderTask) return;
 
             Return(0, Output);
-            Return(1, _buffers.DepthBuffer);
-            Return(2, _buffers.MotionVectors);
+            Return(1, RenderTask.Buffers.DepthBuffer);
+            Return(2, RenderTask.Buffers.MotionVectors);
+        }
+
+        public override void OnDisable()
+        {
+            if (RenderTask)
+            {
+                RenderTask.Begin -= OnRenderTaskBegin;
+                RenderTask.End -= OnRenderTaskEnd;
+                RenderTask.Dispose();
+            }
+
+            Object.Destroy(ref RenderTask);
+            base.OnDisable();
         }
     }
 }

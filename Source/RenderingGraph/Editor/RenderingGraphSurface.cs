@@ -406,7 +406,7 @@ namespace RenderingGraph.Editor
 
             graph.SetNodes(FindNode(MainNodeGroupId, MainNodeTypeId)
                 .DepthFirstTraversal()
-                .Select<SurfaceNode, GraphNode<RenderingGraphContext>>(surfaceNode =>
+                .Select<SurfaceNode, GraphNode<RenderingGraphContext>>((surfaceNode, index) =>
                 {
                     int[] inputIndices = surfaceNode.Elements
                         .OfType<InputBox>()
@@ -434,34 +434,34 @@ namespace RenderingGraph.Editor
                     {
                         if (typeId == MainNodeTypeId)
                         {
-                            return new MainNode(nodeDefinition);
+                            return new MainNode(nodeDefinition) {NodeIndex = index};
                         }
                         if (typeId == 2)
                         {
-                            return new CameraNode(nodeDefinition);
+                            return new CameraNode(nodeDefinition) {NodeIndex = index};
                         }
 
                         if (typeId == 4)
                         {
-                            return new TextureNode(nodeDefinition);
+                            return new TextureNode(nodeDefinition) {NodeIndex = index};
                         }
                     } else if (groupId == EffectNodeGroupId)
                     {
                         if (typeId == 1)
                         {
-                            return new PostEffectNode(nodeDefinition);
+                            return new PostEffectNode(nodeDefinition) {NodeIndex = index};
                         }
 
                         if (typeId == 2)
                         {
-                            return new PixelsEffectNode(nodeDefinition);
+                            return new PixelsEffectNode(nodeDefinition) {NodeIndex = index};
                         }
                     }
                     else if (groupId == ParameterNodeGroupId)
                     {
                         var graphParam = graphParams[(Guid) surfaceNode.Values[0]];
                         nodeDefinition.InputIndices = new int[1] { graphParam.OutputIndex };
-                        return new ParameterNode(nodeDefinition);
+                        return new ParameterNode(nodeDefinition) {NodeIndex = index};
                     }
 
                     throw new NotSupportedException("Not supported node type");

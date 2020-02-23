@@ -14,9 +14,6 @@ namespace RenderingGraph.Nodes
     /// </summary>
     public abstract class OutputNode : RenderingNode
     {
-        [NoSerialize]
-        private Vector2 _cachedSize;
-
         protected Vector2 Size => Vector2.Max(GetInputOrDefault<Vector2>(0, Context.Size), Vector2.One);
 
         [NoSerialize]
@@ -29,11 +26,7 @@ namespace RenderingGraph.Nodes
         public override void OnEnable()
         {
             base.OnEnable();
-            Output = GPUDevice.CreateTexture();
-            var size = Size;
-            _cachedSize = size;
-            var description = GPUTextureDescription.New2D((int)size.X, (int)size.Y, PixelFormat.R8G8B8A8_UNorm);
-            Output.Init(ref description);
+            Output = CreateOutputTexture(Size);
         }
 
         public override void OnDisable()
@@ -45,12 +38,7 @@ namespace RenderingGraph.Nodes
         public override void OnUpdate()
         {
             base.OnUpdate();
-            var size = Size;
-            if (size != _cachedSize)
-            {
-                Output.Size = size;
-                _cachedSize = size;
-            }
+            Output.Size = Size;
         }
     }
 }

@@ -11,6 +11,9 @@ namespace RenderingGraph.Nodes
         private MaterialBase _material;
         private MaterialInstance _materialInstance;
 
+        // TODO: It's probably a good idea to store a proper reference to the material
+        // public MaterialBase Material;
+
         public PostEffectNode(NodeDefinition definition) : base(definition)
         {
         }
