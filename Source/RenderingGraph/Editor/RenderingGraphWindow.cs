@@ -141,7 +141,7 @@ namespace RenderingGraph.Editor
                 {
                     // Error
                     _surface.MarkAsEdited();
-                    Debug.LogError("Failed to save surface data");
+                    FlaxEditor.Editor.LogError("Failed to save surface data");
                 }
                 // Optionally reset the preview
             }
@@ -158,7 +158,7 @@ namespace RenderingGraph.Editor
             if (data == null)
             {
                 // Error
-                Debug.LogError("Failed to load rendering graph surface data.");
+                FlaxEditor.Editor.LogError("Failed to load rendering graph surface data.");
                 return true;
             }
 
@@ -166,7 +166,7 @@ namespace RenderingGraph.Editor
             if (_surface.Load(data))
             {
                 // Error
-                Debug.LogError("Failed to load rendering graph surface.");
+                FlaxEditor.Editor.LogError("Failed to load rendering graph surface.");
                 return true;
             }
 
