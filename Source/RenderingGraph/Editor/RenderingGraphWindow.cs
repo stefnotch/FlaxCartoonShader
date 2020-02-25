@@ -110,8 +110,8 @@ namespace RenderingGraph.Editor
         {
             // Cleanup
             _properties.OnClean();
-            _assetInstance.OnDestroy();
             _preview.RenderingGraph = null;
+            _assetInstance.OnDestroy();
 
             base.UnlinkItem();
         }
@@ -150,8 +150,6 @@ namespace RenderingGraph.Editor
         /// <inheritdoc />
         protected override bool LoadSurface()
         {
-            // Init asset properties and parameters proxy
-            _properties.OnLoad(this);
 
             // Load surface data from the asset
             byte[] data = RenderingGraphSurface.LoadSurface(_asset, _assetInstance, true);
@@ -170,14 +168,32 @@ namespace RenderingGraph.Editor
                 return true;
             }
 
+            // Init asset properties and parameters proxy
+            _properties.OnLoad(this);
+
             return false;
         }
 
         /// <inheritdoc />
         protected override bool SaveSurface()
         {
-            _surface.CompileSurface(_assetInstance);
-            _surface.Save();
+            try
+            {
+                bool enabled = _assetInstance.Enabled;
+                _assetInstance.Enabled = false;
+                _surface.CompileSurface(_assetInstance);
+                _surface.Save();
+                _assetInstance.Enabled = enabled;
+                _surface.Save();
+
+            }
+            catch (Exception e)
+            {
+                FlaxEditor.Editor.LogWarning(e);
+                return true;
+            }
+
+
             return false;
         }
 

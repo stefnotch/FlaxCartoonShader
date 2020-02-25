@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -206,6 +206,7 @@ namespace RenderingGraph.Editor
                 Size = new Vector2(200, 90),
                 Elements = new[]
                 {
+                    // TODO: Motion vectors at full res or half res dropdown
                     NodeElementArchetype.Factory.Input(0, "Size", true, ConnectionType.Vector2, 0),
                     NodeElementArchetype.Factory.Input(1, "Camera", true, ConnectionType.Object, 1),
                     NodeElementArchetype.Factory.Output(0, "Scene Color", ConnectionType.Object, 2),
@@ -378,9 +379,7 @@ namespace RenderingGraph.Editor
 
             assetInstance.VisjectSurface = surfaceData;
 
-            bool success = FlaxEditor.Editor.SaveJsonAsset(asset.Path, assetInstance);
-            asset.Reload();
-            return success;
+            return FlaxEditor.Editor.SaveJsonAsset(asset.Path, assetInstance);
         }
 
         public void CompileSurface(RenderingGraph graph)
