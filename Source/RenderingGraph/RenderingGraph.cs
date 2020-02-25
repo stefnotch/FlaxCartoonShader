@@ -17,17 +17,21 @@ namespace RenderingGraph
         [NoSerialize]
         public GPUTexture Output { get; private set; }
 
-        protected override void OnContextInitialize(RenderingGraphContext context)
+        protected override RenderingGraphContext CreateContext(object[] variables)
         {
-            base.OnContextInitialize(context);
-            Context.Size = Size;
-            Context.ExecutePreviousNodes = ExecutePreviousNodes;
-            Context.NodesCount = Nodes.Length;
+            return new RenderingGraphContext()
+            {
+                Variables = variables,
+                Size = Size,
+                ExecutePreviousNodes = ExecutePreviousNodes,
+                NodesCount = Nodes?.Length ?? 0
+            };
         }
 
         protected override void OnEnable()
         {
             base.OnEnable();
+
             _outputNode = Nodes?.OfType<MainNode>().FirstOrDefault();
 
             // This is the last render task that will get called

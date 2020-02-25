@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -403,8 +403,7 @@ namespace RenderingGraph.Editor
             }
             // Set the parameters
             graph.Parameters = parameters;
-
-            graph.SetNodes(FindNode(MainNodeGroupId, MainNodeTypeId)
+            graph.Nodes = FindNode(MainNodeGroupId, MainNodeTypeId)
                 .DepthFirstTraversal()
                 .Select<SurfaceNode, GraphNode<RenderingGraphContext>>((surfaceNode, index) =>
                 {
@@ -436,6 +435,7 @@ namespace RenderingGraph.Editor
                         {
                             return new MainNode(nodeDefinition) {NodeIndex = index};
                         }
+
                         if (typeId == 2)
                         {
                             return new CameraNode(nodeDefinition) {NodeIndex = index};
@@ -445,7 +445,8 @@ namespace RenderingGraph.Editor
                         {
                             return new TextureNode(nodeDefinition) {NodeIndex = index};
                         }
-                    } else if (groupId == EffectNodeGroupId)
+                    }
+                    else if (groupId == EffectNodeGroupId)
                     {
                         if (typeId == 1)
                         {
@@ -460,13 +461,13 @@ namespace RenderingGraph.Editor
                     else if (groupId == ParameterNodeGroupId)
                     {
                         var graphParam = graphParams[(Guid) surfaceNode.Values[0]];
-                        nodeDefinition.InputIndices = new int[1] { graphParam.OutputIndex };
+                        nodeDefinition.InputIndices = new int[1] {graphParam.OutputIndex};
                         return new ParameterNode(nodeDefinition) {NodeIndex = index};
                     }
 
                     throw new NotSupportedException("Not supported node type");
                 })
-                .ToArray());
+                .ToArray();
         }
     }
 }

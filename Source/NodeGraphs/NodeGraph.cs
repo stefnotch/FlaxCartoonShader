@@ -6,15 +6,13 @@ using FlaxEngine.Utilities;
 
 namespace NodeGraphs
 {
-    public class NodeGraph<TContext> where TContext : GraphContext, new()
+    public abstract class NodeGraph<TContext> where TContext : GraphContext
     {
         private bool _enabled;
-        
+        private GraphNode<TContext>[] _nodes;
+
         [NoSerialize]
         protected TContext Context;
-
-        [Serialize]
-        protected GraphNode<TContext>[] Nodes;
 
         /// <summary>
         /// Serialized Visject surface
@@ -22,8 +20,21 @@ namespace NodeGraphs
         [Serialize]
         public byte[] VisjectSurface { get; set; }
 
+        /// <summary>
+        /// Parameters
+        /// </summary>
         [Serialize]
         public GraphParameter<TContext>[] Parameters { get; set; }
+
+        public GraphNode<TContext>[] Nodes
+        {
+            get => _nodes;
+            set
+            {
+                if (Enabled) throw new Exception("Cannot set nodes while being enabled");
+                _nodes = value;
+            }
+        }
 
         [NoSerialize]
         public bool Enabled
@@ -36,64 +47,46 @@ namespace NodeGraphs
                     _enabled = value;
                     if (_enabled)
                         Scripting.InvokeOnUpdate(async () =>
-                            {
-                                Task.Delay(1000).ContinueWith((a) => { Scripting.InvokeOnUpdate(OnEnable); });
-                            });
+                        {
+                            Task.Delay(1000).ContinueWith(a => { Scripting.InvokeOnUpdate(Enable); });
+                        });
                     else
                         OnDisable();
                 }
             }
         }
 
-        public void SetNodes(GraphNode<TContext>[] nodes)
+        protected abstract TContext CreateContext(object[] variables);
+
+        private void Enable()
         {
-            bool enabled = Enabled;
-            Enabled = false;
-            Nodes = nodes;
-            Enabled = enabled;
+            if (!_enabled) return;
+            if (_nodes == null) return;
+            OnEnable();
         }
 
         protected virtual void OnEnable()
         {
-            if(!_enabled) return;
-            if (Nodes != null)
-            {
-                int maxVariableIndex = Math.Max(
-                    Parameters.Select(p => p.OutputIndex).DefaultIfEmpty(0).Max(),
-                    Nodes.Max(node => node.Definition.OutputIndices.DefaultIfEmpty(0).Max())
-                );
-                Context = new TContext
-                {
-                    Variables = new object[maxVariableIndex + 1]
-                };
-                OnContextInitialize(Context);
-                Nodes.ForEach(n => n.Context = Context);
-                Nodes.ForEach(n => n.OnEnable());
-            }
-            else
-            {
-                Context = new TContext
-                {
-                    Variables = new object[0]
-                };
-            }
-        }
+            int maxVariableIndex = Math.Max(
+                Parameters.Select(p => p.OutputIndex).DefaultIfEmpty(0).Max(),
+                _nodes.Max(node => node.Definition.OutputIndices.DefaultIfEmpty(0).Max())
+            );
+            Context = CreateContext(new object[maxVariableIndex + 1]);
 
-        protected virtual void OnContextInitialize(TContext context)
-        {
-            
+            _nodes.ForEach(n => n.Context = Context);
+            _nodes.ForEach(n => n.OnEnable());
         }
 
         protected virtual void OnDisable()
         {
-            Nodes?.ForEach(n => n.OnDisable());
-            Nodes?.ForEach(n => n.Context = null);
+            _nodes?.ForEach(n => n.OnDisable());
+            _nodes?.ForEach(n => n.Context = null);
             Context = null;
         }
 
         public virtual void Update(float deltaTime)
         {
-            if (Nodes == null || Nodes.Length <= 0) return;
+            if (_nodes == null || _nodes.Length <= 0) return;
 
             // Update the parameters
             // Each parameter will write its Value to the context
@@ -102,7 +95,7 @@ namespace NodeGraphs
             // Each node will get its inputs from the context
             //    Then, each node will execute its associated action
             //    Lastly, it will write the outputs to the context
-            for (int i = 0; i < Nodes.Length; i++) Nodes[i].OnUpdate();
+            for (int i = 0; i < _nodes.Length; i++) _nodes[i].OnUpdate();
         }
 
         public void OnDestroy()
