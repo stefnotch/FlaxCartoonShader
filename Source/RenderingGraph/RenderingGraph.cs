@@ -37,7 +37,7 @@ namespace RenderingGraph
             // This is the last render task that will get called
             // It happens just before the MainRenderTask
             _renderTask = Object.New<CustomRenderTask>();
-            _renderTask.Order = -1;
+            _renderTask.Order = -Nodes.Length - 2;
             _renderTask.Render += RenderUpdate;
             _renderTask.Enabled = true;
         }

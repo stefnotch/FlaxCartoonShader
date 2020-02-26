@@ -150,7 +150,6 @@ namespace RenderingGraph.Editor
         /// <inheritdoc />
         protected override bool LoadSurface()
         {
-
             // Load surface data from the asset
             byte[] data = RenderingGraphSurface.LoadSurface(_asset, _assetInstance, true);
             if (data == null)
@@ -184,8 +183,6 @@ namespace RenderingGraph.Editor
                 _surface.CompileSurface(_assetInstance);
                 _surface.Save();
                 _assetInstance.Enabled = enabled;
-                _surface.Save();
-
             }
             catch (Exception e)
             {

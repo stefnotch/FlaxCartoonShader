@@ -378,7 +378,6 @@ namespace RenderingGraph.Editor
             if (!asset) throw new ArgumentNullException(nameof(asset));
 
             assetInstance.VisjectSurface = surfaceData;
-
             return FlaxEditor.Editor.SaveJsonAsset(asset.Path, assetInstance);
         }
 
