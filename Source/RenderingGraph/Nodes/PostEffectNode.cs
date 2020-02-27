@@ -1,4 +1,5 @@
 ﻿using FlaxEngine;
+using NodeGraphs;
 
 namespace RenderingGraph.Nodes
 {
@@ -14,7 +15,7 @@ namespace RenderingGraph.Nodes
         // TODO: It's probably a good idea to store a proper reference to the material
         // public MaterialBase Material;
 
-        public PostEffectNode(NodeDefinition definition) : base(definition)
+        public PostEffectNode(GraphNodeDefinition definition) : base(definition)
         {
         }
 
@@ -25,21 +26,7 @@ namespace RenderingGraph.Nodes
             if (!_material || !_material.IsPostFx) return;
             _materialInstance = _material.CreateVirtualInstance();
 
-            var instanceParameters = _materialInstance.Parameters;
-            int parameterCount = 0;
-            for (int i = 0; i < instanceParameters.Length; i++)
-            {
-                if (!instanceParameters[i].IsPublic) continue;
-                parameterCount++;
-            }
-
-            _inputParameters = new MaterialParameter[parameterCount];
-            for (int i = 0, j = 0; i < instanceParameters.Length; i++)
-            {
-                if (!instanceParameters[i].IsPublic) continue;
-                _inputParameters[j] = instanceParameters[i];
-                j++;
-            }
+            _inputParameters = GetPublicParameters(_materialInstance);
         }
 
         public override void OnDisable()
@@ -49,9 +36,9 @@ namespace RenderingGraph.Nodes
             base.OnDisable();
         }
 
-        public override void OnUpdate()
+        public override void OnRenderUpdate(GPUContext context)
         {
-            base.OnUpdate();
+            base.OnRenderUpdate(context);
             var inputTexture = InputTexture;
             if (_materialInstance)
             {
@@ -61,11 +48,11 @@ namespace RenderingGraph.Nodes
                     _inputParameters[i].Value = GetInput(i + 2);
                 }
 
-                Context.GPUContext.DrawPostFxMaterial(_materialInstance, Output, inputTexture);
+                context.DrawPostFxMaterial(_materialInstance, Output, inputTexture);
             }
             else
             {
-                Context.GPUContext.Clear(Output, Color.Zero);
+                context.Clear(Output, Color.Zero);
             }
 
             Return(0, Output);

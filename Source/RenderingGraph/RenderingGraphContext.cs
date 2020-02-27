@@ -11,8 +11,6 @@ namespace RenderingGraph
     public class RenderingGraphContext : GraphContext
     {
         public Vector2 Size = Vector2.One;
-        public int NodesCount;
-        public Action<int> ExecutePreviousNodes;
-        public GPUContext GPUContext;
+        public int StartIndex;
     }
 }

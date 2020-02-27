@@ -1,15 +1,17 @@
 ﻿using FlaxEngine;
+using NodeGraphs;
 
 namespace RenderingGraph.Nodes
 {
     /// <summary>
     /// Renders a camera or the main camera
     /// </summary>
-    public class CameraNode : OutputNode
+    public class CameraNode : RenderingNode<SceneRenderTask>
     {
-        protected SceneRenderTask RenderTask;
+        protected GPUTexture Output;
+        protected Vector2 Size => Vector2.Max(GetInputOrDefault<Vector2>(0, Context.Size), Vector2.One);
 
-        public CameraNode(NodeDefinition definition) : base(definition)
+        public CameraNode(GraphNodeDefinition definition) : base(definition)
         {
         }
 
@@ -18,34 +20,24 @@ namespace RenderingGraph.Nodes
         public override void OnEnable()
         {
             base.OnEnable();
-            RenderTask = Object.New<SceneRenderTask>();
-            RenderTask.Enabled = false;
-            RenderTask.Order = Order;
+            Output = CreateOutputTexture(Size);
             RenderTask.Camera = Camera;
             RenderTask.ActorsSource = ActorsSources.Scenes;
             RenderTask.Output = Output;
             RenderTask.Begin += OnRenderTaskBegin;
             RenderTask.End += OnRenderTaskEnd;
-            RenderTask.Enabled = true;
-        }
-
-        public override void OnUpdate()
-        {
-            // Nothing
         }
 
         public void OnRenderTaskBegin(SceneRenderTask task, GPUContext context)
         {
-            Context.ExecutePreviousNodes(NodeIndex);
+            Output.Size = Size;
         }
 
         public void OnRenderTaskEnd(SceneRenderTask task, GPUContext context)
         {
-            if (!RenderTask) return;
-
             Return(0, Output);
-            Return(1, RenderTask.Buffers.DepthBuffer);
-            Return(2, RenderTask.Buffers.MotionVectors);
+            Return(1, RenderTask.Buffers?.DepthBuffer);
+            Return(2, RenderTask.Buffers?.MotionVectors);
         }
 
         public override void OnDisable()
@@ -58,6 +50,7 @@ namespace RenderingGraph.Nodes
             }
 
             Object.Destroy(ref RenderTask);
+            Object.Destroy(ref Output);
             base.OnDisable();
         }
     }

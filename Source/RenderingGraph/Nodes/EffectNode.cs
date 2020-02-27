@@ -4,22 +4,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FlaxEngine;
+using NodeGraphs;
 
 namespace RenderingGraph.Nodes
 {
     /// <summary>
     /// A effect node that takes some inputs and outputs a result
     /// </summary>
-    public abstract class EffectNode : RenderingNode
+    public abstract class EffectNode : RenderingNode<CustomRenderTask>
     {
-        protected Vector2 Size => Vector2.Max(GetInputOrDefault<Vector2>(0, InputTexture?.Size ?? Vector2.One), Vector2.One);
+        protected GPUTexture Output;
 
+        protected Vector2 Size => Vector2.Max(GetInputOrDefault<Vector2>(0, InputTexture?.Size ?? Vector2.One), Vector2.One);
         protected GPUTexture InputTexture => GetInputOrDefault<GPUTexture>(1, null);
 
-        [NoSerialize]
-        public GPUTexture Output;
-
-        protected EffectNode(NodeDefinition definition) 
+        protected EffectNode(GraphNodeDefinition definition)
             : base(definition)
         {
         }
@@ -28,6 +27,7 @@ namespace RenderingGraph.Nodes
         {
             base.OnEnable();
             Output = CreateOutputTexture(Size);
+            RenderTask.Render += OnRenderUpdate;
         }
 
         public override void OnDisable()
@@ -36,7 +36,7 @@ namespace RenderingGraph.Nodes
             FlaxEngine.Object.Destroy(ref Output);
         }
 
-        public override void OnUpdate()
+        public virtual void OnRenderUpdate(GPUContext context)
         {
             base.OnUpdate();
             Output.Size = Size;

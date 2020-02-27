@@ -1,12 +1,16 @@
 ﻿using System;
 using FlaxEngine;
+using NodeGraphs;
 
 namespace RenderingGraph.Nodes
 {
-    public class TextureNode : OutputNode
+    public class TextureNode : RenderingNode<CustomRenderTask>
     {
         private Texture _texture;
-        public TextureNode(NodeDefinition definition) : base(definition)
+        protected GPUTexture Output;
+        protected Vector2 Size => Vector2.Max(GetInputOrDefault<Vector2>(0, Context.Size), Vector2.One);
+
+        public TextureNode(GraphNodeDefinition definition) : base(definition)
         {
         }
 
@@ -14,19 +18,22 @@ namespace RenderingGraph.Nodes
         {
             base.OnEnable();
             _texture = Content.Load<Texture>(ParseGuid(Definition.Values[0]));
+            Output = CreateOutputTexture(Size);
+            RenderTask.Render += OnRenderUpdate;
         }
 
         public override void OnDisable()
         {
             base.OnDisable();
+            FlaxEngine.Object.Destroy(ref Output);
+            FlaxEngine.Object.Destroy(ref _texture);
         }
 
-        public override void OnUpdate()
+        public void OnRenderUpdate(GPUContext context)
         {
             base.OnUpdate();
-            // TODO: Only do this when the size has changed
-            Context.GPUContext.Draw(Output, _texture);
-
+            Output.Size = Size;
+            context.Draw(Output, _texture);
             Return(0, Output);
         }
     }

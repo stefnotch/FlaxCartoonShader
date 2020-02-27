@@ -44,7 +44,7 @@ namespace RenderingGraph.Editor
 
             private void UpdateLayout()
             {
-                Guid materialGuid = (Guid) Values[0];
+                Guid materialGuid = (Guid)Values[0];
                 if (_material && materialGuid == _material.ID) return;
 
                 _material = Content.Load<MaterialBase>(materialGuid);
@@ -56,8 +56,8 @@ namespace RenderingGraph.Editor
                     int boxId = _highestBoxId + 1;
                     foreach (var parameter in _material.Parameters)
                     {
-                        if(!parameter.IsPublic) continue;
-                        
+                        if (!parameter.IsPublic) continue;
+
                         var connectionType = GetConnectionType(parameter.Type);
                         var archetype = NodeElementArchetype.Factory.Input(yLevel, parameter.Name, true, connectionType, boxId);
                         var element = AddElement(archetype);
@@ -417,7 +417,7 @@ namespace RenderingGraph.Editor
                     int groupId = surfaceNode.GroupArchetype.GroupID;
                     int typeId = surfaceNode.Archetype.TypeID;
 
-                    var nodeDefinition = new RenderingNode.NodeDefinition()
+                    var nodeDefinition = new GraphNodeDefinition()
                     {
                         GroupId = groupId,
                         TypeId = typeId,
@@ -431,36 +431,36 @@ namespace RenderingGraph.Editor
                     {
                         if (typeId == MainNodeTypeId)
                         {
-                            return new MainNode(nodeDefinition) {NodeIndex = index};
+                            return new MainNode(nodeDefinition) { NodeIndex = index };
                         }
 
                         if (typeId == 2)
                         {
-                            return new CameraNode(nodeDefinition) {NodeIndex = index};
+                            return new CameraNode(nodeDefinition) { NodeIndex = index };
                         }
 
                         if (typeId == 4)
                         {
-                            return new TextureNode(nodeDefinition) {NodeIndex = index};
+                            return new TextureNode(nodeDefinition) { NodeIndex = index };
                         }
                     }
                     else if (groupId == EffectNodeGroupId)
                     {
                         if (typeId == 1)
                         {
-                            return new PostEffectNode(nodeDefinition) {NodeIndex = index};
+                            return new PostEffectNode(nodeDefinition) { NodeIndex = index };
                         }
 
                         if (typeId == 2)
                         {
-                            return new PixelsEffectNode(nodeDefinition) {NodeIndex = index};
+                            return new PixelsEffectNode(nodeDefinition) { NodeIndex = index };
                         }
                     }
                     else if (groupId == ParameterNodeGroupId)
                     {
-                        var graphParam = graphParams[(Guid) surfaceNode.Values[0]];
-                        nodeDefinition.InputIndices = new int[1] {graphParam.OutputIndex};
-                        return new ParameterNode(nodeDefinition) {NodeIndex = index};
+                        var graphParam = graphParams[(Guid)surfaceNode.Values[0]];
+                        nodeDefinition.InputIndices = new int[1] { graphParam.OutputIndex };
+                        return new ParameterNode(nodeDefinition) { NodeIndex = index };
                     }
 
                     throw new NotSupportedException("Not supported node type");

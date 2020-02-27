@@ -14,9 +14,9 @@ namespace NodeGraphs
     public abstract class GraphNode<TContext> where TContext : GraphContext
     {
         [Serialize]
-        public readonly NodeDefinition Definition;
+        public readonly GraphNodeDefinition Definition;
 
-        protected GraphNode(NodeDefinition definition)
+        protected GraphNode(GraphNodeDefinition definition)
         {
             Definition = definition;
         }
@@ -52,7 +52,7 @@ namespace NodeGraphs
                 // Special handling for numbers
                 // TODO: Replace this with something more efficient and/or better
                 // TODO: Handle the type casting correctly (float --> Vector2)
-                return (T) Convert.ChangeType(value, typeof(T));
+                return (T)Convert.ChangeType(value, typeof(T));
             if (value is T castedValue) return castedValue;
             return default(T);
         }
@@ -81,17 +81,7 @@ namespace NodeGraphs
         public void Return(int index, object returnValue)
         {
             int outputIndex = Definition.OutputIndices[index];
-            if(outputIndex != -1) Context.Variables[outputIndex] = returnValue;
-        }
-
-        public struct NodeDefinition
-        {
-            public int GroupId;
-            public int TypeId;
-            public object[] Values;
-
-            public int[] InputIndices;
-            public int[] OutputIndices;
+            if (outputIndex != -1) Context.Variables[outputIndex] = returnValue;
         }
     }
 }

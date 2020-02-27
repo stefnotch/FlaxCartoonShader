@@ -4,16 +4,39 @@ using NodeGraphs;
 
 namespace RenderingGraph
 {
-    public class RenderingNode : GraphNode<RenderingGraphContext>
+    public abstract class RenderingNode<TRenderTask> : GraphNode<RenderingGraphContext> where TRenderTask : RenderTask
     {
         public int NodeIndex;
 
-        protected int Order => -Context.NodesCount + NodeIndex - 1;
+        protected int Order => Context.StartIndex + NodeIndex;
 
-        public RenderingNode(NodeDefinition definition) : base(definition)
+        protected TRenderTask RenderTask;
+
+        protected RenderingNode(GraphNodeDefinition definition) : base(definition)
         {
         }
-        
+
+        public override void OnEnable()
+        {
+            base.OnEnable();
+            RenderTask = FlaxEngine.Object.New<TRenderTask>();
+            RenderTask.Order = Order;
+        }
+
+        public sealed override void OnUpdate()
+        {
+            base.OnUpdate();
+            // Do nothing, all nodes should create a render task
+        }
+
+        public override void OnDisable()
+        {
+            base.OnDisable();
+
+            RenderTask?.Dispose();
+            FlaxEngine.Object.Destroy(ref RenderTask);
+        }
+
         // TODO: Properly serialize guids instead of relying on this hack!
         public static Guid ParseGuid(object guid)
         {
@@ -34,6 +57,27 @@ namespace RenderingGraph
             texture.Init(ref description);
 
             return texture;
+        }
+
+        public static MaterialParameter[] GetPublicParameters(MaterialBase material)
+        {
+            var materialParameters = material.Parameters;
+            int parameterCount = 0;
+            for (int i = 0; i < materialParameters.Length; i++)
+            {
+                if (!materialParameters[i].IsPublic) continue;
+                parameterCount++;
+            }
+
+            var publicParameters = new MaterialParameter[parameterCount];
+            for (int i = 0, j = 0; i < materialParameters.Length; i++)
+            {
+                if (!materialParameters[i].IsPublic) continue;
+                publicParameters[j] = materialParameters[i];
+                j++;
+            }
+
+            return publicParameters;
         }
     }
 }

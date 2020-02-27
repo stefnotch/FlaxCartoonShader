@@ -4,12 +4,14 @@ using System.Linq;
 using System.Text;
 using FlaxEngine;
 using FlaxEngine.Utilities;
+using NodeGraphs;
 
 namespace RenderingGraph.Nodes
 {
-    public class PixelsEffectNode : OutputNode
+    public class PixelsEffectNode : RenderingNode<SceneRenderTask>
     {
-        protected SceneRenderTask RenderTask;
+        protected GPUTexture Output;
+        protected Vector2 Size => Vector2.Max(GetInputOrDefault<Vector2>(0, Context.Size), Vector2.One);
 
         private MaterialParameter[] _inputParameters;
         private MaterialBase _material;
@@ -24,9 +26,9 @@ namespace RenderingGraph.Nodes
         private StaticModel _modelActor;
         private Model _model;
 
-        public PixelsEffectNode(NodeDefinition definition) : base(definition)
+        public PixelsEffectNode(GraphNodeDefinition definition) : base(definition)
         {
-            
+
         }
 
         public override void OnEnable()
@@ -36,21 +38,7 @@ namespace RenderingGraph.Nodes
             if (!_material || !_material.IsSurface) return;
             _materialInstance = _material.CreateVirtualInstance();
 
-            var instanceParameters = _materialInstance.Parameters;
-            int parameterCount = 0;
-            for (int i = 0; i < instanceParameters.Length; i++)
-            {
-                if (!instanceParameters[i].IsPublic) continue;
-                parameterCount++;
-            }
-
-            _inputParameters = new MaterialParameter[parameterCount];
-            for (int i = 0, j = 0; i < instanceParameters.Length; i++)
-            {
-                if (!instanceParameters[i].IsPublic) continue;
-                _inputParameters[j] = instanceParameters[i];
-                j++;
-            }
+            _inputParameters = GetPublicParameters(_materialInstance);
 
             var size = Size;
             _orthographicCamera = CreateOrthographicCamera();
@@ -68,9 +56,9 @@ namespace RenderingGraph.Nodes
             _modelActor.Entries[0].ShadowsMode = ShadowsCastingMode.None;
             _modelActor.Entries[0].Material = _materialInstance;
             _modelActor.LocalPosition = new Vector3(size * -0.5f, DistanceFromOrigin);
-        
-            RenderTask = FlaxEngine.Object.New<SceneRenderTask>();
-            RenderTask.Enabled = false;
+
+            Output = CreateOutputTexture(Size);
+
             RenderTask.AllowGlobalCustomPostFx = false;
             RenderTask.Order = Order;
             RenderTask.Camera = _orthographicCamera;
@@ -82,28 +70,19 @@ namespace RenderingGraph.Nodes
             RenderTask.View.MaxShadowsQuality = Quality.Low;
             RenderTask.View.Mode = ViewMode.Emissive;
             RenderTask.View.Flags = ViewFlags.None;
-            RenderTask.Enabled = true;
-        }
-
-        public override void OnUpdate()
-        {
-            // Nothing
         }
 
         public void OnRenderTaskBegin(SceneRenderTask task, GPUContext context)
         {
-            Context.ExecutePreviousNodes(NodeIndex);
-
             var size = Size;
             _modelActor.LocalPosition = new Vector3(size.X * -0.5f, size.Y * -0.5f, DistanceFromOrigin);
             if (_cachedSize != size)
             {
-                // TODO: Execute this asynchronously
                 GenerateGridMesh(_model.LODs[0].Meshes[0], size);
                 _cachedSize = size;
             }
 
-            if(!_materialInstance) return; 
+            if (!_materialInstance) return;
 
             for (int i = 0; i < _inputParameters.Length; i++)
             {
@@ -114,8 +93,6 @@ namespace RenderingGraph.Nodes
 
         public void OnRenderTaskEnd(SceneRenderTask task, GPUContext context)
         {
-            if (!RenderTask) return;
-
             Return(0, Output);
         }
 
@@ -135,6 +112,7 @@ namespace RenderingGraph.Nodes
             FlaxEngine.Object.Destroy(ref _model);
             FlaxEngine.Object.Destroy(ref _materialInstance);
             FlaxEngine.Object.Destroy(ref _material);
+            FlaxEngine.Object.Destroy(ref Output);
             base.OnDisable();
         }
 
@@ -175,7 +153,7 @@ namespace RenderingGraph.Nodes
                         (x + 0.5f) / (float)width,
                         1f - (y + 0.5f) / (float)height
                     );
-                   
+
                     for (int i = 0; i < 4; i++)
                     {
                         uvs[index + i] = uv;

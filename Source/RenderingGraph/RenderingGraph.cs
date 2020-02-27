@@ -8,9 +8,8 @@ namespace RenderingGraph
 {
     public class RenderingGraph : NodeGraph<RenderingGraphContext>
     {
-        private int _nodeExecutionIndex;
         private MainNode _outputNode;
-        private CustomRenderTask _renderTask;
+        private CustomRenderTask _firstRenderTask;
 
         public Vector2 Size = Vector2.One;
 
@@ -23,8 +22,7 @@ namespace RenderingGraph
             {
                 Variables = variables,
                 Size = Size,
-                ExecutePreviousNodes = ExecutePreviousNodes,
-                NodesCount = Nodes?.Length ?? 0
+                StartIndex = (-Nodes?.Length ?? 0) - 1 // 0 = MainRenderTask
             };
         }
 
@@ -33,55 +31,41 @@ namespace RenderingGraph
             base.OnEnable();
 
             _outputNode = Nodes?.OfType<MainNode>().FirstOrDefault();
+            Output = _outputNode?.Output;
 
-            // This is the last render task that will get called
-            // It happens just before the MainRenderTask
-            _renderTask = Object.New<CustomRenderTask>();
-            _renderTask.Order = -Nodes.Length - 2;
-            _renderTask.Render += RenderUpdate;
-            _renderTask.Enabled = true;
+            // The first render task, happens before everything else
+            _firstRenderTask = Object.New<CustomRenderTask>();
+            _firstRenderTask.Order = Context.StartIndex - 1;
+            _firstRenderTask.Render += OnRenderUpdate;
         }
 
         public override void Update(float deltaTime)
         {
             // Do not call base.Update
             if (Nodes == null || Nodes.Length <= 0) return;
+        }
 
+        public void OnRenderUpdate(GPUContext context)
+        {
             // Update the parameters
             // Each parameter will write its Value to the context
             for (int i = 0; i < Parameters.Length; i++) Parameters[i].Update(Context);
-        }
 
-        protected void ExecutePreviousNodes(int index)
-        {
-            for (int i = _nodeExecutionIndex; i < index; i++) Nodes[i].OnUpdate();
-        }
-
-        public void RenderUpdate(GPUContext context)
-        {
+            // Set the context data
             Context.Size = Size;
-            Context.GPUContext = context;
-
-            if (_outputNode != null)
-            {
-                ExecutePreviousNodes(_outputNode.NodeIndex);
-            }
-            Output = _outputNode?.GetInputOrDefault<GPUTexture>(0, null);
-
-            // Reset
-            _nodeExecutionIndex = 0;
         }
 
         protected override void OnDisable()
         {
             base.OnDisable();
             _outputNode = null;
-            if (_renderTask)
+
+            if (_firstRenderTask)
             {
-                _renderTask.Render -= RenderUpdate;
-                _renderTask.Dispose();
+                _firstRenderTask.Render -= OnRenderUpdate;
+                _firstRenderTask.Dispose();
             }
-            FlaxEngine.Object.Destroy(ref _renderTask);
+            FlaxEngine.Object.Destroy(ref _firstRenderTask);
         }
     }
 }

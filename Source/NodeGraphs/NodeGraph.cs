@@ -26,6 +26,7 @@ namespace NodeGraphs
         [Serialize]
         public GraphParameter<TContext>[] Parameters { get; set; }
 
+        [Serialize]
         public GraphNode<TContext>[] Nodes
         {
             get => _nodes;

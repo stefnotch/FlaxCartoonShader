@@ -1,12 +1,21 @@
-﻿namespace RenderingGraph.Nodes
+﻿using FlaxEngine;
+using NodeGraphs;
+
+namespace RenderingGraph.Nodes
 {
-    public class ParameterNode : RenderingNode
+    public class ParameterNode : RenderingNode<CustomRenderTask>
     {
-        public ParameterNode(NodeDefinition definition) : base(definition)
+        public ParameterNode(GraphNodeDefinition definition) : base(definition)
         {
         }
 
-        public override void OnUpdate()
+        public override void OnEnable()
+        {
+            base.OnEnable();
+            RenderTask.Render += OnRenderUpdate;
+        }
+
+        protected void OnRenderUpdate(GPUContext context)
         {
             base.OnUpdate();
             Return(0, GetInput(0));

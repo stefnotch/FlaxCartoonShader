@@ -1,5 +1,5 @@
 {
-	"ID": "72b93b6845dbc0ae0c36d7958e52bc10",
+	"ID": "67d16b1f4a340189e58f23a96d2a4962",
 	"TypeName": "RenderingGraph.RenderingGraph",
 	"EngineBuild": 6192,
 	"Data": {
@@ -7,10 +7,29 @@
 			"X": 214.0,
 			"Y": 162.0
 		},
+		"VisjectSurface": "VkcJdeYXAAAAAAAAAAAAAAUAAAAAAAAAAQAAAAEAAQACAAAAAgABAAMAAAABAAIABAAAAAQAAQAFAAAAAgACAAAAAAABAAAAAQAAAQAFAAAAAQEAAAALAAAAAAAAAAAAAAAMAAAAvNzEQ8XRH0IAAAAAAAAAAAUAABAAAAAAAAEAAQAAAAACAAEAAAEAAwAAAAEDAAEAAAAABAABAAAAAAEAAAALAAAAAAAAAAAAAAAMAAAAMUK9w8nMCEIAAAAAAQAAAAf3b0V1fvooSLHneVqhOTlyBAAAEAAAAAAAAQABAAABAAIAAAACAgABAAABAAUAAAAEBAABAAABAAQAAAACAQAAAAsAAAAAAAAAAAAAAAwAAABghADDycwIQgAAAAABAAAAB6bZpv0G0fFPuDA+BI502GMCAAAQAAAAAAACAAEAAAEAAwAAAAQBAAAACwAAAAAAAAAAAAAADAAAAPaQqsMHYjBDAAAAAAEAAAAHlnMP6NE0ekWqYEGPzWiwTQMAABAAAAAAAAEAAQAAAQABAAAAAAQAAQAAAQADAAAAAgEAAAALAAAAAAAAAAAAAAAMAAAAQPfyQsjMCEIAAAAAAQAAAAoAAAAAAAAAAAAAAAwAAACp8whD2NVgQ/ENMT8J",
+		"Parameters": [],
 		"Nodes": [
 			{
-				"$type": "RenderingGraph.Nodes.CameraNode, Game",
+				"$type": "RenderingGraph.Nodes.TextureNode, Game",
 				"NodeIndex": 0,
+				"Definition": {
+					"GroupId": 1,
+					"TypeId": 4,
+					"Values": [
+						"fda6d9a6-d106-4ff1-b830-3e048e74d863"
+					],
+					"InputIndices": [
+						-1
+					],
+					"OutputIndices": [
+						0
+					]
+				}
+			},
+			{
+				"$type": "RenderingGraph.Nodes.CameraNode, Game",
+				"NodeIndex": 1,
 				"Definition": {
 					"GroupId": 1,
 					"TypeId": 2,
@@ -19,15 +38,34 @@
 						-1
 					],
 					"OutputIndices": [
-						0,
+						1,
 						-1,
 						-1
 					]
 				}
 			},
 			{
+				"$type": "RenderingGraph.Nodes.PostEffectNode, Game",
+				"NodeIndex": 2,
+				"Definition": {
+					"GroupId": 2,
+					"TypeId": 1,
+					"Values": [
+						"75456ff7-fa7e-4828-b1e7-795aa1393972"
+					],
+					"InputIndices": [
+						-1,
+						1,
+						0
+					],
+					"OutputIndices": [
+						0
+					]
+				}
+			},
+			{
 				"$type": "RenderingGraph.Nodes.PixelsEffectNode, Game",
-				"NodeIndex": 1,
+				"NodeIndex": 3,
 				"Definition": {
 					"GroupId": 2,
 					"TypeId": 2,
@@ -45,7 +83,7 @@
 			},
 			{
 				"$type": "RenderingGraph.Nodes.MainNode, Game",
-				"NodeIndex": 2,
+				"NodeIndex": 4,
 				"Definition": {
 					"GroupId": 1,
 					"TypeId": 1,
@@ -55,8 +93,6 @@
 					"OutputIndices": []
 				}
 			}
-		],
-		"VisjectSurface": "VkcJdeYXAAAAAAAAAAAAAAMAAAAAAAAAAQAAAAEAAQACAAAAAgABAAMAAAACAAIAAAAAAAEAAAABAAABAAMAAAABAQAAAAsAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAAAAAAAAAAAABQAAEAAAAAAAAQABAAAAAAIAAQAAAQADAAAABAMAAQAAAAAEAAEAAAAAAQAAAAsAAAAAAAAAAAAAAAwAAAC86inEslgbwgAAAAABAAAAB5ZzD+jRNHpFqmBBj81osE0DAAAQAAAAAAABAAEAAAEAAQAAAAAEAAEAAAEAAgAAAAIBAAAACwAAAAAAAAAAAAAADAAAAAp3usOYnlO+AAAAAAEAAAAKAAAAAAAAAAAAAAAMAAAAN/Csw7qajEIEW3A/CQ==",
-		"Parameters": []
+		]
 	}
 }
