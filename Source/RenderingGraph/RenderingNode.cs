@@ -6,9 +6,7 @@ namespace RenderingGraph
 {
     public abstract class RenderingNode<TRenderTask> : GraphNode<RenderingGraphContext> where TRenderTask : RenderTask
     {
-        public int NodeIndex;
-
-        protected int Order => Context.StartIndex + NodeIndex;
+        protected int Order => Context.StartIndex + Definition.Index;
 
         protected TRenderTask RenderTask;
 

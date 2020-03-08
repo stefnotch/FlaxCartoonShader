@@ -23,7 +23,7 @@
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DefineConstants>DEBUG;FLAX_ASSERTIONS;TRACE;FLAX;FLAX_0;FLAX_0_6;FLAX_0_6_6192;FLAX_EDITOR;FLAX_WINDOWS;FLAX_EDITOR_WIN</DefineConstants>
-	<UseVSHostingProcess>false</UseVSHostingProcess>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>portable</DebugType>
@@ -34,22 +34,22 @@
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DefineConstants>TRACE;FLAX;FLAX_0;FLAX_0_6;FLAX_0_6_6192;FLAX_EDITOR;FLAX_WINDOWS;FLAX_EDITOR_WIN</DefineConstants>
-	<UseVSHostingProcess>false</UseVSHostingProcess>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
-	<Reference Include="FlaxEngine">
-		<HintPath>Cache\Assemblies\FlaxEngine.dll</HintPath>
-	</Reference>
-	<Reference Include="Newtonsoft.Json">
-		<HintPath>Cache\Assemblies\Newtonsoft.Json.dll</HintPath>
-	</Reference>
-	<Reference Include="FlaxEditor">
-		<HintPath>Cache\Assemblies\FlaxEditor.dll</HintPath>
-	</Reference>
+    <Reference Include="FlaxEngine">
+      <HintPath>Cache\Assemblies\FlaxEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>Cache\Assemblies\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="FlaxEditor">
+      <HintPath>Cache\Assemblies\FlaxEditor.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="CartoonShader.csproj">
@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="Cache\AssemblyInfo.cs" />
     <Compile Include="Source\RenderingGraph\Editor\GraphVariables.cs" />
+    <Compile Include="Source\RenderingGraph\Editor\RenderingGraphCompiler.cs" />
     <Compile Include="Source\RenderingGraph\Editor\RenderingGraphPlugin.cs" />
     <Compile Include="Source\RenderingGraph\Editor\RenderingGraphPreview.cs" />
     <Compile Include="Source\RenderingGraph\Editor\RenderingGraphProxy.cs" />
@@ -67,4 +68,4 @@
     <Compile Include="Source\RenderingGraph\Editor\RenderingGraphWindow.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-</Project>
+</Project>

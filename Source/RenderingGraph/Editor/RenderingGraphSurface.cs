@@ -383,6 +383,8 @@ namespace RenderingGraph.Editor
 
         public void CompileSurface(RenderingGraph graph)
         {
+            var compiler = new RenderingGraphCompiler();
+
             // We're mapping every output box to an index
             // So we can store the node outputs in an array
             var variableIndexGetter = new GraphVariables();
@@ -399,11 +401,10 @@ namespace RenderingGraph.Editor
                 graphParams.Add(param.ID, graphParameter);
                 parameters[i] = graphParameter;
             }
-            // Set the parameters
-            graph.Parameters = parameters;
-            graph.Nodes = FindNode(MainNodeGroupId, MainNodeTypeId)
+
+            var nodeDefinitions = FindNode(MainNodeGroupId, MainNodeTypeId)
                 .DepthFirstTraversal()
-                .Select<SurfaceNode, GraphNode<RenderingGraphContext>>((surfaceNode, index) =>
+                .Select<SurfaceNode, GraphNodeDefinition>((surfaceNode, index) =>
                 {
                     int[] inputIndices = surfaceNode.Elements
                         .OfType<InputBox>()
@@ -417,55 +418,25 @@ namespace RenderingGraph.Editor
                     int groupId = surfaceNode.GroupArchetype.GroupID;
                     int typeId = surfaceNode.Archetype.TypeID;
 
-                    var nodeDefinition = new GraphNodeDefinition()
+                    if (groupId == paramNodeGroupId)
+                    {
+                        var graphParam = graphParams[(Guid)surfaceNode.Values[0]];
+                        inputIndices = new int[1] { graphParam.OutputIndex };
+                    }
+
+                    return new GraphNodeDefinition()
                     {
                         GroupId = groupId,
                         TypeId = typeId,
+                        Index = index,
                         Values = surfaceNode.Values,
                         InputIndices = inputIndices,
                         OutputIndices = outputIndices
                     };
-
-                    // Create the runtime nodes
-                    if (groupId == MainNodeGroupId)
-                    {
-                        if (typeId == MainNodeTypeId)
-                        {
-                            return new MainNode(nodeDefinition) { NodeIndex = index };
-                        }
-
-                        if (typeId == 2)
-                        {
-                            return new CameraNode(nodeDefinition) { NodeIndex = index };
-                        }
-
-                        if (typeId == 4)
-                        {
-                            return new TextureNode(nodeDefinition) { NodeIndex = index };
-                        }
-                    }
-                    else if (groupId == EffectNodeGroupId)
-                    {
-                        if (typeId == 1)
-                        {
-                            return new PostEffectNode(nodeDefinition) { NodeIndex = index };
-                        }
-
-                        if (typeId == 2)
-                        {
-                            return new PixelsEffectNode(nodeDefinition) { NodeIndex = index };
-                        }
-                    }
-                    else if (groupId == ParameterNodeGroupId)
-                    {
-                        var graphParam = graphParams[(Guid)surfaceNode.Values[0]];
-                        nodeDefinition.InputIndices = new int[1] { graphParam.OutputIndex };
-                        return new ParameterNode(nodeDefinition) { NodeIndex = index };
-                    }
-
-                    throw new NotSupportedException("Not supported node type");
                 })
                 .ToArray();
+
+            compiler.Compile(graph, parameters, nodeDefinitions);
         }
     }
 }

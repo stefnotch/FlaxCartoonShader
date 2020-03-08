@@ -10,6 +10,7 @@ namespace NodeGraphs
     {
         public int GroupId;
         public int TypeId;
+        public int Index;
         public object[] Values;
 
         public int[] InputIndices;
