@@ -10,14 +10,14 @@ namespace RenderingGraph.Editor
 {
     public class RenderingGraphCompiler
     {
-        private struct NodeCreator
+        public struct NodeCreator
         {
             public int GroupId;
             public int TypeId;
             public Func<GraphNodeDefinition, GraphNode<RenderingGraphContext>> Create;
         }
 
-        private NodeCreator[] _nodeCreators = new[]
+        public static NodeCreator[] NodeCreators = new[]
         {
             new NodeCreator
             {
@@ -71,14 +71,14 @@ namespace RenderingGraph.Editor
             graph.Nodes = nodes;
         }
 
-        private NodeCreator GetNodeCreator(GraphNodeDefinition nodeDefinition)
+        private static NodeCreator GetNodeCreator(GraphNodeDefinition nodeDefinition)
         {
-            for (int j = 0; j < _nodeCreators.Length; j++)
+            for (int j = 0; j < NodeCreators.Length; j++)
             {
-                if (_nodeCreators[j].GroupId == nodeDefinition.GroupId &&
-                    _nodeCreators[j].TypeId == nodeDefinition.TypeId)
+                if (NodeCreators[j].GroupId == nodeDefinition.GroupId &&
+                    NodeCreators[j].TypeId == nodeDefinition.TypeId)
                 {
-                    return _nodeCreators[j];
+                    return NodeCreators[j];
                 }
             }
 
