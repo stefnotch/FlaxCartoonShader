@@ -11,18 +11,13 @@ namespace NodeGraphs
     /// <remarks>
     /// https://github.com/FlaxEngine/FlaxAPI/blob/45537b251b8f88987456b5bc5daf107005c6ec33/FlaxEngine/API/BinaryAssets/AnimationGraph.cs#L24
     /// </remarks>
-    public abstract class GraphNode<TContext> where TContext : GraphContext
+    public abstract class GraphNode
     {
-        [Serialize]
-        public readonly GraphNodeDefinition Definition;
-
-        protected GraphNode(GraphNodeDefinition definition)
-        {
-            Definition = definition;
-        }
+        public int[] InputIndices;
+        public int[] OutputIndices;
 
         [NoSerialize]
-        public TContext Context { get; internal set; }
+        public object[] Variables { get; internal set; }
 
         /// <summary>
         /// Initialize
@@ -60,12 +55,12 @@ namespace NodeGraphs
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool HasInput(int index)
         {
-            return Definition.InputIndices[index] != -1;
+            return InputIndices[index] != -1;
         }
 
         public object GetInput(int index)
         {
-            return Context.Variables[Definition.InputIndices[index]];
+            return Variables[InputIndices[index]];
         }
 
         public T GetInput<T>(int index)
@@ -80,8 +75,8 @@ namespace NodeGraphs
 
         public void Return(int index, object returnValue)
         {
-            int outputIndex = Definition.OutputIndices[index];
-            if (outputIndex != -1) Context.Variables[outputIndex] = returnValue;
+            int outputIndex = OutputIndices[index];
+            if (outputIndex != -1) Variables[outputIndex] = returnValue;
         }
     }
 }

@@ -59,6 +59,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cache\AssemblyInfo.cs" />
+    <Compile Include="Source\NodeGraphs\Editor\NodeDefinition.cs" />
+    <Compile Include="Source\NodeGraphs\Editor\NodeFactory.cs" />
+    <Compile Include="Source\NodeGraphs\Editor\NodeFactoryGroup.cs" />
     <Compile Include="Source\RenderingGraph\Editor\GraphVariables.cs" />
     <Compile Include="Source\RenderingGraph\Editor\RenderingGraphPlugin.cs" />
     <Compile Include="Source\RenderingGraph\Editor\RenderingGraphPreview.cs" />

@@ -169,12 +169,10 @@
 			"ID": "fa10ef5445760d6f1dbb91a47b07a46b",
 			"ParentID": "4f0f027a43ea626c417fbd8b7e60b9ef",
 			"Name": "StaticModel",
-			"Model": "d4d169e8440a81f6f12762bc8b795b42",
 			"DrawModes": 3,
 			"Buffer": {
 				"Entries": [
 					{
-						"Material": "dcbbbfe6485a0f2f641cd595688bbb40",
 						"ShadowsMode": 0,
 						"ReceiveDecals": false
 					}
@@ -186,6 +184,13 @@
 			"ID": "f7811f564abd072c536df19694afdb67",
 			"ParentID": "4f0f027a43ea626c417fbd8b7e60b9ef",
 			"Name": "PostFxVolume",
+			"Transform": {
+				"Translation": {
+					"X": 0.0,
+					"Y": 0.0,
+					"Z": -18.57080078125
+				}
+			},
 			"StaticFlags": 0,
 			"Settings": {
 				"AO": {
