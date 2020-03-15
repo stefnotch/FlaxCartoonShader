@@ -56,15 +56,14 @@
     <Compile Include="Source\MeshGenerators\OptionalMeshDatatypes.cs" />
     <Compile Include="Source\MeshGenerators\QuadGenerator.cs" />
     <Compile Include="Source\MeshGenerators\ScreenPixelQuadsGenerator.cs" />
-    <Compile Include="Source\NodeGraphs\GraphContext.cs" />
     <Compile Include="Source\NodeGraphs\GraphNode.cs" />
-    <Compile Include="Source\NodeGraphs\GraphNodeDefinition.cs" />
     <Compile Include="Source\NodeGraphs\GraphParameter.cs" />
     <Compile Include="Source\NodeGraphs\NodeGraph.cs" />
     <Compile Include="Source\RenderingGraph\RenderingGraph.cs" />
     <Compile Include="Source\RenderingGraph\RenderingGraphContext.cs" />
     <Compile Include="Source\RenderingGraph\RenderingNode.cs" />
     <Compile Include="Source\RenderingGraph\Nodes\CameraNode.cs" />
+    <Compile Include="Source\RenderingGraph\Nodes\CustomRenderingNode.cs" />
     <Compile Include="Source\RenderingGraph\Nodes\EffectNode.cs" />
     <Compile Include="Source\RenderingGraph\Nodes\MainNode.cs" />
     <Compile Include="Source\RenderingGraph\Nodes\ParameterNode.cs" />

@@ -9,6 +9,7 @@ using FlaxEditor.Surface;
 using FlaxEditor.Surface.Elements;
 using FlaxEngine;
 using NodeGraphs;
+using NodeGraphs.Editor;
 using RenderingGraph.Nodes;
 
 namespace RenderingGraph.Editor
@@ -173,142 +174,68 @@ namespace RenderingGraph.Editor
 
         public const int MainNodeGroupId = 1;
         public const int MainNodeTypeId = 1;
-        public const int EffectNodeGroupId = 2;
-        public const int ParameterNodeGroupId = 6;
 
-        // Surface will be expanded later
         public RenderingGraphSurface(IVisjectSurfaceOwner owner, Action onSave, FlaxEditor.Undo undo = null, SurfaceStyle style = null)
-            : base(owner, onSave, undo, style, RenderingGraphGroups)
+            : base(owner, onSave, undo, style, GetGroupArchetypes())
         {
         }
 
-        public static readonly NodeArchetype[] RenderingGraphSourceNodes =
-        {
-            // Main node
-            new NodeArchetype
+        public static readonly NodeFactoryGroup<RenderingNode> SourceNodeFactories =
+            new NodeFactoryGroup<RenderingNode>()
             {
-                TypeID = 1,
-                Title = "RenderingGraph",
-                Description = "Main expression graph node",
-                Flags = NodeFlags.AllGraphs | NodeFlags.NoRemove | NodeFlags.NoSpawnViaGUI | NodeFlags.NoCloseButton,
-                Size = new Vector2(150, 300),
-                Elements = new[]
+                GroupArchetype = new GroupArchetype
                 {
-                    NodeElementArchetype.Factory.Input(0, "Output", true, ConnectionType.Object, 0) // Last optional param: Value Index
+                    GroupID = MainNodeGroupId,
+                    Name = "Rendering Graph Source",
+                    Color = new Color(231, 231, 60)
                 }
-            },
-            new NodeArchetype
-            {
-                TypeID = 2,
-                Title = "Main Camera",
-                Description = "Main camera output",
-                Flags = NodeFlags.AllGraphs,
-                Size = new Vector2(200, 90),
-                Elements = new[]
-                {
-                    // TODO: Motion vectors at full res or half res dropdown
-                    NodeElementArchetype.Factory.Input(0, "Size", true, ConnectionType.Vector2, 0),
-                    NodeElementArchetype.Factory.Input(1, "Camera", true, ConnectionType.Object, 1),
-                    NodeElementArchetype.Factory.Output(0, "Scene Color", ConnectionType.Object, 2),
-                    NodeElementArchetype.Factory.Output(1, "Depth Buffer", ConnectionType.Object, 3),
-                    NodeElementArchetype.Factory.Output(2, "Motion Vectors", ConnectionType.Object, 4),
-                }
-            },
-            // TODO: Camera node
-            new NodeArchetype
-            {
-                TypeID = 4,
-                Title = "Texture",
-                Description = "Texture",
-                Flags = NodeFlags.AllGraphs,
-                Size = new Vector2(150, 90),
-                DefaultValues = new object[]
-                {
-                    Guid.Empty
-                },
-                Elements = new[]
-                {
-                    NodeElementArchetype.Factory.Input(0, "Size", true, ConnectionType.Vector2, 0),
-                    NodeElementArchetype.Factory.Output(0, "Color", ConnectionType.Object, 2),
-                    NodeElementArchetype.Factory.Asset(0, 20, 0, ContentDomain.Texture)
-                }
-            }
-        };
+            };
 
-        public static readonly NodeArchetype[] RenderingGraphEffectNodes =
-        {
-            // TODO: PixelsRenderer node
-            new NodeArchetype
+        public static readonly NodeFactoryGroup<RenderingNode> EffectNodeFactories =
+            new NodeFactoryGroup<RenderingNode>()
             {
-                TypeID = 1,
-                Create = (id, context, arch, groupArch) => new MaterialNodeParamsSet(id, context, arch, groupArch),
-                Title = "PostFx",
-                Description = "Post Processing Effect",
-                Flags = NodeFlags.AllGraphs,
-                Size = new Vector2(200, 90),
-                DefaultValues = new object[]
+                GroupArchetype = new GroupArchetype
                 {
-                    Guid.Empty
-                },
-                Elements = new[]
-                {
-                    NodeElementArchetype.Factory.Input(0, "Size", true, ConnectionType.Vector2, 0),
-                    NodeElementArchetype.Factory.Input(1, "Input", true, ConnectionType.Object, 1),
-                    NodeElementArchetype.Factory.Output(0, "", ConnectionType.Object, 2),
-                    // TODO: Only allow PostFx materials
-                    NodeElementArchetype.Factory.Asset(100, FlaxEditor.Surface.Constants.LayoutOffsetY, 0, ContentDomain.Material)
+                    GroupID = 2,
+                    Name = "Rendering Graph Effects",
+                    Color = new Color(231, 231, 60)
                 }
-            },
-            new NodeArchetype
-            {
-                TypeID = 2,
-                Create = (id, context, arch, groupArch) => new MaterialNodeParamsSet(id, context, arch, groupArch),
-                Title = "Pixels Effect",
-                Description = "Effect with control over pixel positions",
-                Flags = NodeFlags.AllGraphs,
-                Size = new Vector2(200, 90),
-                DefaultValues = new object[]
-                {
-                    Guid.Empty
-                },
-                Elements = new[]
-                {
-                    NodeElementArchetype.Factory.Input(0, "Size", true, ConnectionType.Vector2, 0),
-                    // TODO: Actual Input Texture from where the size is taken
-                    NodeElementArchetype.Factory.Output(0, "", ConnectionType.Object, 1),
-                    // TODO: Only allow Surface materials
-                    NodeElementArchetype.Factory.Asset(100, FlaxEditor.Surface.Constants.LayoutOffsetY, 0, ContentDomain.Material)
-                }
-            }
-        };
+            };
 
-        // Our group archetypes
-        public static readonly List<GroupArchetype> RenderingGraphGroups = new List<GroupArchetype>()
+        public static readonly List<NodeFactoryGroup<RenderingNode>> NodeFactoryGroups = new List<NodeFactoryGroup<RenderingNode>>()
         {
             // Our own nodes, including the main node
-            new GroupArchetype
-            {
-                GroupID = MainNodeGroupId,
-                Name = "Rendering Graph Source",
-                Color = new Color(231, 231, 60),
-                Archetypes = RenderingGraphSourceNodes
-            },
-            new GroupArchetype
-            {
-                GroupID = EffectNodeGroupId,
-                Name = "Rendering Graph Effects",
-                Color = new Color(231, 231, 60),
-                Archetypes = RenderingGraphEffectNodes
-            },
+            SourceNodeFactories,
+            EffectNodeFactories,
             // Just a single parameter node
-            new GroupArchetype
+            new NodeFactoryGroup<RenderingNode>()
             {
-                GroupID = ParameterNodeGroupId,
-                Name = "Parameters",
-                Color = new Color(52, 73, 94),
-                Archetypes = new []{ FlaxEditor.Surface.Archetypes.Parameters.Nodes[0] }
+                GroupArchetype = new GroupArchetype
+                {
+                    GroupID = 6,
+                    Name = "Parameters",
+                    Color = new Color(52, 73, 94),
+                }
             }
         };
+
+        public static List<GroupArchetype> GetGroupArchetypes()
+        {
+            return new List<GroupArchetype>(NodeFactoryGroups.Select(t => t.GetGroupArchetype()));
+        }
+
+        public static NodeFactoryGroup<RenderingNode> GetNodeFactoryGroup(int groupId)
+        {
+            for (int i = 0; i < NodeFactoryGroups.Count; i++)
+            {
+                if (NodeFactoryGroups[i].GroupArchetype.GroupID == groupId)
+                {
+                    return NodeFactoryGroups[i];
+                }
+            }
+
+            return null;
+        }
 
         /// <summary>
         /// For saving and loading surfaces
@@ -349,8 +276,7 @@ namespace RenderingGraph.Editor
                 var surfaceContext = new VisjectSurfaceContext(null, null, new FakeSurfaceContext());
 
                 // Add the main node
-                // TODO: Change NodeFactory.DefaultGroups to your list of group archetypes
-                var node = NodeFactory.CreateNode(RenderingGraphGroups, 1, surfaceContext, MainNodeGroupId, MainNodeTypeId);
+                var node = NodeFactory.CreateNode(GetGroupArchetypes(), 1, surfaceContext, MainNodeGroupId, MainNodeTypeId);
 
                 if (node == null)
                 {
@@ -371,7 +297,6 @@ namespace RenderingGraph.Editor
         /// <summary>
         /// Updates the surface graph asset (save new one, discard cached data, reload asset).
         /// </summary>
-        /// <param name="data">Surface data.</param>
         /// <returns>True if cannot save it, otherwise false.</returns>
         public static bool SaveSurface(JsonAsset asset, RenderingGraph assetInstance, byte[] surfaceData)
         {
@@ -383,8 +308,6 @@ namespace RenderingGraph.Editor
 
         public void CompileSurface(RenderingGraph graph)
         {
-            var compiler = new RenderingGraphCompiler();
-
             // We're mapping every output box to an index
             // So we can store the node outputs in an array
             var variableIndexGetter = new GraphVariables();
@@ -392,27 +315,27 @@ namespace RenderingGraph.Editor
             // Get the parameters
             GetParameterGetterNodeArchetype(out ushort paramNodeGroupId);
 
-            var graphParams = new Dictionary<Guid, GraphParameter<RenderingGraphContext>>();
-            var parameters = new GraphParameter<RenderingGraphContext>[Parameters.Count];
+            var graphParams = new Dictionary<Guid, GraphParameter>();
+            var parameters = new GraphParameter[Parameters.Count];
             for (int i = 0; i < Parameters.Count; i++)
             {
                 var param = Parameters[i];
-                var graphParameter = new GraphParameter<RenderingGraphContext>(param.Name, param.Value, variableIndexGetter.RegisterNewVariable());
+                var graphParameter = new GraphParameter(param.Name, param.Value, variableIndexGetter.RegisterVariable());
                 graphParams.Add(param.ID, graphParameter);
                 parameters[i] = graphParameter;
             }
 
-            var nodeDefinitions = FindNode(MainNodeGroupId, MainNodeTypeId)
+            var nodes = FindNode(MainNodeGroupId, MainNodeTypeId)
                 .DepthFirstTraversal()
-                .Select<SurfaceNode, GraphNodeDefinition>((surfaceNode, index) =>
+                .Select<SurfaceNode, RenderingNode>((surfaceNode, index) =>
                 {
                     int[] inputIndices = surfaceNode.Elements
                         .OfType<InputBox>()
-                        .Select(inputBox => inputBox.HasAnyConnection ? variableIndexGetter.UseInputBox(inputBox) : -1)
+                        .Select(inputBox => inputBox.HasAnyConnection ? variableIndexGetter.UseVariable(inputBox) : -1)
                         .ToArray();
                     int[] outputIndices = surfaceNode.Elements
                         .OfType<OutputBox>()
-                        .Select(outputBox => variableIndexGetter.RegisterOutputBox(outputBox))
+                        .Select(outputBox => variableIndexGetter.RegisterVariable(outputBox))
                         .ToArray();
 
                     int groupId = surfaceNode.GroupArchetype.GroupID;
@@ -424,7 +347,7 @@ namespace RenderingGraph.Editor
                         inputIndices = new int[1] { graphParam.OutputIndex };
                     }
 
-                    return new GraphNodeDefinition()
+                    var nodeDefinition = new NodeDefinition()
                     {
                         GroupId = groupId,
                         TypeId = typeId,
@@ -433,10 +356,14 @@ namespace RenderingGraph.Editor
                         InputIndices = inputIndices,
                         OutputIndices = outputIndices
                     };
+
+                    var nodeFactory = GetNodeFactoryGroup(groupId).GetNodeFactory(typeId);
+                    return nodeFactory.Create(nodeDefinition);
                 })
                 .ToArray();
 
-            compiler.Compile(graph, parameters, nodeDefinitions);
+            graph.Parameters = parameters;
+            graph.Nodes = nodes;
         }
     }
 }

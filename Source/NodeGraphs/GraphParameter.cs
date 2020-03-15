@@ -1,9 +1,11 @@
-﻿namespace NodeGraphs
+﻿using System;
+
+namespace NodeGraphs
 {
     /// <summary>
     /// A graph parameter
     /// </summary>
-    public class GraphParameter<TContext> where TContext : GraphContext
+    public class GraphParameter
     {
         public string Name;
         public int OutputIndex;
@@ -16,9 +18,9 @@
             OutputIndex = outputIndex;
         }
 
-        public void Update(TContext context)
+        public void Update(object[] variables)
         {
-            context.Variables[OutputIndex] = Value;
+            variables[OutputIndex] = Value;
         }
     }
 }

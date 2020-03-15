@@ -9,22 +9,17 @@ namespace RenderingGraph.Nodes
     public class PostEffectNode : EffectNode
     {
         private MaterialParameter[] _inputParameters;
-        private MaterialBase _material;
         private MaterialInstance _materialInstance;
 
         // TODO: It's probably a good idea to store a proper reference to the material
-        // public MaterialBase Material;
-
-        public PostEffectNode(GraphNodeDefinition definition) : base(definition)
-        {
-        }
+        public MaterialBase Material;
 
         public override void OnEnable()
         {
             base.OnEnable();
-            _material = Content.Load<MaterialBase>(ParseGuid(Definition.Values[0]));
-            if (!_material || !_material.IsPostFx) return;
-            _materialInstance = _material.CreateVirtualInstance();
+            Material.WaitForLoaded();
+            if (!Material || !Material.IsPostFx) return;
+            _materialInstance = Material.CreateVirtualInstance();
 
             _inputParameters = GetPublicParameters(_materialInstance);
         }
@@ -32,11 +27,10 @@ namespace RenderingGraph.Nodes
         public override void OnDisable()
         {
             FlaxEngine.Object.Destroy(ref _materialInstance);
-            FlaxEngine.Object.Destroy(ref _material);
             base.OnDisable();
         }
 
-        public override void OnRenderUpdate(GPUContext context)
+        protected override void OnRenderUpdate(GPUContext context)
         {
             base.OnRenderUpdate(context);
             var inputTexture = InputTexture;

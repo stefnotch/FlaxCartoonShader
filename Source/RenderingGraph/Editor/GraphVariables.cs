@@ -27,15 +27,15 @@ namespace RenderingGraph.Editor
             public int UsagesLeft;
         }
 
-        private Dictionary<Int2, Variable> _connectionIds = new Dictionary<Int2, Variable>();
-        private HashSet<int> _takenConnectionIds = new HashSet<int>();
+        private readonly Dictionary<Int2, Variable> _connectionIds = new Dictionary<Int2, Variable>();
+        private readonly HashSet<int> _takenConnectionIds = new HashSet<int>();
 
         /// <summary>
         /// Register a output box
         /// </summary>
         /// <param name="box">An output box</param>
         /// <returns>The id of the output box or -1</returns>
-        public int RegisterOutputBox(OutputBox box)
+        public int RegisterVariable(OutputBox box)
         {
             if (!box.IsOutput)
             {
@@ -68,7 +68,7 @@ namespace RenderingGraph.Editor
         /// </summary>
         /// <remarks>This variable cannot be unregistered anymore</remarks>
         /// <returns>Index of the variable</returns>
-        public int RegisterNewVariable()
+        public int RegisterVariable()
         {
             for (int i = 0; ; i++)
             {
@@ -87,7 +87,7 @@ namespace RenderingGraph.Editor
         /// </summary>
         /// <param name="box">An input box</param>
         /// <returns>The id of the associated output box or -1</returns>
-        public int UseInputBox(InputBox box)
+        public int UseVariable(InputBox box)
         {
             if (!box.HasAnyConnection) return -1;
 
@@ -98,7 +98,7 @@ namespace RenderingGraph.Editor
                 variable.UsagesLeft--;
                 if (variable.UsagesLeft <= 0)
                 {
-                    RemoveOutputBox(outputBox);
+                    RemoveVariable(outputBox);
                 }
                 return variable.Index;
             }
@@ -108,7 +108,7 @@ namespace RenderingGraph.Editor
             }
         }
 
-        private void RemoveOutputBox(Box box)
+        private void RemoveVariable(Box box)
         {
             var id = GetBoxId(box);
             if (_connectionIds.TryGetValue(id, out var variable))

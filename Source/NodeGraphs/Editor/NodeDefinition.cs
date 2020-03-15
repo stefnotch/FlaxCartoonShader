@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace NodeGraphs
+﻿namespace NodeGraphs.Editor
 {
-    public struct GraphNodeDefinition
+    public struct NodeDefinition
     {
         public int GroupId;
         public int TypeId;

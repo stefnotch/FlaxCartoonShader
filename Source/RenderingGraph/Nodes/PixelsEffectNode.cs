@@ -8,17 +8,14 @@ using NodeGraphs;
 
 namespace RenderingGraph.Nodes
 {
-    public class PixelsEffectNode : RenderingNode<SceneRenderTask>
+    public class PixelsEffectNode : RenderingNode
     {
+        protected SceneRenderTask RenderTask;
         protected GPUTexture Output;
         protected Vector2 Size => Vector2.Max(GetInputOrDefault<Vector2>(0, Context.Size), Vector2.One);
 
         private MaterialParameter[] _inputParameters;
-        private MaterialBase _material;
         private MaterialInstance _materialInstance;
-
-        // TODO: It's probably a good idea to store a proper reference to the material
-        // public MaterialBase Material;
 
         private const float DistanceFromOrigin = 100f;
         private Vector2 _cachedSize;
@@ -26,17 +23,16 @@ namespace RenderingGraph.Nodes
         private StaticModel _modelActor;
         private Model _model;
 
-        public PixelsEffectNode(GraphNodeDefinition definition) : base(definition)
-        {
-
-        }
+        // TODO: It's probably a good idea to store a proper reference to the material
+        public MaterialBase Material;
 
         public override void OnEnable()
         {
             base.OnEnable();
-            _material = Content.Load<MaterialBase>(ParseGuid(Definition.Values[0]));
-            if (!_material || !_material.IsSurface) return;
-            _materialInstance = _material.CreateVirtualInstance();
+
+            Material.WaitForLoaded();
+            if (!Material || !Material.IsSurface) return;
+            _materialInstance = Material.CreateVirtualInstance();
 
             _inputParameters = GetPublicParameters(_materialInstance);
 
@@ -59,6 +55,7 @@ namespace RenderingGraph.Nodes
 
             Output = CreateOutputTexture(Size);
 
+            RenderTask = FlaxEngine.Object.New<SceneRenderTask>();
             RenderTask.AllowGlobalCustomPostFx = false;
             RenderTask.Order = Order;
             RenderTask.Camera = _orthographicCamera;
@@ -111,7 +108,6 @@ namespace RenderingGraph.Nodes
             FlaxEngine.Object.Destroy(ref _modelActor);
             FlaxEngine.Object.Destroy(ref _model);
             FlaxEngine.Object.Destroy(ref _materialInstance);
-            FlaxEngine.Object.Destroy(ref _material);
             FlaxEngine.Object.Destroy(ref Output);
             base.OnDisable();
         }

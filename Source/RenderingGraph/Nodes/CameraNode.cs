@@ -6,21 +6,19 @@ namespace RenderingGraph.Nodes
     /// <summary>
     /// Renders a camera or the main camera
     /// </summary>
-    public class CameraNode : RenderingNode<SceneRenderTask>
+    public class CameraNode : RenderingNode
     {
         protected GPUTexture Output;
+        protected SceneRenderTask RenderTask;
         protected Vector2 Size => Vector2.Max(GetInputOrDefault<Vector2>(0, Context.Size), Vector2.One);
-
-        public CameraNode(GraphNodeDefinition definition) : base(definition)
-        {
-        }
-
         protected Camera Camera => GetInputOrDefault(1, Camera.MainCamera);
 
         public override void OnEnable()
         {
             base.OnEnable();
             Output = CreateOutputTexture(Size);
+            RenderTask = FlaxEngine.Object.New<SceneRenderTask>();
+            RenderTask.Order = Order;
             RenderTask.Camera = Camera;
             RenderTask.ActorsSource = ActorsSources.Scenes;
             RenderTask.Output = Output;

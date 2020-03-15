@@ -8,7 +8,7 @@ using NodeGraphs;
 
 namespace RenderingGraph
 {
-    public class RenderingGraphContext : GraphContext
+    public class RenderingGraphContext
     {
         public Vector2 Size = Vector2.One;
         public int StartIndex;

@@ -6,13 +6,11 @@ using FlaxEngine.Utilities;
 
 namespace NodeGraphs
 {
-    public abstract class NodeGraph<TContext> where TContext : GraphContext
+    public abstract class NodeGraph<TNode> where TNode : GraphNode
     {
         private bool _enabled;
-        private GraphNode<TContext>[] _nodes;
-
-        [NoSerialize]
-        protected TContext Context;
+        private TNode[] _nodes;
+        protected object[] Variables;
 
         /// <summary>
         /// Serialized Visject surface
@@ -24,10 +22,10 @@ namespace NodeGraphs
         /// Parameters
         /// </summary>
         [Serialize]
-        public GraphParameter<TContext>[] Parameters { get; set; }
+        public GraphParameter[] Parameters { get; set; }
 
         [Serialize]
-        public GraphNode<TContext>[] Nodes
+        public TNode[] Nodes
         {
             get => _nodes;
             set
@@ -47,9 +45,17 @@ namespace NodeGraphs
                 {
                     _enabled = value;
                     if (_enabled)
-                        Scripting.InvokeOnUpdate(async () =>
+                        Scripting.InvokeOnUpdate(() =>
                         {
-                            Task.Delay(1000).ContinueWith(a => { Scripting.InvokeOnUpdate(Enable); });
+                            Task.Delay(1000).ContinueWith(a =>
+                             {
+                                 Scripting.InvokeOnUpdate(() =>
+                                 {
+                                     if (!_enabled) return;
+                                     if (_nodes == null) return;
+                                     OnEnable();
+                                 });
+                             });
                         });
                     else
                         OnDisable();
@@ -57,32 +63,23 @@ namespace NodeGraphs
             }
         }
 
-        protected abstract TContext CreateContext(object[] variables);
-
-        private void Enable()
-        {
-            if (!_enabled) return;
-            if (_nodes == null) return;
-            OnEnable();
-        }
-
         protected virtual void OnEnable()
         {
             int maxVariableIndex = Math.Max(
                 Parameters.Select(p => p.OutputIndex).DefaultIfEmpty(0).Max(),
-                _nodes.Max(node => node.Definition.OutputIndices.DefaultIfEmpty(0).Max())
+                _nodes.Max(node => node.OutputIndices.DefaultIfEmpty(0).Max())
             );
-            Context = CreateContext(new object[maxVariableIndex + 1]);
+            Variables = new object[maxVariableIndex + 1];
 
-            _nodes.ForEach(n => n.Context = Context);
+            _nodes.ForEach(n => n.Variables = Variables);
             _nodes.ForEach(n => n.OnEnable());
         }
 
         protected virtual void OnDisable()
         {
             _nodes?.ForEach(n => n.OnDisable());
-            _nodes?.ForEach(n => n.Context = null);
-            Context = null;
+            _nodes?.ForEach(n => n.Variables = null);
+            Variables = null;
         }
 
         public virtual void Update(float deltaTime)
@@ -91,7 +88,7 @@ namespace NodeGraphs
 
             // Update the parameters
             // Each parameter will write its Value to the context
-            for (int i = 0; i < Parameters.Length; i++) Parameters[i].Update(Context);
+            for (int i = 0; i < Parameters.Length; i++) Parameters[i].Update(Variables);
             // Update the nodes
             // Each node will get its inputs from the context
             //    Then, each node will execute its associated action
