@@ -23,15 +23,14 @@ namespace RenderingGraph.Nodes
         private StaticModel _modelActor;
         private Model _model;
 
-        // TODO: It's probably a good idea to store a proper reference to the material
         public MaterialBase Material;
 
         public override void OnEnable()
         {
             base.OnEnable();
 
-            Material.WaitForLoaded();
             if (!Material || !Material.IsSurface) return;
+            Material.WaitForLoaded();
             _materialInstance = Material.CreateVirtualInstance();
 
             _inputParameters = GetPublicParameters(_materialInstance);

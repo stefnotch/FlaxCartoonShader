@@ -47,15 +47,9 @@ namespace NodeGraphs
                     if (_enabled)
                         Scripting.InvokeOnUpdate(() =>
                         {
-                            Task.Delay(1000).ContinueWith(a =>
-                             {
-                                 Scripting.InvokeOnUpdate(() =>
-                                 {
-                                     if (!_enabled) return;
-                                     if (_nodes == null) return;
-                                     OnEnable();
-                                 });
-                             });
+                            if (!_enabled) return;
+                            if (_nodes == null) return;
+                            OnEnable();
                         });
                     else
                         OnDisable();

@@ -19,9 +19,13 @@ namespace RenderingGraph.Nodes
         protected override void OnRenderUpdate(GPUContext context)
         {
             var input = GetInputOrDefault<GPUTexture>(0, null);
-            if (input != null)
+            if (input)
             {
                 context.Draw(Output, input);
+            }
+            else
+            {
+                context.Clear(Output, Color.Black);
             }
         }
 

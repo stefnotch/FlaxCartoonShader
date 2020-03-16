@@ -14,6 +14,7 @@ namespace RenderingGraph.Nodes
         public override void OnEnable()
         {
             base.OnEnable();
+            Texture.WaitForLoaded();
             Output = CreateOutputTexture(Size);
         }
 

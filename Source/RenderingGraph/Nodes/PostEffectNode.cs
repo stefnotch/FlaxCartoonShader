@@ -11,14 +11,13 @@ namespace RenderingGraph.Nodes
         private MaterialParameter[] _inputParameters;
         private MaterialInstance _materialInstance;
 
-        // TODO: It's probably a good idea to store a proper reference to the material
         public MaterialBase Material;
 
         public override void OnEnable()
         {
             base.OnEnable();
-            Material.WaitForLoaded();
             if (!Material || !Material.IsPostFx) return;
+            Material.WaitForLoaded();
             _materialInstance = Material.CreateVirtualInstance();
 
             _inputParameters = GetPublicParameters(_materialInstance);
